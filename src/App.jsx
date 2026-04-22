@@ -364,7 +364,7 @@ function App() {
                 <h3 className="service-title" style={{ color: '#fff', margin: 0 }}>LinkedIn Newsletter</h3>
               </div>
               <p style={{ opacity: 0.7, marginBottom: '2rem' }}>Stay updated with professional insights, growth strategies, and success stories from Up4Growth coaches.</p>
-              <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ background: '#0077B5' }}>Follow on LinkedIn</a>
+              <a href="https://www.linkedin.com/build-relation/newsletter-follow?entityUrn=7238170764301017088" target="_blank" rel="noreferrer" className="btn btn-primary" style={{ background: '#0077B5' }}>Read on LinkedIn</a>
             </div>
 
             <div className="reveal" ref={addToRefs} style={{ padding: '2.5rem', background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--radius-md)', border: '1px solid rgba(255,255,255,0.1)', transitionDelay: '0.1s' }}>
