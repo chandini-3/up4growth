@@ -127,8 +127,7 @@ function App() {
               Growth by design, not by default.
             </h1>
             <p className="hero-description">
-              We help individuals and teams move from overwhelm to clarity,<br />
-              so they can take intentional steps toward meaningful growth.
+              We create space for clear thinking, conscious choices and visible progress.
             </p>
             <div className="hero-actions">
               <a href="#expertise" className="btn btn-primary">
