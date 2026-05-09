@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ArrowRight, Users, Target, BookOpen, Quote, Shield, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy, Menu, X } from 'lucide-react';
+import { ArrowRight, Users, Target, BookOpen, Quote, Shield, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy, Menu, X, Calendar, Clock, MapPin, Link as LinkIcon, CheckCircle2, Star } from 'lucide-react';
 import './index.css';
 
 function LinkedInIcon() {
@@ -21,6 +21,7 @@ function LinkedInIcon() {
 function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(true);
   const revealRefs = useRef([]);
   const emailSubject = 'Request for Details on Up4Growth Programs';
   const emailBody = `Hello Up4Growth Team,\n\nI recently came across Up4Growth and I'm interested in understanding more about your coaching programs and workshops.\n\nCould you please share further details on your offerings and how I can get started?\n\nThank you, and I look forward to your response.\n\nBest regards,\n[Your Name]`;
@@ -59,6 +60,49 @@ function App() {
     };
   }, [mobileMenuOpen]);
 
+  const closePopup = () => {
+    setShowPopup(false);
+  };
+
+  useEffect(() => {
+    let timer;
+    if (showPopup) {
+      document.body.style.overflow = 'hidden';
+      timer = setTimeout(() => {
+        closePopup();
+      }, 60000);
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      if (timer) clearTimeout(timer);
+      document.body.style.overflow = '';
+    };
+  }, [showPopup]);
+
+  useEffect(() => {
+    const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+    if (!gaMeasurementId || typeof window === 'undefined') return;
+
+    window.dataLayer = window.dataLayer || [];
+    function gtag(...args) {
+      window.dataLayer.push(args);
+    }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', gaMeasurementId, { anonymize_ip: true });
+
+    const gaScript = document.createElement('script');
+    gaScript.async = true;
+    gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`;
+    gaScript.setAttribute('data-ga4', 'true');
+    document.head.appendChild(gaScript);
+
+    return () => {
+      gaScript.remove();
+    };
+  }, []);
+
   const addToRefs = (el) => {
     if (el && !revealRefs.current.includes(el)) {
       revealRefs.current.push(el);
@@ -67,11 +111,114 @@ function App() {
 
   return (
     <div className="layout">
+      {showPopup && (
+        <div className="popup-overlay" onClick={closePopup}>
+          <div className="popup-content banner-popup" onClick={(e) => e.stopPropagation()}>
+            <button className="popup-close-x" onClick={closePopup}>
+              <X size={24} />
+            </button>
+            <div className="banner-popup-inner">
+              <div className="banner-left">
+              <p className="banner-italic-top">Invest in yourself.<br/>Connect. Grow. Thrive.</p>
+              
+              <div className="banner-badge">
+                <span className="badge-highlight">CAREER NETWORKING</span> 
+                <span className="badge-script">Event</span>
+              </div>
+              
+              <h1 className="banner-title">
+                <span className="title-dark">OWN YOUR</span><br/>
+                <span className="title-pink">CAREER</span>
+              </h1>
+              
+              <div className="banner-subtitle">
+                <span>TAKE CHARGE OF YOUR</span><br/>
+                <span>PROFESSIONAL GROWTH</span>
+              </div>
+
+              <p className="banner-desc">
+                An engaging workshop + networking<br/>
+                experience to <span className="text-pink">inspire your next move</span><br/>
+                and <span className="text-pink">expand your network.</span>
+              </p>
+
+              <div className="banner-details">
+                <div className="detail-col sep">
+                  <Calendar className="icon-pink" size={28} />
+                  <div>
+                    <strong>FRIDAY</strong><br/>
+                    5TH JUNE 2026
+                  </div>
+                </div>
+                <div className="detail-col sep">
+                  <Clock className="icon-pink" size={28} />
+                  <div>15:30 - 19:00 CET</div>
+                </div>
+                <div className="detail-col">
+                  <MapPin className="icon-pink" size={28} />
+                  <div>
+                    <strong>Memox | Basel SBB</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="banner-right">
+
+              <div className="right-register-box" style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px', marginBottom: '10px'}}>
+                <h3 style={{fontSize: '20px', margin: 0, color: '#fff'}}>Reserve Your Spot Now!</h3>
+                <a 
+                  href="https://eventfrog.ch/en/p/courses-seminars/coaching/own-your-career-workshop-networking-event-basel-7455238459688538552.html" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="btn-primary"
+                  style={{
+                    display: 'block',
+                    padding: '12px 20px',
+                    fontSize: '16px',
+                    textDecoration: 'none',
+                    borderRadius: '8px',
+                    backgroundColor: '#e53935',
+                    color: '#fff',
+                    fontWeight: 600,
+                    width: '100%',
+                    textAlign: 'center',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                  }}
+                >
+                  Register Now
+                </a>
+              </div>
+
+              <hr className="divider" style={{ marginTop: '5px' }} />
+
+              <div className="right-gain">
+                <div className="gain-title" style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+                  <div className="icon-circle bg-pink"><Star size={16} fill="white" color="white" /></div>
+                  <h3 style={{margin:0}}>What You'll Experience</h3>
+                </div>
+                <ul className="gain-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 0 0 10px', margin: '20px 0 0 0', listStyleType: 'none' }}>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>✨</span> <span style={{lineHeight: '1.4'}}>Networking with like-minded professionals</span></li>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🎲</span> <span style={{lineHeight: '1.4'}}>Engaging games to break the ice and build real connections</span></li>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🧠</span> <span style={{lineHeight: '1.4'}}>Interactive workshop on owning your career and growth</span></li>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🍹</span> <span style={{lineHeight: '1.4'}}>Drinks & Delicious food</span></li>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🎧</span> <span style={{lineHeight: '1.4'}}>Music & DJ to keep the energy high</span></li>
+                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>📍</span> <span style={{lineHeight: '1.4'}}>Great location designed for engaging workshops</span></li>
+                </ul>
+              </div>
+
+              <div style={{height: '20px'}}></div> {/* Added spacing at the bottom so the popup breathes */}
+              
+            </div>
+            </div>
+          </div>
+        </div>
+      )}
       {/* Navigation */}
       <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
         <div className="container">
           <a href="#home" className="logo logo-frame">
-            <img src="/images/logo-clean.png" alt="Up4Growth" className="logo-img" fetchPriority="high" />
+            <img src="/images/logo-clean.png" alt="Up4Growth" className="logo-img" fetchPriority="high" decoding="async" />
           </a>
           <ul className="nav-links">
             <li><a href="#home" className="nav-link">Home</a></li>
@@ -116,6 +263,7 @@ function App() {
         </div>
       </nav>
 
+      <main>
       {/* Hero Section */}
       <header className="hero" id="home">
         <div className="container">
@@ -146,6 +294,7 @@ function App() {
               alt="Corporate Growth" 
               className="hero-image" 
               fetchPriority="high"
+              decoding="async"
             />
           </div>
         </div>
@@ -248,7 +397,7 @@ function App() {
           <div className="team-grid" style={{ maxWidth: '1280px' }}>
             <div className="team-card reveal" ref={addToRefs}>
               <div className="team-img-container">
-                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" loading="lazy" />
+                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Coach & Corporate Trainer</span>
@@ -266,7 +415,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
               <div className="team-img-container">
-                <img src="/images/Etienne Claverie.png" alt="Etienne Claverie" className="team-img" loading="lazy" />
+                <img src="/images/Etienne Claverie.png" alt="Etienne Claverie" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Facilitator & Agile Coach</span>
@@ -284,7 +433,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.2s', gridColumn: '1 / -1' }}>
               <div className="team-img-container">
-                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" loading="lazy" />
+                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Software Engineering Intern - Data, Digital & AI</span>
@@ -404,6 +553,7 @@ function App() {
           </div>
         </div>
       </section>
+      </main>
 
       {/* Footer */}
       <footer className="footer">

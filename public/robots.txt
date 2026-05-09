@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://up4growth.ch/sitemap.xml
