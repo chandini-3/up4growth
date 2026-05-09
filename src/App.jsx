@@ -546,7 +546,7 @@ function App() {
                 title: 'The Ultimate Guide to Career Networking in Switzerland', 
                 category: 'Networking',
                 desc: 'Networking is an art. Discover how to effectively build professional connections and accelerate your career across Switzerland.',
-                link: '#'
+                link: '/blog/networking-strategies-switzerland/'
               },
               { 
                 title: 'How to Lead with Impact: Leadership Workshops in Basel', 
