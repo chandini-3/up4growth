@@ -225,6 +225,7 @@ function App() {
             <li><a href="#expertise" className="nav-link">Expertise</a></li>
             <li><a href="#services" className="nav-link">Services</a></li>
             <li><a href="#team" className="nav-link">Team</a></li>
+            <li><a href="#blog" className="nav-link">Blog</a></li>
             <li><a href="#testimonials" className="nav-link">Testimonials</a></li>
             <li><a href="#contact" className="nav-link">Contact</a></li>
             <li>
@@ -255,6 +256,7 @@ function App() {
           <a href="#expertise" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Expertise</a>
           <a href="#services" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Services</a>
           <a href="#team" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Meet The Team</a>
+          <a href="#blog" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Blog</a>
           <a href="#testimonials" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Testimonials</a>
           <a href="#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
@@ -448,6 +450,63 @@ function App() {
                 </a>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section (SEO Content) */}
+      <section className="section" id="blog" style={{ background: '#f9fafb' }}>
+        <div className="container">
+          <div className="section-head reveal" ref={addToRefs}>
+            <span className="section-tag">Insights & Resources</span>
+            <h2 className="section-title">Latest Articles & Career Advice</h2>
+            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '800px', margin: '1.5rem auto' }}>
+              Explore deep insights into career networking, leadership, and professional growth.
+            </p>
+          </div>
+
+          <div className="services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+            {[
+              { 
+                title: 'The Ultimate Guide to Career Networking in Switzerland', 
+                category: 'Networking',
+                desc: 'Networking is an art. Discover how to effectively build professional connections and accelerate your career across Switzerland.',
+                link: '#'
+              },
+              { 
+                title: 'How to Lead with Impact: Leadership Workshops in Basel', 
+                category: 'Leadership',
+                desc: 'Effective leadership requires intention. Learn actionable takeaways from our latest Basel leadership workshops to lead teams successfully.',
+                link: '#'
+              },
+              { 
+                title: '5 Strategies to Maximize Professional Growth Programs', 
+                category: 'Career Growth',
+                desc: 'Are you getting the most out of your growth programs? Discover 5 ways to apply workshop learnings into long-term habits.',
+                link: '#'
+              },
+              { 
+                title: 'Navigating the European Startup Scene: Tips for Networking', 
+                category: 'Startups',
+                desc: 'The startup ecosystem across Europe is dynamic but crowded. Here is how to stand out and build a supportive European network.',
+                link: '#'
+              },
+              { 
+                title: 'The Power of Intentional Career Choices', 
+                category: 'Career Design',
+                desc: 'Growth by design, not default. Exploring how small, conscious steps can radically shift your professional trajectory.',
+                link: '#'
+              }
+            ].map((blog, i) => (
+              <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'left', padding: '2rem' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px' }}>{blog.category}</span>
+                <h3 className="service-title" style={{ fontSize: '1.3rem', margin: '1rem 0' }}>{blog.title}</h3>
+                <p className="service-desc" style={{ marginBottom: '1.5rem' }}>{blog.desc}</p>
+                <a href={blog.link} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  Read Article <ArrowRight size={16} />
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
