@@ -454,63 +454,6 @@ function App() {
         </div>
       </section>
 
-      {/* Blog Section (SEO Content) */}
-      <section className="section" id="blog" style={{ background: '#f9fafb' }}>
-        <div className="container">
-          <div className="section-head reveal" ref={addToRefs}>
-            <span className="section-tag">Insights & Resources</span>
-            <h2 className="section-title">Latest Articles & Career Advice</h2>
-            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '800px', margin: '1.5rem auto' }}>
-              Explore deep insights into career networking, leadership, and professional growth.
-            </p>
-          </div>
-
-          <div className="services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-            {[
-              { 
-                title: 'The Ultimate Guide to Career Networking in Switzerland', 
-                category: 'Networking',
-                desc: 'Networking is an art. Discover how to effectively build professional connections and accelerate your career across Switzerland.',
-                link: '#'
-              },
-              { 
-                title: 'How to Lead with Impact: Leadership Workshops in Basel', 
-                category: 'Leadership',
-                desc: 'Effective leadership requires intention. Learn actionable takeaways from our latest Basel leadership workshops to lead teams successfully.',
-                link: '#'
-              },
-              { 
-                title: '5 Strategies to Maximize Professional Growth Programs', 
-                category: 'Career Growth',
-                desc: 'Are you getting the most out of your growth programs? Discover 5 ways to apply workshop learnings into long-term habits.',
-                link: '#'
-              },
-              { 
-                title: 'Navigating the European Startup Scene: Tips for Networking', 
-                category: 'Startups',
-                desc: 'The startup ecosystem across Europe is dynamic but crowded. Here is how to stand out and build a supportive European network.',
-                link: '#'
-              },
-              { 
-                title: 'The Power of Intentional Career Choices', 
-                category: 'Career Design',
-                desc: 'Growth by design, not default. Exploring how small, conscious steps can radically shift your professional trajectory.',
-                link: '#'
-              }
-            ].map((blog, i) => (
-              <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'left', padding: '2rem' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px' }}>{blog.category}</span>
-                <h3 className="service-title" style={{ fontSize: '1.3rem', margin: '1rem 0' }}>{blog.title}</h3>
-                <p className="service-desc" style={{ marginBottom: '1.5rem' }}>{blog.desc}</p>
-                <a href={blog.link} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  Read Article <ArrowRight size={16} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Testimonials Section */}
       <section className="section testimonials-section" id="testimonials">
         <div className="container">
@@ -582,6 +525,63 @@ function App() {
               <p style={{ opacity: 0.7, marginBottom: '2rem' }}>Dive deeper into thought-provoking articles, productivity tips, and personal growth content written by our coaches.</p>
               <a href="https://medium.com/@gade.madhu" target="_blank" rel="noreferrer" className="btn btn-outline" style={{ border: '1px solid #fff', color: '#fff' }}>Read on Medium</a>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog Section (SEO Content) */}
+      <section className="section" id="blog" style={{ background: '#f9fafb' }}>
+        <div className="container">
+          <div className="section-head reveal" ref={addToRefs}>
+            <span className="section-tag">Insights & Resources</span>
+            <h2 className="section-title">Latest Articles & Career Advice</h2>
+            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '800px', margin: '1.5rem auto' }}>
+              Explore deep insights into career networking, leadership, and professional growth.
+            </p>
+          </div>
+
+          <div className="services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
+            {[
+              { 
+                title: 'The Ultimate Guide to Career Networking in Switzerland', 
+                category: 'Networking',
+                desc: 'Networking is an art. Discover how to effectively build professional connections and accelerate your career across Switzerland.',
+                link: '#'
+              },
+              { 
+                title: 'How to Lead with Impact: Leadership Workshops in Basel', 
+                category: 'Leadership',
+                desc: 'Effective leadership requires intention. Learn actionable takeaways from our latest Basel leadership workshops to lead teams successfully.',
+                link: '#'
+              },
+              { 
+                title: '5 Strategies to Maximize Professional Growth Programs', 
+                category: 'Career Growth',
+                desc: 'Are you getting the most out of your growth programs? Discover 5 ways to apply workshop learnings into long-term habits.',
+                link: '#'
+              },
+              { 
+                title: 'Navigating the European Startup Scene: Tips for Networking', 
+                category: 'Startups',
+                desc: 'The startup ecosystem across Europe is dynamic but crowded. Here is how to stand out and build a supportive European network.',
+                link: '#'
+              },
+              { 
+                title: 'The Power of Intentional Career Choices', 
+                category: 'Career Design',
+                desc: 'Growth by design, not default. Exploring how small, conscious steps can radically shift your professional trajectory.',
+                link: '#'
+              }
+            ].map((blog, i) => (
+              <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'left', padding: '2rem' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px' }}>{blog.category}</span>
+                <h3 className="service-title" style={{ fontSize: '1.3rem', margin: '1rem 0' }}>{blog.title}</h3>
+                <p className="service-desc" style={{ marginBottom: '1.5rem' }}>{blog.desc}</p>
+                <a href={blog.link} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  Read Article <ArrowRight size={16} />
+                </a>
+              </div>
+            ))}
           </div>
         </div>
       </section>
