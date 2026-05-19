@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ArrowRight, Users, Target, BookOpen, Quote, Shield, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy, Menu, X, Calendar, Clock, MapPin, Link as LinkIcon, CheckCircle2, Star } from 'lucide-react';
 import './index.css';
+import Assessment from './Assessment';
 
 function LinkedInIcon() {
   return (
@@ -22,6 +23,7 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(true);
+  const [showAssessment, setShowAssessment] = useState(false);
   const revealRefs = useRef([]);
   const emailSubject = 'Request for Details on Up4Growth Programs';
   const emailBody = `Hello Up4Growth Team,\n\nI recently came across Up4Growth and I'm interested in understanding more about your coaching programs and workshops.\n\nCould you please share further details on your offerings and how I can get started?\n\nThank you, and I look forward to your response.\n\nBest regards,\n[Your Name]`;
@@ -225,9 +227,11 @@ function App() {
             <li><a href="#expertise" className="nav-link">Expertise</a></li>
             <li><a href="#services" className="nav-link">Services</a></li>
             <li><a href="#team" className="nav-link">Team</a></li>
-            <li><a href="#blog" className="nav-link">Blog</a></li>
             <li><a href="#testimonials" className="nav-link">Testimonials</a></li>
             <li><a href="#contact" className="nav-link">Contact</a></li>
+            <li>
+              <button onClick={() => setShowAssessment(true)} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }}>Assessment</button>
+            </li>
             <li>
               <a
                 href="https://www.linkedin.com/company/up4growth/"
@@ -256,7 +260,6 @@ function App() {
           <a href="#expertise" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Expertise</a>
           <a href="#services" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Services</a>
           <a href="#team" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Meet The Team</a>
-          <a href="#blog" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Blog</a>
           <a href="#testimonials" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Testimonials</a>
           <a href="#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Contact</a>
           <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
@@ -399,7 +402,7 @@ function App() {
           <div className="team-grid" style={{ maxWidth: '1280px' }}>
             <div className="team-card reveal" ref={addToRefs}>
               <div className="team-img-container">
-                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" loading="lazy" decoding="async" />
+                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" fetchPriority="high" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Coach & Corporate Trainer</span>
@@ -409,7 +412,7 @@ function App() {
                   <li>• Empowered 1,000+ participants through workshops</li>
                   <li>• 20+ years of experience in Data & Analytics</li>
                 </ul>
-                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/in/madhugade/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -417,7 +420,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
               <div className="team-img-container">
-                <img src="/images/Etienne Claverie.png" alt="Etienne Claverie" className="team-img" loading="lazy" decoding="async" />
+                <img src="/images/Etienne Claverie.jpg" alt="Etienne Claverie" className="team-img" fetchPriority="high" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Facilitator & Agile Coach</span>
@@ -427,7 +430,7 @@ function App() {
                   <li>• 15 years in Agro-industries</li>
                   <li>• PhD in Applied Mathematics</li>
                 </ul>
-                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/in/etienne-claverie/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -435,7 +438,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.2s', gridColumn: '1 / -1' }}>
               <div className="team-img-container">
-                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" loading="lazy" decoding="async" />
+                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" fetchPriority="high" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Software Engineering Intern - Data, Digital & AI</span>
@@ -529,63 +532,6 @@ function App() {
         </div>
       </section>
 
-      {/* Blog Section (SEO Content) */}
-      <section className="section" id="blog" style={{ background: '#f9fafb' }}>
-        <div className="container">
-          <div className="section-head reveal" ref={addToRefs}>
-            <span className="section-tag">Insights & Resources</span>
-            <h2 className="section-title">Latest Articles & Career Advice</h2>
-            <p style={{ color: 'var(--color-text-secondary)', maxWidth: '800px', margin: '1.5rem auto' }}>
-              Explore deep insights into career networking, leadership, and professional growth.
-            </p>
-          </div>
-
-          <div className="services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))' }}>
-            {[
-              { 
-                title: 'The Ultimate Guide to Career Networking in Switzerland', 
-                category: 'Networking',
-                desc: 'Networking is an art. Discover how to effectively build professional connections and accelerate your career across Switzerland.',
-                link: '/blog/networking-strategies-switzerland/'
-              },
-              { 
-                title: 'How to Lead with Impact: Leadership Workshops in Basel', 
-                category: 'Leadership',
-                desc: 'Effective leadership requires intention. Learn actionable takeaways from our latest Basel leadership workshops to lead teams successfully.',
-                link: '#'
-              },
-              { 
-                title: '5 Strategies to Maximize Professional Growth Programs', 
-                category: 'Career Growth',
-                desc: 'Are you getting the most out of your growth programs? Discover 5 ways to apply workshop learnings into long-term habits.',
-                link: '#'
-              },
-              { 
-                title: 'Navigating the European Startup Scene: Tips for Networking', 
-                category: 'Startups',
-                desc: 'The startup ecosystem across Europe is dynamic but crowded. Here is how to stand out and build a supportive European network.',
-                link: '#'
-              },
-              { 
-                title: 'The Power of Intentional Career Choices', 
-                category: 'Career Design',
-                desc: 'Growth by design, not default. Exploring how small, conscious steps can radically shift your professional trajectory.',
-                link: '#'
-              }
-            ].map((blog, i) => (
-              <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'left', padding: '2rem' }}>
-                <span style={{ fontSize: '0.8rem', fontWeight: 600, color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px' }}>{blog.category}</span>
-                <h3 className="service-title" style={{ fontSize: '1.3rem', margin: '1rem 0' }}>{blog.title}</h3>
-                <p className="service-desc" style={{ marginBottom: '1.5rem' }}>{blog.desc}</p>
-                <a href={blog.link} style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px' }}>
-                  Read Article <ArrowRight size={16} />
-                </a>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Contact Section */}
       <section className="section cta-section" id="contact">
         <div className="container">
@@ -628,6 +574,7 @@ function App() {
           </div>
         </div>
       </footer>
+      {showAssessment && <Assessment onClose={() => setShowAssessment(false)} />}
     </div>
   );
 }
