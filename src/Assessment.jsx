@@ -12,81 +12,72 @@ import {
 import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react';
 
 const dimensionsKey = [
-  'Workplace Performance',
-  'Work Environment',
   'Career Direction',
   'Income',
   'Mental Wellbeing',
   'Work-Life Balance',
   'Relationships at Work',
-  'Skillset'
+  'Professional Development',
+  'Workplace Performance',
+  'Work Environment'
 ];
 
 const dimensionQuestions = {
-  'Workplace Performance': [
-    'How satisfied are you with your promotion opportunities?',
-    'How recognized is your expertise in your team?',
-    'How would you rate your visibility to leadership?',
-    'How would you rate your overall productivity?',
-    'How satisfied are you with the recognition you receive?'
-  ],
-  'Work Environment': [
-    'How aligns the office culture with your values?',
-    'How satisfied are you with work location flexibility?',
-    'How acceptable is your daily travel time/commute?',
-    'How positive is your immediate team environment?',
-    'How would you rate the safety and comfort of your workspace?'
-  ],
   'Career Direction': [
-    'How satisfied are you with your current career trajectory?',
-    'How clear is your path for career navigation?',
-    'How satisfied are you with your growth opportunities?',
-    'How aligned is your role with your long-term goals?',
-    'How would you rate the career support you receive at work?'
+    'How satisfied are you with the clarity and direction of your career path?'
   ],
   'Income': [
-    'How satisfied are you with your current salary?',
-    'How would you rate your financial stability from this job?',
-    'How satisfied are you with your pension and benefits?',
-    'How optimal is your residual/bonus income potential?',
-    'How would you rate the fairness of your compensation?'
+    'How satisfied are you with your current income and financial growth opportunities?'
   ],
   'Mental Wellbeing': [
-    'How manageable are your stress levels at work?',
-    'How well does your job allow for quality sleep?',
-    'How much does your role allow for self-care routines?',
-    'How would you rate your emotional balance during work?',
-    'How well can you relax after a workday?'
+    'How satisfied are you with your mental wellbeing and stress management at work?'
   ],
   'Work-Life Balance': [
-    'How well does your schedule allow for leisure activities?',
-    'How satisfied are you with the time available for family?',
-    'How appropriate is the amount of time spent at work?',
-    'How well can you pursue personal hobbies?',
-    'How effectively are you managing burnout?'
+    'How satisfied are you with the balance between your work and personal life?'
   ],
   'Relationships at Work': [
-    'How positive are your team relationships?',
-    'How effective is communication within your workplace?',
-    'How would you rate the internal support you receive?',
-    'How satisfied are you with your external networking opportunities?',
-    'How strong is the trust and collaboration in your team?'
+    'How satisfied are you with your relationships and communication with colleagues and managers?'
   ],
-  'Skillset': [
-    'How satisfied are you with the training provided?',
-    'How much passion do you feel for your daily tasks?',
-    'How confident are you in your current expertise?',
-    'How strongly does your environment foster a learning mindset?',
-    'How satisfied are you with your professional development?'
+  'Professional Development': [
+    'How satisfied are you with your opportunities to learn new skills and grow professionally?'
+  ],
+  'Workplace Performance': [
+    'How satisfied are you with your productivity and performance at work?'
+  ],
+  'Work Environment': [
+    'How satisfied are you with your workplace environment and overall company culture?'
   ]
 };
+
+const dimensionDescriptions = {
+  'Career Direction': 'Your career goals and future growth path.',
+  'Income': 'Your salary, financial stability, and earning growth.',
+  'Mental Wellbeing': 'Your stress levels, emotional health, and peace of mind.',
+  'Work-Life Balance': 'Your ability to balance work and personal life.',
+  'Relationships at Work': 'Your connection and communication with coworkers and managers.',
+  'Professional Development': 'Your learning opportunities and skill growth.',
+  'Workplace Performance': 'Your effectiveness, productivity, and recognition at work.',
+  'Work Environment': 'Your workplace culture, comfort, and overall environment.'
+};
+
+const allQuestions = dimensionsKey.flatMap(dim => 
+  dimensionQuestions[dim].map((q, idx) => ({ 
+    dimension: dim, 
+    question: q, 
+    questionIndexInDimension: idx 
+  }))
+);
 
 const CustomTooltip = ({ active, payload }) => {
   if (active && payload && payload.length) {
     return (
       <div className="bg-white p-3 shadow-lg rounded-lg border border-gray-100">
         <p className="font-semibold text-gray-800">{payload[0].payload.dimension}</p>
-        <p className="text-primary font-bold">Score: {payload[0].value.toFixed(1)} / 10</p>
+        {payload.map((entry, index) => (
+          <p key={index} style={{ color: entry.color }} className="font-bold">
+            {entry.name}: {entry.value} / 5
+          </p>
+        ))}
       </div>
     );
   }
@@ -95,31 +86,48 @@ const CustomTooltip = ({ active, payload }) => {
 
 export default function Assessment({ onClose }) {
   const [step, setStep] = useState('intro'); // intro, questions, results
-  const [currentDimensionIndex, setCurrentDimensionIndex] = useState(0);
+  const [currentQuestionGlobalIndex, setCurrentQuestionGlobalIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [scores, setScores] = useState([]);
 
   const handleStart = () => setStep('questions');
 
-  const handleAnswer = (questionIndex, value) => {
-    const dimension = dimensionsKey[currentDimensionIndex];
-    setAnswers(prev => ({
-      ...prev,
-      [dimension]: {
-        ...prev[dimension],
-        [questionIndex]: value
+  const handleAnswer = (type, value) => {
+    const { dimension, questionIndexInDimension } = allQuestions[currentQuestionGlobalIndex];
+    setAnswers(prev => {
+      const updatedDimension = { ...prev[dimension] };
+      const currentAns = updatedDimension[questionIndexInDimension] || {};
+      const newAns = { ...currentAns, [type]: value };
+      updatedDimension[questionIndexInDimension] = newAns;
+      
+      if (newAns.current !== undefined && newAns.target !== undefined) {
+        setTimeout(() => {
+          const nextBtn = document.getElementById('next-question-btn');
+          if (nextBtn && !nextBtn.disabled) {
+            nextBtn.click();
+          }
+        }, 500);
       }
-    }));
+
+      return {
+        ...prev,
+        [dimension]: updatedDimension
+      };
+    });
   };
 
-  const currentDimension = dimensionsKey[currentDimensionIndex];
-  const currentQuestions = dimensionQuestions[currentDimension];
+  const currentQ = allQuestions[currentQuestionGlobalIndex] || allQuestions[0];
+  const { dimension: currentDimension, question: currentQuestionText, questionIndexInDimension } = currentQ;
   const currentDimensionAnswers = answers[currentDimension] || {};
-  const isCurrentDimensionComplete = Object.keys(currentDimensionAnswers).length === currentQuestions.length;
+  const currentAnswerObj = currentDimensionAnswers[questionIndexInDimension] || {};
+  const { current: currentScore, target: targetScore } = currentAnswerObj;
+
+  const isCurrentComplete = currentScore !== undefined && targetScore !== undefined;
+  const isLastQuestion = currentQuestionGlobalIndex === allQuestions.length - 1;
 
   const handleNext = () => {
-    if (currentDimensionIndex < dimensionsKey.length - 1) {
-      setCurrentDimensionIndex(prev => prev + 1);
+    if (!isLastQuestion) {
+      setCurrentQuestionGlobalIndex(prev => prev + 1);
     } else {
       calculateScores();
       setStep('results');
@@ -127,20 +135,28 @@ export default function Assessment({ onClose }) {
   };
 
   const handlePrev = () => {
-    if (currentDimensionIndex > 0) {
-      setCurrentDimensionIndex(prev => prev - 1);
+    if (currentQuestionGlobalIndex > 0) {
+      setCurrentQuestionGlobalIndex(prev => prev - 1);
     }
   };
 
   const calculateScores = () => {
     const finalScores = dimensionsKey.map(dim => {
       const dimAnswers = answers[dim] || {};
-      const values = Object.values(dimAnswers);
-      const avg = values.length ? values.reduce((a, b) => a + b, 0) / values.length : 0;
+      const answerList = Object.values(dimAnswers);
+      
+      const avgCurrent = answerList.length 
+        ? answerList.reduce((acc, val) => acc + (val.current || 0), 0) / answerList.length 
+        : 0;
+      const avgTarget = answerList.length 
+        ? answerList.reduce((acc, val) => acc + (val.target || 0), 0) / answerList.length 
+        : 0;
+
       return {
         dimension: dim,
-        score: avg,
-        fullMark: 10
+        currentScore: avgCurrent,
+        futureScore: avgTarget,
+        fullMark: 5
       };
     });
     setScores(finalScores);
@@ -148,7 +164,10 @@ export default function Assessment({ onClose }) {
 
   const getRecommendations = () => {
     if (!scores.length) return [];
-    const sorted = [...scores].sort((a, b) => a.score - b.score);
+    // Recommend areas with the biggest gap between current and target scores
+    const sorted = [...scores]
+      .filter(s => s.futureScore > s.currentScore)
+      .sort((a, b) => (b.futureScore - b.currentScore) - (a.futureScore - a.currentScore));
     return sorted.slice(0, 3).map(s => s.dimension);
   };
 
@@ -178,18 +197,10 @@ export default function Assessment({ onClose }) {
               <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
                 Discover Your True Career Balance
               </h1>
-              <p className="text-xl text-gray-600 mb-10 leading-relaxed">
+              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 Take our comprehensive assessment across 8 vital dimensions to visualize your career satisfaction and identify areas for growth.
               </p>
               
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12 w-full">
-                {dimensionsKey.slice(0, 4).map((dim, i) => (
-                  <div key={i} className="bg-orange-50 p-3 rounded-lg text-sm font-medium text-orange-800">
-                    {dim}
-                  </div>
-                ))}
-              </div>
-
               <button
                 onClick={handleStart}
                 className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 rounded-full font-bold text-lg shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 flex items-center gap-2"
@@ -209,43 +220,84 @@ export default function Assessment({ onClose }) {
             >
               {/* Progress */}
               <div className="mb-8">
-                <div className="flex justify-between text-sm text-gray-500 mb-2">
-                  <span>Dimension {currentDimensionIndex + 1} of {dimensionsKey.length}</span>
-                  <span>{Math.round(((currentDimensionIndex) / dimensionsKey.length) * 100)}% Completed</span>
+                <div className="flex justify-between text-sm text-gray-500 mb-2 font-medium">
+                  <span>Question {currentQuestionGlobalIndex + 1} of {allQuestions.length}</span>
+                  <span>{Math.round((currentQuestionGlobalIndex / allQuestions.length) * 100)}% Complete</span>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2.5">
+                <div className="w-full bg-gray-200 rounded-full h-2">
                   <div 
-                    className="bg-orange-500 h-2.5 rounded-full transition-all duration-500"
-                    style={{ width: `${((currentDimensionIndex) / dimensionsKey.length) * 100}%` }}
+                    className="bg-orange-500 h-2 rounded-full transition-all duration-500"
+                    style={{ width: `${(currentQuestionGlobalIndex / allQuestions.length) * 100}%` }}
                   ></div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8 flex-grow">
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{currentDimension}</h3>
-                <p className="text-gray-500 mb-8">Rate your satisfaction from 1 (lowest) to 10 (highest)</p>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-10 flex-grow flex flex-col justify-center text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-orange-500 tracking-wider uppercase mb-3">{currentDimension}</h3>
+                <p className="text-gray-500 mb-8 md:mb-10 text-base sm:text-lg md:text-xl">{dimensionDescriptions[currentDimension]}</p>
 
-                <div className="space-y-8">
-                  {currentQuestions.map((q, idx) => (
-                    <div key={idx} className="border-b border-gray-50 pb-6 last:border-0 last:pb-0">
-                      <p className="text-lg text-gray-800 mb-4">{q}</p>
-                      <div className="flex justify-between gap-1 md:gap-2">
-                        {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map(num => (
-                          <button
-                            key={num}
-                            onClick={() => handleAnswer(idx, num)}
-                            className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-medium transition-all
-                              ${currentDimensionAnswers[idx] === num 
-                                ? 'bg-orange-500 text-white shadow-md transform scale-110' 
-                                : 'bg-gray-100 text-gray-600 hover:bg-orange-100 hover:text-orange-600'
-                              }`}
-                          >
-                            {num}
-                          </button>
-                        ))}
-                      </div>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-8 md:mb-12 leading-tight">
+                  {currentQuestionText}
+                </h2>
+
+                <div className="mb-6 md:mb-8 w-full max-w-3xl mx-auto">
+                  <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-orange-500"></span>
+                      <p className="text-base sm:text-lg text-gray-800 font-semibold">Current Satisfaction</p>
                     </div>
-                  ))}
+                    <span className="text-xs sm:text-sm font-medium text-orange-800 bg-orange-50 px-3 py-1 rounded">Where are you now?</span>
+                  </div>
+                  <div className="flex flex-wrap justify-center sm:justify-between gap-2 sm:gap-1 md:gap-2 px-0 lg:px-8 mb-2">
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <button
+                        key={num}
+                        onClick={() => handleAnswer('current', num)}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 rounded-full flex items-center justify-center font-bold text-sm sm:text-base md:text-lg transition-all focus:outline-none
+                          ${currentScore === num 
+                            ? 'bg-orange-500 text-white shadow-md ring-2 ring-orange-200 transform scale-110' 
+                            : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-500'
+                          }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full max-w-[210px] sm:max-w-full mx-auto sm:mx-0">
+                    <span>Very Dissatisfied</span>
+                    <span>Very Satisfied</span>
+                  </div>
+                </div>
+
+                <div className="border-t border-gray-100 mb-6 md:mb-8 max-w-3xl mx-auto w-full"></div>
+
+                <div className="mb-4 w-full max-w-3xl mx-auto">
+                  <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-500"></span>
+                      <p className="text-base sm:text-lg text-gray-800 font-semibold">Target Satisfaction</p>
+                    </div>
+                    <span className="text-xs sm:text-sm font-medium text-blue-800 bg-blue-50 px-3 py-1 rounded">Where do you want to be?</span>
+                  </div>
+                  <div className="flex flex-wrap justify-center sm:justify-between gap-2 sm:gap-1 md:gap-2 px-0 lg:px-8 mb-2">
+                    {[1, 2, 3, 4, 5].map(num => (
+                      <button
+                        key={num}
+                        onClick={() => handleAnswer('target', num)}
+                        className={`w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 shrink-0 rounded-full flex items-center justify-center font-bold text-sm sm:text-base md:text-lg transition-all focus:outline-none
+                          ${targetScore === num 
+                            ? 'bg-blue-500 text-white shadow-md ring-2 ring-blue-200 transform scale-110' 
+                            : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-500'
+                          }`}
+                      >
+                        {num}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full max-w-[210px] sm:max-w-full mx-auto sm:mx-0">
+                    <span>Very Dissatisfied</span>
+                    <span>Very Satisfied</span>
+                  </div>
                 </div>
               </div>
 
@@ -253,21 +305,22 @@ export default function Assessment({ onClose }) {
               <div className="flex justify-between mt-8">
                 <button
                   onClick={handlePrev}
-                  disabled={currentDimensionIndex === 0}
+                  disabled={currentQuestionGlobalIndex === 0}
                   className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-colors
-                    ${currentDimensionIndex === 0 ? 'text-gray-400 cursor-not-allowed' : 'text-gray-700 hover:bg-gray-100'}`}
+                    ${currentQuestionGlobalIndex === 0 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'}`}
                 >
                   <ArrowLeft className="w-5 h-5" /> Previous
                 </button>
                 <button
+                  id="next-question-btn"
                   onClick={handleNext}
-                  disabled={!isCurrentDimensionComplete}
-                  className={`flex items-center gap-2 px-8 py-3 rounded-lg font-bold transition-all
-                    ${!isCurrentDimensionComplete 
-                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
-                      : 'bg-orange-500 hover:bg-orange-600 text-white shadow-md'}`}
+                  disabled={!isCurrentComplete}
+                  className={`flex items-center gap-2 px-8 py-3 rounded-xl font-bold transition-all shadow-sm
+                    ${!isCurrentComplete
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+                      : 'bg-orange-500 hover:bg-orange-600 text-white shadow-orange-200 shadow-lg'}`}
                 >
-                  {currentDimensionIndex === dimensionsKey.length - 1 ? 'See Results' : 'Next'} <ArrowRight className="w-5 h-5" />
+                   {isLastQuestion ? 'See Results' : 'Next'} <ArrowRight className="w-5 h-5" />
                 </button>
               </div>
             </motion.div>
@@ -288,21 +341,58 @@ export default function Assessment({ onClose }) {
                 <p className="text-gray-600">Here is your tailored Career Wheel of Life visualization.</p>
               </div>
 
-              <div className="w-full flex flex-col md:flex-row gap-8 items-center md:items-start max-w-5xl">
+              <div className="w-full flex flex-col gap-8 items-center max-w-4xl mx-auto">
                 {/* Chart Container */}
-                <div className="w-full md:w-1/2 md:mt-24 bg-white p-4 rounded-2xl shadow-sm border border-gray-100 h-[400px] md:h-[500px]">
+                <div className="w-full bg-white p-2 sm:p-4 rounded-2xl shadow-sm border border-gray-100 h-[350px] sm:h-[400px] md:h-[600px] overflow-visible">
                   <ResponsiveContainer width="100%" height="100%">
-                    <RadarChart cx="50%" cy="50%" outerRadius="70%" data={scores}>
+                    <RadarChart cx="50%" cy="50%" outerRadius={window.innerWidth < 768 ? "40%" : "65%"} data={scores} margin={{ top: 20, right: window.innerWidth < 768 ? 45 : 30, bottom: 20, left: window.innerWidth < 768 ? 45 : 30 }}>
                       <PolarGrid stroke="#e5e7eb" />
-                      <PolarAngleAxis dataKey="dimension" tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 500 }} />
-                      <PolarRadiusAxis angle={30} domain={[0, 10]} tick={{ fill: '#9ca3af' }} />
+                      <PolarAngleAxis 
+                        dataKey="dimension" 
+                        tick={(props) => {
+                          const { x, y, payload, textAnchor } = props;
+                          const words = payload.value.split(' ');
+                          const isMobile = window.innerWidth < 768;
+
+                          // Shift texts slightly inwards on the far left and far right so they never touch the phone's edge
+                          let shiftX = 0;
+                          if (isMobile) {
+                            if (textAnchor === "end") shiftX = 12; // Far Left: Push inwards to the right
+                            if (textAnchor === "start") shiftX = -12; // Far Right: Push inwards to the left
+                          }
+                          
+                          // Break long text into two lines if needed on mobile
+                          if (isMobile && words.length > 1) {
+                            return (
+                              <text x={x + shiftX} y={y} textAnchor={textAnchor} fill="#4b5563" fontSize={9} fontWeight={500}>
+                                <tspan x={x + shiftX} dy="-0.5em">{words[0]}</tspan>
+                                <tspan x={x + shiftX} dy="1.2em">{words.slice(1).join(' ')}</tspan>
+                              </text>
+                            );
+                          }
+                          return (
+                            <text x={x + shiftX} y={y} dy={4} textAnchor={textAnchor} fill="#4b5563" fontSize={isMobile ? 9 : 12} fontWeight={500}>
+                              {payload.value}
+                            </text>
+                          );
+                        }} 
+                      />
+                      <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Radar
-                        name="Career Score"
-                        dataKey="score"
+                        name="Current"
+                        dataKey="currentScore"
                         stroke="#f97316"
                         fill="#f97316"
                         fillOpacity={0.4}
+                        animationDuration={1500}
+                      />
+                      <Radar
+                        name="Target (Future)"
+                        dataKey="futureScore"
+                        stroke="#0ea5e9"
+                        fill="#0ea5e9"
+                        fillOpacity={0.2}
                         animationDuration={1500}
                       />
                     </RadarChart>
@@ -310,7 +400,7 @@ export default function Assessment({ onClose }) {
                 </div>
 
                 {/* Analysis */}
-                <div className="w-full md:w-1/2 space-y-6">
+                <div className="w-full space-y-6">
                   <div className="bg-orange-50 p-6 rounded-2xl border border-orange-100">
                     <h3 className="text-xl font-bold text-gray-900 mb-4">Key Insights</h3>
                     <p className="text-gray-700 leading-relaxed mb-4">
