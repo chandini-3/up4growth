@@ -1,7 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { ArrowRight, Users, Target, BookOpen, Quote, Shield, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy, Menu, X, Calendar, Clock, MapPin, Link as LinkIcon, CheckCircle2, Star } from 'lucide-react';
 import './index.css';
-import Assessment from './Assessment';
 
 function LinkedInIcon() {
   return (
@@ -23,7 +22,6 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showPopup, setShowPopup] = useState(true);
-  const [showAssessment, setShowAssessment] = useState(false);
   const revealRefs = useRef([]);
   const emailSubject = 'Request for Details on Up4Growth Programs';
   const emailBody = `Hello Up4Growth Team,\n\nI recently came across Up4Growth and I'm interested in understanding more about your coaching programs and workshops.\n\nCould you please share further details on your offerings and how I can get started?\n\nThank you, and I look forward to your response.\n\nBest regards,\n[Your Name]`;
@@ -230,9 +228,6 @@ function App() {
             <li><a href="#testimonials" className="nav-link">Testimonials</a></li>
             <li><a href="#contact" className="nav-link">Contact</a></li>
             <li>
-              <button onClick={() => setShowAssessment(true)} className="nav-link" style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'inherit', fontSize: 'inherit' }}>Assessment</button>
-            </li>
-            <li>
               <a
                 href="https://www.linkedin.com/company/up4growth/"
                 target="_blank"
@@ -262,6 +257,16 @@ function App() {
           <a href="#team" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Meet The Team</a>
           <a href="#testimonials" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Testimonials</a>
           <a href="#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Contact</a>
+          <button 
+            className="mobile-menu-link" 
+            style={{ textAlign: 'left', width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
+            onClick={() => {
+              setShowAssessment(true);
+              setMobileMenuOpen(false);
+            }}
+          >
+            Assessment
+          </button>
           <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
             LinkedIn
           </a>
@@ -574,7 +579,6 @@ function App() {
           </div>
         </div>
       </footer>
-      {showAssessment && <Assessment onClose={() => setShowAssessment(false)} />}
     </div>
   );
 }
