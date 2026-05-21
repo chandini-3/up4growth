@@ -248,12 +248,12 @@ export default function Assessment({ onClose }) {
                     </div>
                     <span className="text-xs sm:text-sm font-medium text-orange-800 bg-orange-50 px-3 py-1 rounded">Where are you now?</span>
                   </div>
-                  <div className="flex flex-wrap justify-between gap-1 sm:gap-2 px-0 lg:px-8 mb-2">
+                  <div className="flex flex-nowrap justify-between md:justify-center gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-4 mb-2">
                     {[1, 2, 3, 4, 5, 6].map(num => (
                       <button
                         key={num}
                         onClick={() => handleAnswer('current', num)}
-                        className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 shrink-0 rounded-full flex items-center justify-center font-bold text-sm sm:text-base md:text-lg transition-all focus:outline-none
+                        className={`w-9 h-9 sm:w-11 sm:h-11 md:w-14 md:h-14 shrink-0 rounded-full flex items-center justify-center font-bold text-base sm:text-lg md:text-xl transition-all focus:outline-none
                           ${currentScore === num 
                             ? 'bg-orange-500 text-white shadow-md ring-2 ring-orange-200 transform scale-110' 
                             : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-orange-300 hover:text-orange-500'
@@ -263,7 +263,7 @@ export default function Assessment({ onClose }) {
                       </button>
                     ))}
                   </div>
-                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full mx-auto">
+                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full max-w-[210px] sm:max-w-full mx-auto sm:mx-0">
                     <span>Very Dissatisfied</span>
                     <span>Very Satisfied</span>
                   </div>
@@ -279,12 +279,12 @@ export default function Assessment({ onClose }) {
                     </div>
                     <span className="text-xs sm:text-sm font-medium text-blue-800 bg-blue-50 px-3 py-1 rounded">Where do you want to be?</span>
                   </div>
-                  <div className="flex flex-wrap justify-between gap-1 sm:gap-2 px-0 lg:px-8 mb-2">
+                  <div className="flex flex-nowrap justify-between md:justify-center gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-4 mb-2">
                     {[1, 2, 3, 4, 5, 6].map(num => (
                       <button
                         key={num}
                         onClick={() => handleAnswer('target', num)}
-                        className={`w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 shrink-0 rounded-full flex items-center justify-center font-bold text-sm sm:text-base md:text-lg transition-all focus:outline-none
+                        className={`w-9 h-9 sm:w-11 sm:h-11 md:w-14 md:h-14 shrink-0 rounded-full flex items-center justify-center font-bold text-base sm:text-lg md:text-xl transition-all focus:outline-none
                           ${targetScore === num 
                             ? 'bg-blue-500 text-white shadow-md ring-2 ring-blue-200 transform scale-110' 
                             : 'bg-white border-2 border-gray-200 text-gray-600 hover:border-blue-300 hover:text-blue-500'
@@ -294,7 +294,7 @@ export default function Assessment({ onClose }) {
                       </button>
                     ))}
                   </div>
-                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full mx-auto">
+                  <div className="flex justify-between items-center px-0 lg:px-8 text-xs sm:text-sm text-gray-400 font-medium w-full max-w-[210px] sm:max-w-full mx-auto sm:mx-0">
                     <span>Very Dissatisfied</span>
                     <span>Very Satisfied</span>
                   </div>
@@ -377,7 +377,7 @@ export default function Assessment({ onClose }) {
                           );
                         }} 
                       />
-                      <PolarRadiusAxis angle={30} domain={[0, 5]} tick={{ fill: '#9ca3af' }} />
+                      <PolarRadiusAxis angle={30} domain={[0, 6]} tick={{ fill: '#9ca3af' }} />
                       <Tooltip content={<CustomTooltip />} />
                       <Radar
                         name="Current"
