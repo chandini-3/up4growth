@@ -338,7 +338,7 @@ export default function Assessment({ onClose }) {
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Assessment Complete!</h2>
-                <p className="text-gray-600">Here is your tailored Career Wheel of Life visualization.</p>
+                <p className="text-gray-600">Here is your tailored Career Wheel visualization.</p>
               </div>
 
               <div className="w-full flex flex-col gap-8 items-center max-w-4xl mx-auto">
@@ -417,6 +417,31 @@ export default function Assessment({ onClose }) {
                         ))}
                       </ul>
                     </div>
+                  </div>
+
+                  <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-6">
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
+                    <p className="text-gray-700 leading-relaxed mb-6">
+                      If you'd like personalized support to accelerate your career growth, schedule a free discovery session with one of our coaches to explore whether we're the right fit to support you on your journey toward your goals.
+                    </p>
+                    <a 
+                      href="https://calendly.com/gade" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-sm"
+                    >
+                      BOOK A FREE CONSULTATION
+                    </a>
+                  </div>
+
+                  {/* Navigation back to questions */}
+                  <div className="flex justify-start mt-8 pt-6 border-t border-gray-100">
+                    <button
+                      onClick={() => setStep('questions')}
+                      className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+                    >
+                      <ArrowLeft className="w-5 h-5" /> Previous
+                    </button>
                   </div>
                 </div>
               </div>
