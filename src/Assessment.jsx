@@ -27,7 +27,7 @@ const dimensionQuestions = {
     'How satisfied are you with the clarity and direction of your career path?'
   ],
   'Income': [
-    'How satisfied are you with your current income and financial growth opportunities?'
+    'How satisfied are you with your income and financial growth opportunities?'
   ],
   'Mental Wellbeing': [
     'How satisfied are you with your mental wellbeing and stress management at work?'
