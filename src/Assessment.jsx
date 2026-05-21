@@ -248,7 +248,7 @@ export default function Assessment({ onClose }) {
                     </div>
                     <span className="text-xs sm:text-sm font-medium text-orange-800 bg-orange-50 px-3 py-1 rounded">Where are you now?</span>
                   </div>
-                  <div className="flex flex-nowrap justify-between md:justify-center gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-4 mb-2">
+                  <div className="flex flex-nowrap justify-between w-full gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-8 mb-2">
                     {[1, 2, 3, 4, 5, 6].map(num => (
                       <button
                         key={num}
@@ -279,7 +279,7 @@ export default function Assessment({ onClose }) {
                     </div>
                     <span className="text-xs sm:text-sm font-medium text-blue-800 bg-blue-50 px-3 py-1 rounded">Where do you want to be?</span>
                   </div>
-                  <div className="flex flex-nowrap justify-between md:justify-center gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-4 mb-2">
+                  <div className="flex flex-nowrap justify-between w-full gap-1 sm:gap-2 lg:gap-3 px-0 lg:px-8 mb-2">
                     {[1, 2, 3, 4, 5, 6].map(num => (
                       <button
                         key={num}
