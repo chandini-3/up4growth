@@ -1,28 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { ArrowRight, Users, Target, BookOpen, Quote, Shield, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy, Menu, X, Calendar, Clock, MapPin, Link as LinkIcon, CheckCircle2, Star } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { ArrowRight, Users, Target, BookOpen, Quote, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy } from 'lucide-react';
+import SiteNavbar, { LinkedInIcon } from './SiteNavbar';
+import SeoHead from './SeoHead';
+import { defaultSeo } from './seoConfig';
 import './index.css';
-import Assessment from './Assessment';
-
-function LinkedInIcon() {
-  return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      focusable="false"
-      fill="currentColor"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M20.447 20.452H16.893V14.89c0-1.327-.025-3.036-1.852-3.036-1.853 0-2.136 1.445-2.136 2.94v5.658H9.353V9h3.414v1.561h.049c.476-.9 1.637-1.852 3.369-1.852 3.602 0 4.266 2.369 4.266 5.452v6.291zM5.337 7.433a2.063 2.063 0 1 1 0-4.125 2.063 2.063 0 0 1 0 4.125zM6.91 20.452H3.764V9H6.91v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0z" />
-    </svg>
-  );
-}
 
 function App() {
-  const [scrolled, setScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [showPopup, setShowPopup] = useState(true);
+  const location = useLocation();
   const [showAssessment, setShowAssessment] = useState(false);
   const revealRefs = useRef([]);
   const emailSubject = 'Request for Details on Up4Growth Programs';
@@ -30,10 +15,15 @@ function App() {
   const mailtoLink = `mailto:contact@up4growth.ch?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    if (!location.hash) return undefined;
+    const sectionId = location.hash.slice(1);
+    const frame = requestAnimationFrame(() => {
+      document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [location.pathname, location.hash]);
 
+  useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -46,41 +36,12 @@ function App() {
       if (ref) observer.observe(ref);
     });
 
-    window.addEventListener('scroll', handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
       revealRefs.current.forEach(ref => {
         if (ref) observer.unobserve(ref);
       });
     };
   }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [mobileMenuOpen]);
-
-  const closePopup = () => {
-    setShowPopup(false);
-  };
-
-  useEffect(() => {
-    let timer;
-    if (showPopup) {
-      document.body.style.overflow = 'hidden';
-      timer = setTimeout(() => {
-        closePopup();
-      }, 60000);
-    } else {
-      document.body.style.overflow = '';
-    }
-    return () => {
-      if (timer) clearTimeout(timer);
-      document.body.style.overflow = '';
-    };
-  }, [showPopup]);
 
   useEffect(() => {
     const gaMeasurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
@@ -113,176 +74,8 @@ function App() {
 
   return (
     <div className="layout">
-      {showPopup && (
-        <div className="popup-overlay" onClick={closePopup}>
-          <div className="popup-content banner-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="popup-close-x" onClick={closePopup}>
-              <X size={24} />
-            </button>
-            <div className="banner-popup-inner">
-              <div className="banner-left">
-              <p className="banner-italic-top">Invest in yourself.<br/>Connect. Grow. Thrive.</p>
-              
-              <div className="banner-badge">
-                <span className="badge-highlight">CAREER NETWORKING</span> 
-                <span className="badge-script">Event</span>
-              </div>
-              
-              <h1 className="banner-title">
-                <span className="title-dark">OWN YOUR</span><br/>
-                <span className="title-pink">CAREER</span>
-              </h1>
-              
-              <div className="banner-subtitle">
-                <span>TAKE CHARGE OF YOUR</span><br/>
-                <span>PROFESSIONAL GROWTH</span>
-              </div>
-
-              <p className="banner-desc">
-                An engaging workshop + networking<br/>
-                experience to <span className="text-pink">inspire your next move</span><br/>
-                and <span className="text-pink">expand your network.</span>
-              </p>
-
-              <div className="banner-details">
-                <div className="detail-col sep">
-                  <Calendar className="icon-pink" size={28} />
-                  <div>
-                    <strong>FRIDAY</strong><br/>
-                    5TH JUNE 2026
-                  </div>
-                </div>
-                <div className="detail-col sep">
-                  <Clock className="icon-pink" size={28} />
-                  <div>15:30 - 19:00 CET</div>
-                </div>
-                <div className="detail-col">
-                  <MapPin className="icon-pink" size={28} />
-                  <div>
-                    <strong>Memox | Basel SBB</strong>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="banner-right">
-
-              <div className="right-register-box" style={{display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '12px', marginBottom: '10px'}}>
-                <h3 style={{fontSize: '20px', margin: 0, color: '#fff'}}>Reserve Your Spot Now!</h3>
-                <a 
-                  href="https://eventfrog.ch/en/p/courses-seminars/coaching/own-your-career-workshop-networking-event-basel-7455238459688538552.html" 
-                  target="_blank" 
-                  rel="noreferrer"
-                  className="btn-primary"
-                  style={{
-                    display: 'block',
-                    padding: '12px 20px',
-                    fontSize: '16px',
-                    textDecoration: 'none',
-                    borderRadius: '8px',
-                    backgroundColor: '#e53935',
-                    color: '#fff',
-                    fontWeight: 600,
-                    width: '100%',
-                    textAlign: 'center',
-                    boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
-                  }}
-                >
-                  Register Now
-                </a>
-              </div>
-
-              <hr className="divider" style={{ marginTop: '5px' }} />
-
-              <div className="right-gain">
-                <div className="gain-title" style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
-                  <div className="icon-circle bg-pink"><Star size={16} fill="white" color="white" /></div>
-                  <h3 style={{margin:0}}>What You'll Experience</h3>
-                </div>
-                <ul className="gain-list" style={{ display: 'flex', flexDirection: 'column', gap: '16px', padding: '0 0 0 10px', margin: '20px 0 0 0', listStyleType: 'none' }}>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>✨</span> <span style={{lineHeight: '1.4'}}>Networking with like-minded professionals</span></li>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🎲</span> <span style={{lineHeight: '1.4'}}>Engaging games to break the ice and build real connections</span></li>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🧠</span> <span style={{lineHeight: '1.4'}}>Interactive workshop on owning your career and growth</span></li>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🍹</span> <span style={{lineHeight: '1.4'}}>Drinks & Delicious food</span></li>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>🎧</span> <span style={{lineHeight: '1.4'}}>Music & DJ to keep the energy high</span></li>
-                  <li style={{marginBottom: 0, fontSize: '15px', display: 'flex', alignItems: 'flex-start'}}><span style={{fontSize: '20px', marginRight: '12px', lineHeight: '1.2'}}>📍</span> <span style={{lineHeight: '1.4'}}>Great location designed for engaging workshops</span></li>
-                </ul>
-              </div>
-
-              <div style={{height: '20px'}}></div> {/* Added spacing at the bottom so the popup breathes */}
-              
-            </div>
-            </div>
-          </div>
-        </div>
-      )}
-      {/* Navigation */}
-      <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
-        <div className="container">
-          <a href="#home" className="logo logo-frame">
-            <img src="/images/logo-clean.png" alt="Up4Growth" className="logo-img" fetchPriority="high" decoding="async" />
-          </a>
-          <ul className="nav-links">
-            <li><a href="#home" className="nav-link">Home</a></li>
-            <li><a href="#expertise" className="nav-link">Expertise</a></li>
-            <li><a href="#services" className="nav-link">Services</a></li>
-            <li><a href="#team" className="nav-link">Team</a></li>
-            <li><a href="#testimonials" className="nav-link">Testimonials</a></li>
-            <li><a href="#contact" className="nav-link">Contact</a></li>
-            <li>
-              <button 
-                className="nav-link" 
-                style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-                onClick={() => setShowAssessment(true)}
-              >
-                Assessment
-              </button>
-            </li>
-            <li>
-              <a
-                href="https://www.linkedin.com/company/up4growth/"
-                target="_blank"
-                rel="noreferrer"
-                className="nav-social-link"
-                aria-label="Visit Up4Growth on LinkedIn"
-                title="Up4Growth LinkedIn"
-              >
-                <LinkedInIcon />
-              </a>
-            </li>
-          </ul>
-          <button
-            type="button"
-            className="mobile-menu-toggle"
-            aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-            aria-expanded={mobileMenuOpen}
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </div>
-        <div className={`mobile-menu ${mobileMenuOpen ? 'open' : ''}`}>
-          <a href="#home" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Home</a>
-          <a href="#expertise" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Expertise</a>
-          <a href="#services" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Services</a>
-          <a href="#team" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Meet The Team</a>
-          <a href="#testimonials" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Testimonials</a>
-          <a href="#contact" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>Contact</a>
-          <button 
-            className="mobile-menu-link" 
-            style={{ textAlign: 'left', width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
-            onClick={() => {
-              setShowAssessment(true);
-              setMobileMenuOpen(false);
-            }}
-          >
-            Assessment
-          </button>
-          <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={() => setMobileMenuOpen(false)}>
-            LinkedIn
-          </a>
-        </div>
-      </nav>
+      <SeoHead {...defaultSeo} />
+      <SiteNavbar />
 
       <main>
       {/* Hero Section */}
@@ -332,15 +125,29 @@ function App() {
           <div className="services-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }}>
             {[
               { title: 'Career Development', icon: <Briefcase size={32} />, desc: 'Guidance to identify key skills, gain confidence, and create clear roadmaps for professional advancement.' },
-              { title: 'Leadership', icon: <Trophy size={32} />, desc: 'Enhancing leadership qualities, strategic thinking, and the ability to inspire and empower teams.' },
-              { title: 'Productivity', icon: <Zap size={32} />, desc: 'Cultivating focus, balance, and sustainable high performance in the modern workplace.' },
+              { title: 'Leadership', icon: <Trophy size={32} />, desc: 'Enhancing leadership qualities, strategic thinking, and the ability to inspire and empower teams.', to: '/blog/stop-asking-how-are-you' },
+              { title: 'Productivity', icon: <Zap size={32} />, desc: 'Cultivating focus, balance, and sustainable high performance in the modern workplace.', to: '/blog/breaking-through-procrastination' },
               { title: 'Wellbeing', icon: <Heart size={32} />, desc: 'Promoting mental clarity and resilience as the foundation for optimal performance.' }
             ].map((exp, i) => (
-              <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'center' }}>
-                <div className="service-icon-box" style={{ margin: '0 auto 2rem' }}>{exp.icon}</div>
-                <h3 className="service-title" style={{ fontSize: '1.5rem' }}>{exp.title}</h3>
-                <p className="service-desc">{exp.desc}</p>
-              </div>
+              exp.to ? (
+                <Link
+                  key={i}
+                  to={exp.to}
+                  className="service-card reveal"
+                  ref={addToRefs}
+                  style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'center', color: 'inherit' }}
+                >
+                  <div className="service-icon-box" style={{ margin: '0 auto 2rem' }}>{exp.icon}</div>
+                  <h3 className="service-title" style={{ fontSize: '1.5rem' }}>{exp.title}</h3>
+                  <p className="service-desc">{exp.desc}</p>
+                </Link>
+              ) : (
+                <div key={i} className="service-card reveal" ref={addToRefs} style={{ transitionDelay: `${i * 0.1}s`, textAlign: 'center' }}>
+                  <div className="service-icon-box" style={{ margin: '0 auto 2rem' }}>{exp.icon}</div>
+                  <h3 className="service-title" style={{ fontSize: '1.5rem' }}>{exp.title}</h3>
+                  <p className="service-desc">{exp.desc}</p>
+                </div>
+              )
             ))}
           </div>
         </div>
@@ -355,12 +162,16 @@ function App() {
           </div>
 
           <div className="services-grid">
-            <div className="service-card reveal" ref={addToRefs}>
+            <div className="service-card reveal service-card--with-action" ref={addToRefs}>
               <div className="service-icon-box"><Users size={32} /></div>
               <h3 className="service-title">Corporate Workshops</h3>
               <p className="service-desc">
                 Interactive, high-impact sessions designed to enhance leadership, teamwork, and productivity. We help organizations nurture growth-oriented cultures through experiential learning.
               </p>
+              <Link to="/workshops/topics" className="service-card-learn-more">
+                Learn more
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
             </div>
             
             <div className="service-card reveal" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
@@ -418,7 +229,7 @@ function App() {
           <div className="team-grid" style={{ maxWidth: '1280px' }}>
             <div className="team-card reveal" ref={addToRefs}>
               <div className="team-img-container">
-                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" fetchPriority="high" decoding="async" />
+                <img src="/images/Madhu Gade.jpg" alt="Madhu Gade" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Coach & Corporate Trainer</span>
@@ -428,7 +239,7 @@ function App() {
                   <li>• Empowered 1,000+ participants through workshops</li>
                   <li>• 20+ years of experience in Data & Analytics</li>
                 </ul>
-                <a href="https://www.linkedin.com/in/madhugade/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -436,7 +247,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
               <div className="team-img-container">
-                <img src="/images/Etienne Claverie.jpg" alt="Etienne Claverie" className="team-img" fetchPriority="high" decoding="async" />
+                <img src="/images/Etienne Claverie.png" alt="Etienne Claverie" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Certified Facilitator & Agile Coach</span>
@@ -446,7 +257,7 @@ function App() {
                   <li>• 15 years in Agro-industries</li>
                   <li>• PhD in Applied Mathematics</li>
                 </ul>
-                <a href="https://www.linkedin.com/in/etienne-claverie/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -454,7 +265,7 @@ function App() {
 
             <div className="team-card reveal" ref={addToRefs} style={{ transitionDelay: '0.2s', gridColumn: '1 / -1' }}>
               <div className="team-img-container">
-                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" fetchPriority="high" decoding="async" />
+                <img src="/images/Chandini%20Majji.jpg" alt="Chandini Majji" className="team-img" loading="lazy" decoding="async" />
               </div>
               <div className="team-info">
                 <span className="team-role">Software Engineering Intern - Data, Digital & AI</span>

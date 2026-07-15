@@ -219,7 +219,7 @@ export default function Assessment({ onClose }) {
               className="flex-grow flex flex-col"
             >
               {/* Progress */}
-              <div className="mb-8">
+              <div className="mb-4 sm:mb-5">
                 <div className="flex justify-between text-sm text-gray-500 mb-2 font-medium">
                   <span>Question {currentQuestionGlobalIndex + 1} of {allQuestions.length}</span>
                   <span>{Math.round((currentQuestionGlobalIndex / allQuestions.length) * 100)}% Complete</span>
@@ -232,15 +232,15 @@ export default function Assessment({ onClose }) {
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-10 flex-grow flex flex-col justify-center text-center">
-                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-orange-500 tracking-wider uppercase mb-3">{currentDimension}</h3>
-                <p className="text-gray-500 mb-8 md:mb-10 text-base sm:text-lg md:text-xl">{dimensionDescriptions[currentDimension]}</p>
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sm:p-6 md:p-10 flex-grow flex flex-col justify-start text-center">
+                <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-orange-500 tracking-wider uppercase mb-2 sm:mb-3">{currentDimension}</h3>
+                <p className="text-gray-500 mb-5 sm:mb-6 md:mb-8 text-base sm:text-lg md:text-xl">{dimensionDescriptions[currentDimension]}</p>
 
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-8 md:mb-12 leading-tight">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-6 md:mb-8 leading-tight">
                   {currentQuestionText}
                 </h2>
 
-                <div className="mb-6 md:mb-8 w-full max-w-3xl mx-auto">
+                <div className="mb-5 md:mb-6 w-full max-w-3xl mx-auto">
                   <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-orange-500"></span>
@@ -269,9 +269,9 @@ export default function Assessment({ onClose }) {
                   </div>
                 </div>
 
-                <div className="border-t border-gray-100 mb-6 md:mb-8 max-w-3xl mx-auto w-full"></div>
+                <div className="border-t border-gray-100 mb-5 md:mb-6 max-w-3xl mx-auto w-full"></div>
 
-                <div className="mb-4 w-full max-w-3xl mx-auto">
+                <div className="mb-2 w-full max-w-3xl mx-auto">
                   <div className="flex flex-col md:flex-row justify-between items-center mb-4 gap-2">
                     <div className="flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-blue-500"></span>
@@ -338,7 +338,7 @@ export default function Assessment({ onClose }) {
                   <CheckCircle className="w-8 h-8" />
                 </div>
                 <h2 className="text-3xl font-bold text-gray-900 mb-2">Assessment Complete!</h2>
-                <p className="text-gray-600">Here is your tailored Career Wheel visualization.</p>
+                <p className="text-gray-600">Here is your tailored Career Wheel of Career visualization.</p>
               </div>
 
               <div className="w-full flex flex-col gap-8 items-center max-w-4xl mx-auto">
@@ -422,7 +422,7 @@ export default function Assessment({ onClose }) {
                   <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100 mt-6">
                     <h3 className="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
                     <p className="text-gray-700 leading-relaxed mb-6">
-                      If you'd like personalized support to accelerate your career growth, schedule a free discovery session with one of our coaches to explore whether we're the right fit to support you on your journey toward your goals.
+                      If you'd like personalized support to accelerate your career growth, schedule a <strong>free discovery session</strong> with one of our coaches to explore whether we're the right fit to support you on your journey toward your goals.
                     </p>
                     <a 
                       href="https://calendly.com/gade" 
