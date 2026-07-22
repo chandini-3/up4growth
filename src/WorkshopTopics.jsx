@@ -84,6 +84,9 @@ export default function WorkshopTopics() {
       <main>
         <section className="section workshop-topics-section">
           <div className="container">
+            <Link to="/" className="programs-back-home">
+              ← Back to Home
+            </Link>
             <h1 className="workshop-topics-title">Topics</h1>
 
             <div className="workshop-topics-filters" role="tablist" aria-label="Workshop topics">

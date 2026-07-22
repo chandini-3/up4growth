@@ -1001,6 +1001,30 @@ a {
   background: var(--color-bg);
 }
 
+.programs-back-home {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin: 0 0 1.25rem;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid rgba(194, 65, 12, 0.2);
+  border-radius: 999px;
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-family: var(--font-sans);
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.2;
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.programs-back-home:hover {
+  background: var(--color-accent-soft);
+  border-color: rgba(194, 65, 12, 0.35);
+  color: var(--color-text-primary);
+}
+
 .workshop-topics-title {
   text-align: center;
   font-family: var(--font-serif);
@@ -1051,6 +1075,28 @@ a {
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 1.75rem;
   align-items: stretch;
+}
+
+.workshop-program-grid--programs {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.programs-page-lead {
+  max-width: 640px;
+  margin: -0.5rem auto 3rem;
+  text-align: center;
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+
+.programs-detail-excerpt {
+  margin: 1.25rem 0 0;
+  color: var(--color-text-secondary);
+  font-size: 1.05rem;
+  line-height: 1.7;
 }
 
 .workshop-program-card {
@@ -1987,6 +2033,7 @@ a {
   .hero-content { max-width: 100%; text-align: center; }
   .services-grid { grid-template-columns: 1fr; }
   .workshop-program-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .workshop-program-grid--programs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .workshop-landing-hero-grid { grid-template-columns: 1fr; }
   .workshop-landing-hero-visual { max-width: 560px; }
   .workshop-landing-outcomes-grid,
@@ -2021,7 +2068,8 @@ a {
   .workshop-topics-filter {
     flex-shrink: 0;
   }
-  .workshop-program-grid { grid-template-columns: 1fr; }
+  .workshop-program-grid,
+  .workshop-program-grid--programs { grid-template-columns: 1fr; }
   .workshop-landing-hero { padding-top: 6.5rem; }
   .workshop-landing-purpose-grid,
   .workshop-landing-outcomes-grid,

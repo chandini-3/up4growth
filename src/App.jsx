@@ -174,20 +174,29 @@ function App() {
               </Link>
             </div>
             
-            <div className="service-card reveal" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
+            <div className="service-card reveal service-card--with-action" ref={addToRefs} style={{ transitionDelay: '0.1s' }}>
               <div className="service-icon-box"><Target size={32} /></div>
               <h3 className="service-title">One-on-One Coaching</h3>
               <p className="service-desc">
                 Personalized coaching sessions focused on self-awareness, goal setting, and performance improvement. We empower professionals to reach their full potential.
               </p>
+              <Link to="/coaching" className="service-card-learn-more">
+                Learn more
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
             </div>
 
-            <div className="service-card reveal" ref={addToRefs} style={{ transitionDelay: '0.2s' }}>
+            <div className="service-card reveal service-card--with-action" ref={addToRefs} style={{ transitionDelay: '0.2s' }}>
               <div className="service-icon-box"><BookOpen size={32} /></div>
-              <h3 className="service-title">Productivity Programs</h3>
+              <h3 className="service-title">Up4growth programs</h3>
               <p className="service-desc">
-                Our Productivity Programs are designed to help professionals cultivate focus, balance, and sustainable high performance in their workdays.
+                We design customized programs tailored to each client's unique needs.
+                Practical solutions that help individuals and teams achieve their goals.
               </p>
+              <Link to="/programs" className="service-card-learn-more">
+                Learn more
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
             </div>
           </div>
 
