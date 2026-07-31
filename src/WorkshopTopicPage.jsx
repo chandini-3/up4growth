@@ -1,12 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import OwnYourCareerWorkshop from './OwnYourCareerWorkshop';
+import WorkshopTopicLanding from './WorkshopTopicLanding';
 import { SITE_NAME, absoluteUrl } from './seoConfig';
-import {
-  getWorkshopCategoryMeta,
-  getWorkshopTopicById,
-} from './workshopTopicData';
+import { getWorkshopTopicById } from './workshopTopicData';
 import './index.css';
 
 function SiteFooter() {
@@ -58,41 +55,5 @@ export default function WorkshopTopicPage() {
     );
   }
 
-  if (topic.id === 'own-your-career') {
-    return <OwnYourCareerWorkshop />;
-  }
-
-  const categoryMeta = getWorkshopCategoryMeta(topic.category);
-  const topicUrl = `/workshops/topics/${topic.id}`;
-
-  return (
-    <div className="layout">
-      <SeoHead
-        title={`${topic.title} | Workshop Topics | ${SITE_NAME}`}
-        description={`Learn more about the ${topic.title} workshop from Up4Growth.`}
-        canonical={absoluteUrl(topicUrl)}
-        image={absoluteUrl('/images/hero.png')}
-        type="website"
-      />
-      <SiteNavbar />
-
-      <main>
-        <section className="section workshop-detail-section">
-          <div className="container workshop-detail-container">
-            <Link to="/workshops/topics" className="workshop-detail-back">
-              ← Back to Topics
-            </Link>
-
-            <span className="workshop-program-card-badge workshop-detail-badge">
-              {categoryMeta.badgeLabel ?? categoryMeta.label}
-            </span>
-
-            <h1 className="workshop-detail-title">{topic.title}</h1>
-          </div>
-        </section>
-      </main>
-
-      <SiteFooter />
-    </div>
-  );
+  return <WorkshopTopicLanding topic={topic} />;
 }

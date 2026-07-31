@@ -13,7 +13,7 @@ export const coachingOffers = [
     badge: 'Career',
     category: 'career',
     excerpt:
-      'Take charge of your professional growth with coaching that builds self-awareness, clear goals, and a practical roadmap for advancement.',
+      'Take charge of your professional growth with a 12-week career coaching program — personalized sessions, Career Model Canvas, and clear action plans with accountability.',
   },
   {
     id: 'leadership-coaching',

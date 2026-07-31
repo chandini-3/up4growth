@@ -18,7 +18,7 @@ import './index.css';
 
 const BOOK_CALL_URL = 'https://calendly.com/gade';
 const CONTACT_EMAIL = 'contact@up4growth.ch';
-const PROGRAM_PATH = '/programs/custom-growth';
+const DEFAULT_PROGRAM_PATH = '/programs/custom-growth';
 const PROGRAM_HERO_IMAGE = '/images/own-your-career-hero.png?v=4';
 
 const emailSubject = 'Own Your Career Program Inquiry';
@@ -36,7 +36,7 @@ const whatsInItItems = [
   'Action plans with accountability and regular progress reviews',
 ];
 
-const programSupportItems = [
+const highlightItems = [
   'Personalized coaching aligned with your career aspirations',
   'Career Audit across key career dimensions',
   'Personalized Career Model Canvas',
@@ -65,7 +65,7 @@ const audienceItems = [
 
 const footerNav = [
   { label: "What's in it", href: '#whats-in-it' },
-  { label: 'Program Support', href: '#program-support' },
+  { label: 'Program Highlights', href: '#program-highlights' },
   { label: 'Expected Outcomes', href: '#expected-outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
   { label: 'Delivery Options', href: '#delivery-options' },
@@ -143,13 +143,17 @@ function ProgramLandingFooter() {
   );
 }
 
-export default function OwnYourCareerProgram() {
+export default function OwnYourCareerProgram({
+  path = DEFAULT_PROGRAM_PATH,
+  backTo = '/programs',
+  backLabel = '← Back to Programs',
+} = {}) {
   return (
     <div className="layout workshop-landing-page">
       <SeoHead
         title={`Own Your Career | Career Coaching Program | ${SITE_NAME}`}
         description="Take charge of your professional growth with the Own Your Career coaching program — personalized coaching, career clarity, and a practical roadmap for long-term aspirations."
-        canonical={absoluteUrl(PROGRAM_PATH)}
+        canonical={absoluteUrl(path)}
         image={absoluteUrl('/images/own-your-career-hero.png')}
         type="website"
       />
@@ -169,17 +173,17 @@ export default function OwnYourCareerProgram() {
             </div>
 
             <div className="workshop-landing-hero-content">
-              <Link to="/programs" className="workshop-detail-back">
-                ← Back to Programs
+              <Link to={backTo} className="workshop-detail-back">
+                {backLabel}
               </Link>
 
               <span className="workshop-program-card-badge workshop-landing-hero-badge">
-                Program 01/02 · Career Coaching
+                Program 01/02 · Career
               </span>
 
               <h1 className="workshop-landing-hero-title">Own Your Career</h1>
               <p className="workshop-landing-hero-subtitle">
-                Take Charge of Your Professional Growth
+                Career Coaching Program · Take Charge of Your Professional Growth
               </p>
 
               <div className="workshop-landing-meta">
@@ -227,15 +231,15 @@ export default function OwnYourCareerProgram() {
           </div>
         </section>
 
-        <section className="section workshop-landing-section workshop-landing-section--alt" id="program-support">
+        <section className="section workshop-landing-section workshop-landing-section--alt" id="program-highlights">
           <div className="container">
             <div className="workshop-landing-section-head">
               <span className="section-tag">Programs for sustainable growth</span>
-              <h2 className="section-title workshop-landing-section-title">Program Support</h2>
+              <h2 className="section-title workshop-landing-section-title">Program Highlights</h2>
             </div>
 
             <div className="workshop-landing-highlights-grid">
-              {programSupportItems.map((item) => (
+              {highlightItems.map((item) => (
                 <article key={item} className="workshop-landing-highlight-card">
                   <Briefcase size={20} aria-hidden="true" />
                   <p>{item}</p>

@@ -1,6 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
+import OwnYourCareerProgram from './OwnYourCareerProgram';
 import { SITE_NAME, absoluteUrl } from './seoConfig';
 import { getCoachingOfferById } from './coachingData';
 import './index.css';
@@ -51,6 +52,16 @@ export default function CoachingPage() {
         </main>
         <SiteFooter />
       </div>
+    );
+  }
+
+  if (offer.id === 'own-your-career') {
+    return (
+      <OwnYourCareerProgram
+        path="/coaching/own-your-career"
+        backTo="/coaching"
+        backLabel="← Back to Coaching"
+      />
     );
   }
 
