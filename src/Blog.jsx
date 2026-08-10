@@ -92,19 +92,18 @@ function ArticleLink({ article, className, children, ...props }) {
   );
 }
 
-function getBlogCardPreview(summary) {
-  if (!summary) return '';
+function getBlogCardPreviewLines(summary) {
+  if (!summary) return [];
   return summary
     .split('\n')
     .map((line) => line.trim())
     .filter(Boolean)
-    .slice(0, 3)
-    .join('\n');
+    .slice(0, 3);
 }
 
 function BlogCard({ article }) {
   const imageCategory = article.categories[0];
-  const summary = getBlogCardPreview(articleContents[article.id]?.summary);
+  const summaryLines = getBlogCardPreviewLines(articleContents[article.id]?.summary);
 
   return (
     <article className="blog-card">
@@ -148,7 +147,13 @@ function BlogCard({ article }) {
           <span>{article.readTime} min read</span>
         </p>
 
-        {summary && <p className="blog-card-summary">{summary}</p>}
+        {summaryLines.length > 0 && (
+          <div className="blog-card-summary">
+            {summaryLines.map((line) => (
+              <p key={line} className="blog-card-summary-line">{line}</p>
+            ))}
+          </div>
+        )}
 
         <ArticleLink className="blog-card-read-more" article={article}>
           Read more
