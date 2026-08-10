@@ -147,6 +147,8 @@ export default function WorkshopTopicLanding({ topic }) {
   const displayTitle = topic.shortTitle || topic.title;
   const mailtoLink = buildMailto(displayTitle);
   const heroImage = topic.heroImage || DEFAULT_HERO_IMAGE;
+  const heroVideo = topic.heroVideo || null;
+  const heroImageClass = topic.heroImageClass || '';
   const duration = topic.duration || 'Interactive workshop';
   const format = topic.format || 'Online or In-Person';
   const purposeItems = topic.purpose || [];
@@ -173,13 +175,27 @@ export default function WorkshopTopicLanding({ topic }) {
         <header className="workshop-landing-hero" id="top">
           <div className="container workshop-landing-hero-grid">
             <div className="workshop-landing-hero-visual">
-              <img
-                src={heroImage}
-                alt={`${displayTitle} workshop`}
-                className="workshop-landing-hero-image"
-                loading="eager"
-                decoding="async"
-              />
+              {heroVideo ? (
+                <video
+                  className="workshop-landing-hero-image workshop-landing-hero-video"
+                  src={heroVideo}
+                  poster={heroImage}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  aria-label={`${displayTitle} workshop video`}
+                />
+              ) : (
+                <img
+                  src={heroImage}
+                  alt={`${displayTitle} workshop`}
+                  className={`workshop-landing-hero-image ${heroImageClass}`.trim()}
+                  loading="eager"
+                  decoding="async"
+                />
+              )}
             </div>
 
             <div className="workshop-landing-hero-content">

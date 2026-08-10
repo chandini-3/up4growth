@@ -13,6 +13,9 @@ import './index.css';
 function WorkshopTopicCard({ topic }) {
   const categoryMeta = getWorkshopCategoryMeta(topic.category);
   const topicHref = `/workshops/topics/${topic.id}`;
+  const cardImage = topic.heroImage
+    ? topic.heroImage.split('?')[0]
+    : null;
 
   return (
     <article className="workshop-program-card" aria-label={topic.title}>
@@ -22,10 +25,20 @@ function WorkshopTopicCard({ topic }) {
         aria-label={`View workshop: ${topic.title}`}
       >
         <div className="workshop-program-card-image-wrap">
-          <div
-            className={`workshop-program-card-image workshop-program-card-image--${topic.category}`}
-            aria-hidden="true"
-          />
+          {cardImage ? (
+            <img
+              src={cardImage}
+              alt=""
+              className={`workshop-program-card-image${topic.heroImageClass ? ` ${topic.heroImageClass}` : ''}`}
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div
+              className={`workshop-program-card-image workshop-program-card-image--${topic.category}`}
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Link>
 

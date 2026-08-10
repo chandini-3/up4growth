@@ -1142,6 +1142,16 @@ a {
   transition: transform 0.35s ease;
 }
 
+.workshop-program-card-image.workshop-landing-hero-image--focus-top {
+  min-height: 0;
+  transform: none;
+  object-position: center 18%;
+}
+
+.workshop-program-card-image-link:hover .workshop-program-card-image.workshop-landing-hero-image--focus-top {
+  transform: scale(1.04);
+}
+
 .workshop-program-card-image--career {
   background: linear-gradient(135deg, #fff7ed 0%, #c2410c 40%, #431407 100%);
 }
@@ -1390,6 +1400,16 @@ a {
   height: 100%;
   min-height: 360px;
   object-fit: cover;
+}
+
+.workshop-landing-hero-video {
+  background: #111;
+}
+
+.workshop-landing-hero-image--focus-top {
+  min-height: 420px;
+  object-fit: cover;
+  object-position: center 18%;
 }
 
 .workshop-landing-cta-group {

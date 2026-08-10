@@ -4,6 +4,7 @@ export const coachingOffers = [
     title: 'Anyone Who Wants To Grow!',
     badge: 'Growth',
     category: 'wellbeing',
+    heroImage: '/images/consciously-design-your-future-hero.png',
     excerpt:
       'Personalized coaching for professionals ready to grow with clarity, confidence, and purposeful action in their career and life.',
   },
@@ -12,6 +13,7 @@ export const coachingOffers = [
     title: 'Own Your Career',
     badge: 'Career',
     category: 'career',
+    heroImage: '/images/own-your-career-hero.png',
     excerpt:
       'Take charge of your professional growth with a 12-week career coaching program — personalized sessions, Career Model Canvas, and clear action plans with accountability.',
   },
@@ -20,8 +22,9 @@ export const coachingOffers = [
     title: 'Leadership Coaching',
     badge: 'Leadership',
     category: 'leadership',
+    heroImage: '/images/constructive-feedback-hero.png',
     excerpt:
-      'Strengthen leadership presence, strategic thinking, and the ability to inspire teams through focused one-on-one coaching.',
+      'Strengthen leadership presence, strategic thinking, and the ability to inspire teams through focused one-on-one coaching — including feedback, communication, and culture-building skills.',
   },
 ];
 

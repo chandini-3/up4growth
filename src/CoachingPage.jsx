@@ -2,6 +2,7 @@ import { Link, useParams } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
 import OwnYourCareerProgram from './OwnYourCareerProgram';
+import LeadershipCoaching from './LeadershipCoaching';
 import { SITE_NAME, absoluteUrl } from './seoConfig';
 import { getCoachingOfferById } from './coachingData';
 import './index.css';
@@ -63,6 +64,10 @@ export default function CoachingPage() {
         backLabel="← Back to Coaching"
       />
     );
+  }
+
+  if (offer.id === 'leadership-coaching') {
+    return <LeadershipCoaching />;
   }
 
   const offerUrl = `/coaching/${offer.id}`;

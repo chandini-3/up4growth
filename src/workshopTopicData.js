@@ -13,6 +13,8 @@ export const workshopTopics = [
     category: 'career',
     workshopNumber: '01 / 10',
     outcomeTitle: 'How to Stop Drowning and Start Thriving',
+    heroVideo: '/images/ai-vs-human.mp4',
+    heroImage: '/images/ai-anxiety-to-ai-advantage-poster.png',
     description:
       'This workshop helps professionals overwhelmed by AI’s rapid evolution move from anxiety, self-doubt, and fear of irrelevance to clarity, confidence, and actionable momentum.',
     purpose: [
@@ -39,6 +41,7 @@ export const workshopTopics = [
     category: 'career',
     workshopNumber: '02 / 10',
     outcomeTitle: 'Take charge of your life',
+    heroImage: '/images/consciously-design-your-future-hero.png',
     description:
       'Take charge of your life and career by envisioning the future you want — and building a clear roadmap to get there.',
     purpose: [
@@ -60,6 +63,7 @@ export const workshopTopics = [
     category: 'career',
     workshopNumber: '03 / 10',
     outcomeTitle: 'Build Meaningful Connections',
+    heroImage: '/images/networking-with-authenticity-hero.png',
     description:
       'Transform networking from a transactional task into a rewarding practice of genuine connection and collaboration.',
     purpose: [
@@ -130,6 +134,7 @@ export const workshopTopics = [
     category: 'leadership',
     workshopNumber: '05 / 10',
     outcomeTitle: 'Cultivate a feedback culture that fuels growth',
+    heroImage: '/images/constructive-feedback-hero.png',
     description:
       'Cultivate a feedback culture that fuels growth, collaboration, and continuous improvement.',
     purpose: [
@@ -151,6 +156,7 @@ export const workshopTopics = [
     category: 'leadership',
     workshopNumber: '06 / 10',
     outcomeTitle: 'Setting Boundaries for Success',
+    heroImage: '/images/art-of-saying-no-hero.png',
     description:
       'Empower yourself to set healthy boundaries that protect your time, focus, and energy without guilt.',
     purpose: [
@@ -172,6 +178,8 @@ export const workshopTopics = [
     category: 'leadership',
     workshopNumber: '07 / 10',
     outcomeTitle: 'How Startup Founders Turn Uncertainty into Growth',
+    heroImage: '/images/fearless-founder-hero.jpg',
+    heroImageClass: 'workshop-landing-hero-image--focus-top',
     description:
       'Building a startup means making high-stakes decisions in the face of constant uncertainty. This workshop helps startup founders recognize and navigate the fears that can limit growth—from fear of failure and rejection to imposter syndrome and difficult leadership decisions. Through practical reflection and proven mindset techniques, participants will learn how to transform fear into clarity, confidence, and decisive action.',
     purpose: [
@@ -194,6 +202,7 @@ export const workshopTopics = [
     category: 'productivity',
     workshopNumber: '08 / 10',
     outcomeTitle: 'Unlock Your Productivity Potential',
+    heroImage: '/images/unlock-productivity-potential-hero.png',
     description:
       'Overcome procrastination by understanding its roots and applying science-backed tools to take consistent action.',
     purpose: [
@@ -215,6 +224,7 @@ export const workshopTopics = [
     category: 'productivity',
     workshopNumber: '09 / 10',
     outcomeTitle: 'Small Steps, Big Impact',
+    heroImage: '/images/designing-habits-that-stick-hero.png',
     description:
       'Leverage behavioural science to create habits that drive consistent personal and professional growth.',
     purpose: [
@@ -236,6 +246,8 @@ export const workshopTopics = [
     category: 'wellbeing',
     workshopNumber: '10 / 10',
     outcomeTitle: 'Shape your future from FEAR to FREEDOM',
+    heroImage: '/images/understanding-fears-hero.jpg',
+    heroImageClass: 'workshop-landing-hero-image--focus-top',
     description:
       'Learn how to recognize and manage fears that hold you back, turning them into opportunities for growth.',
     purpose: [

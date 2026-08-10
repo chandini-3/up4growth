@@ -7,6 +7,9 @@ import './index.css';
 
 function ProgramCard({ program }) {
   const programHref = `/programs/${program.id}`;
+  const cardImage = program.heroImage
+    ? program.heroImage.split('?')[0]
+    : null;
 
   return (
     <article className="workshop-program-card" aria-label={program.title}>
@@ -16,10 +19,20 @@ function ProgramCard({ program }) {
         aria-label={`View program: ${program.title}`}
       >
         <div className="workshop-program-card-image-wrap">
-          <div
-            className={`workshop-program-card-image workshop-program-card-image--${program.category}`}
-            aria-hidden="true"
-          />
+          {cardImage ? (
+            <img
+              src={cardImage}
+              alt=""
+              className="workshop-program-card-image"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div
+              className={`workshop-program-card-image workshop-program-card-image--${program.category}`}
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Link>
 

@@ -7,6 +7,9 @@ import './index.css';
 
 function CoachingCard({ offer }) {
   const offerHref = `/coaching/${offer.id}`;
+  const cardImage = offer.heroImage
+    ? offer.heroImage.split('?')[0]
+    : null;
 
   return (
     <article className="workshop-program-card" aria-label={offer.title}>
@@ -16,10 +19,20 @@ function CoachingCard({ offer }) {
         aria-label={`View coaching: ${offer.title}`}
       >
         <div className="workshop-program-card-image-wrap">
-          <div
-            className={`workshop-program-card-image workshop-program-card-image--${offer.category}`}
-            aria-hidden="true"
-          />
+          {cardImage ? (
+            <img
+              src={cardImage}
+              alt=""
+              className="workshop-program-card-image"
+              loading="lazy"
+              decoding="async"
+            />
+          ) : (
+            <div
+              className={`workshop-program-card-image workshop-program-card-image--${offer.category}`}
+              aria-hidden="true"
+            />
+          )}
         </div>
       </Link>
 
