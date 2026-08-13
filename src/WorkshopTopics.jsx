@@ -13,9 +13,7 @@ import './index.css';
 function WorkshopTopicCard({ topic }) {
   const categoryMeta = getWorkshopCategoryMeta(topic.category);
   const topicHref = `/workshops/topics/${topic.id}`;
-  const cardImage = topic.heroImage
-    ? topic.heroImage.split('?')[0]
-    : null;
+  const cardImage = topic.heroImage || null;
 
   return (
     <article className="workshop-program-card" aria-label={topic.title}>

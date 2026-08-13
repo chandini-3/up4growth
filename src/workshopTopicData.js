@@ -63,7 +63,8 @@ export const workshopTopics = [
     category: 'career',
     workshopNumber: '03 / 10',
     outcomeTitle: 'Build Meaningful Connections',
-    heroImage: '/images/networking-with-authenticity-hero.png',
+    heroImage: '/images/networking-with-authenticity-hero.png?v=2',
+    heroImageClass: 'workshop-landing-hero-image--focus-top',
     description:
       'Transform networking from a transactional task into a rewarding practice of genuine connection and collaboration.',
     purpose: [
