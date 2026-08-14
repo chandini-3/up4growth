@@ -164,7 +164,7 @@ function App() {
           <div className="services-grid">
             <div className="service-card reveal service-card--with-action" ref={addToRefs}>
               <div className="service-icon-box"><Users size={32} /></div>
-              <h3 className="service-title">Corporate Workshops</h3>
+              <h3 className="service-title">Workshops</h3>
               <p className="service-desc">
                 Interactive, high-impact sessions designed to enhance leadership, teamwork, and productivity. We help organizations nurture growth-oriented cultures through experiential learning.
               </p>

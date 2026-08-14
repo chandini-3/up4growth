@@ -6,8 +6,6 @@ import {
   Check,
   Globe,
   Mail,
-  MapPin,
-  Monitor,
   Target,
   Users,
 } from 'lucide-react';
@@ -71,7 +69,6 @@ const footerNav = [
   { label: 'Purpose', href: '#purpose' },
   { label: 'Outcomes', href: '#outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
-  { label: 'Delivery Options', href: '#delivery-options' },
   { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
   { label: 'Contact', href: mailtoLink, external: true },
 ];
@@ -190,7 +187,7 @@ export default function OwnYourCareerWorkshop() {
                 </span>
                 <span className="workshop-landing-meta-item">
                   <Globe size={18} aria-hidden="true" />
-                  Format: Online or In-Person
+                  Delivery option: Online or In-Person
                 </span>
               </div>
 
@@ -285,41 +282,6 @@ export default function OwnYourCareerWorkshop() {
           </div>
         </section>
 
-        <section className="section workshop-landing-section" id="delivery-options">
-          <div className="container">
-            <div className="workshop-landing-section-head">
-              <span className="section-tag">Flexible delivery</span>
-              <h2 className="section-title workshop-landing-section-title">Delivery Options</h2>
-            </div>
-
-            <div className="workshop-landing-delivery-grid">
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <Monitor size={28} aria-hidden="true" />
-                </div>
-                <h3>Online</h3>
-                <ul>
-                  <li>Virtual coaching sessions</li>
-                  <li>Flexible scheduling</li>
-                  <li>Accessible from anywhere</li>
-                </ul>
-              </article>
-
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <MapPin size={28} aria-hidden="true" />
-                </div>
-                <h3>In-Person</h3>
-                <ul>
-                  <li>Face-to-face coaching</li>
-                  <li>Interactive discussions</li>
-                  <li>Personalized experience</li>
-                </ul>
-              </article>
-            </div>
-          </div>
-        </section>
-
         <section className="workshop-landing-bottom-cta" id="book-a-call">
           <div className="container workshop-landing-bottom-cta-inner">
             <h2>Ready to Take Ownership of Your Career?</h2>
@@ -328,16 +290,6 @@ export default function OwnYourCareerWorkshop() {
               and long-term aspirations.
             </p>
             <WorkshopCtaButtons className="workshop-landing-cta-group--centered" />
-          </div>
-        </section>
-
-        <section className="workshop-landing-contact-strip" id="contact">
-          <div className="container workshop-landing-contact-strip-inner">
-            <div>
-              <h2>Have questions?</h2>
-              <p>Reach out to discuss how this programme can support your career goals.</p>
-            </div>
-            <WorkshopCtaButtons />
           </div>
         </section>
       </main>

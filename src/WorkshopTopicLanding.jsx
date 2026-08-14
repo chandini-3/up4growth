@@ -6,8 +6,6 @@ import {
   Check,
   Globe,
   Mail,
-  MapPin,
-  Monitor,
   Target,
   Users,
 } from 'lucide-react';
@@ -87,7 +85,6 @@ function WorkshopLandingFooter({ mailtoLink }) {
     { label: 'Purpose', href: '#purpose' },
     { label: 'Outcomes', href: '#outcomes' },
     { label: 'Who Is This For?', href: '#who-is-this-for' },
-    { label: 'Delivery Options', href: '#delivery-options' },
     { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
     { label: 'Contact', href: mailtoLink, external: true },
   ];
@@ -226,7 +223,7 @@ export default function WorkshopTopicLanding({ topic }) {
                 </span>
                 <span className="workshop-landing-meta-item">
                   <Globe size={18} aria-hidden="true" />
-                  Format: {format}
+                  Delivery option: {format}
                 </span>
               </div>
 
@@ -320,68 +317,11 @@ export default function WorkshopTopicLanding({ topic }) {
           </div>
         </section>
 
-        <section className="section workshop-landing-section" id="delivery-options">
-          <div className="container">
-            <div className="workshop-landing-section-head">
-              <span className="section-tag">Flexible delivery</span>
-              <h2 className="section-title workshop-landing-section-title">Delivery Options</h2>
-            </div>
-
-            <div className="workshop-landing-delivery-grid">
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <Monitor size={28} aria-hidden="true" />
-                </div>
-                <h3>Online</h3>
-                <ul>
-                  <li>Virtual workshop sessions</li>
-                  <li>Flexible scheduling</li>
-                  <li>Accessible from anywhere</li>
-                </ul>
-              </article>
-
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <MapPin size={28} aria-hidden="true" />
-                </div>
-                <h3>In-Person</h3>
-                <ul>
-                  <li>Face-to-face facilitation</li>
-                  <li>Interactive discussions</li>
-                  <li>Personalized experience</li>
-                </ul>
-              </article>
-            </div>
-          </div>
-        </section>
-
-        {topic.footnotes?.length ? (
-          <section className="section workshop-landing-section workshop-landing-section--alt" id="notes">
-            <div className="container workshop-detail-container">
-              <ul className="workshop-topic-footnotes">
-                {topic.footnotes.map((note) => (
-                  <li key={note}>{note}</li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        ) : null}
-
         <section className="workshop-landing-bottom-cta" id="book-a-call">
           <div className="container workshop-landing-bottom-cta-inner">
             <h2>{ctaTitle}</h2>
             <p>{ctaText}</p>
             <WorkshopCtaButtons mailtoLink={mailtoLink} className="workshop-landing-cta-group--centered" />
-          </div>
-        </section>
-
-        <section className="workshop-landing-contact-strip" id="contact">
-          <div className="container workshop-landing-contact-strip-inner">
-            <div>
-              <h2>Have questions?</h2>
-              <p>Reach out to discuss how this workshop can support your goals.</p>
-            </div>
-            <WorkshopCtaButtons mailtoLink={mailtoLink} />
           </div>
         </section>
       </main>

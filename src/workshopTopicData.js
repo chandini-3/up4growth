@@ -16,23 +16,23 @@ export const workshopTopics = [
     heroVideo: '/images/ai-vs-human.mp4',
     heroImage: '/images/ai-anxiety-to-ai-advantage-poster.png',
     description:
-      'This workshop helps professionals overwhelmed by AI’s rapid evolution move from anxiety, self-doubt, and fear of irrelevance to clarity, confidence, and actionable momentum.',
+      'This workshop helps professionals overwhelmed by AI (AI - Artificial Intelligence)’s rapid evolution move from anxiety, self-doubt, and fear of irrelevance to clarity, confidence, and actionable momentum.',
     purpose: [
-      'Recognize why AI triggers anxiety, FOMO, and self-doubt — and that these feelings are normal, not a personal failing.',
-      'Apply practical EQ-based tools — reframing, stress regulation, and mindset shifting — to move from overwhelm to action.',
+      'Recognize why AI triggers anxiety, FOMO (FOMO - Fear Of Missing Out), and self-doubt — and that these feelings are normal, not a personal failing.',
+      'Apply practical EQ (EQ - Emotional Quotient)-based tools — reframing, stress regulation, and mindset shifting — to move from overwhelm to action.',
       'Adopt an adaptable mindset that transforms AI from a threat into a personal growth catalyst.',
       'Leave with a clear, immediate action plan to build AI confidence and future-proof their relevance.',
     ],
     outcomes: [
-      'Move from AI anxiety and self-doubt to clarity and confidence',
-      'Use EQ-based tools to regulate stress and reframe overwhelm',
-      'Treat AI as a growth catalyst rather than a threat',
-      'Leave with a practical plan to build AI confidence',
+      'Name what is driving your AI anxiety — FOMO, comparison, or fear of being left behind — and stop treating it as a personal failure',
+      'Interrupt the “I’m drowning” spiral with EQ tools that calm stress in the moment and reopen clear thinking',
+      'Reframe AI as a skill you can grow with, not a wave that will replace you',
+      'Walk away with a personal thriving plan: where to start, what to practice next, and how to stay relevant without burning out',
     ],
-    footnotes: [
-      'AI — Artificial Intelligence',
-      'FOMO — Fear Of Missing Out',
-      'EQ — Emotional Quotient',
+    audience: [
+      'Individuals worried about how AI may impact their jobs or careers',
+      'Professionals who want to move from AI anxiety to AI readiness',
+      'Anyone who wants to turn AI from a source of uncertainty into a career advantage',
     ],
   },
   {
@@ -56,6 +56,11 @@ export const workshopTopics = [
       'Create a Vision Board that represents your aspirations',
       'Build a clear roadmap to take charge of your future',
     ],
+    audience: [
+      'People who feel they are living on autopilot and want to take charge of their future',
+      'Professionals ready to reflect on today and define 5-year life and career goals',
+      'Anyone who wants to create a Vision Board and a roadmap to the future they actually want',
+    ],
   },
   {
     id: 'networking-with-authenticity',
@@ -78,6 +83,11 @@ export const workshopTopics = [
       'Network confidently in person and online',
       'Expand your network in a meaningful, sustainable way',
       'Turn networking into genuine connection and collaboration',
+    ],
+    audience: [
+      'Professionals who find networking difficult or uncomfortable',
+      'People looking to create meaningful connections beyond exchanging contacts',
+      'Anyone who wants to network authentically without feeling forced or transactional',
     ],
   },
   {
@@ -118,12 +128,9 @@ export const workshopTopics = [
       'Action plans with accountability and regular progress reviews',
     ],
     audience: [
-      'Professionals seeking career clarity',
-      'Individuals planning career growth',
-      'Mid-career professionals looking for direction',
-      'Professionals considering a career transition',
-      'Aspiring leaders',
-      'Anyone who wants to take ownership of their career',
+      'Professionals who want to take ownership of their career growth',
+      'People who feel stuck or uncertain about their next career move',
+      'People who want to make more intentional and confident career decisions',
     ],
     ctaTitle: 'Ready to Take Ownership of Your Career?',
     ctaText:
@@ -150,6 +157,11 @@ export const workshopTopics = [
       'Practice feedback skills through real-world scenarios',
       'Support a culture of growth and continuous improvement',
     ],
+    audience: [
+      'Individuals who want to give feedback with clarity and respect',
+      'People looking to become more comfortable receiving constructive feedback',
+      'Anyone who wants to create healthier, growth-focused conversations at work',
+    ],
   },
   {
     id: 'art-of-saying-no',
@@ -171,6 +183,11 @@ export const workshopTopics = [
       'Protect your time by identifying true priorities',
       'Prevent overcommitment and scattered focus',
       'Set healthy boundaries without guilt',
+    ],
+    audience: [
+      'Individuals who struggle to say no without feeling guilty',
+      'People who often take on more than they can manage',
+      'Those looking to set healthier boundaries around their time and commitments',
     ],
   },
   {
@@ -196,6 +213,11 @@ export const workshopTopics = [
       'Build emotional resilience for high-stakes decisions',
       'Create an action plan to overcome one limiting fear',
     ],
+    audience: [
+      'Startup founders navigating uncertainty and high-stakes decisions',
+      'Professionals facing fear of failure, rejection, or setbacks',
+      'Founders struggling with self-doubt or imposter syndrome',
+    ],
   },
   {
     id: 'unlock-productivity-potential',
@@ -217,6 +239,11 @@ export const workshopTopics = [
       'Sustain motivation with practical strategies',
       'Build focus and momentum for meaningful results',
       'Take consistent action with science-backed tools',
+    ],
+    audience: [
+      'Individuals looking to overcome procrastination',
+      'Professionals seeking better focus and follow-through',
+      'Anyone ready to build consistent daily progress',
     ],
   },
   {
@@ -240,6 +267,11 @@ export const workshopTopics = [
       'Create a daily progress action plan',
       'Use behavioural science for consistent growth',
     ],
+    audience: [
+      'People who struggle to stay consistent with new habits',
+      'Individuals who start strong but find it difficult to maintain routines',
+      'Anyone looking to build sustainable routines without relying on motivation alone',
+    ],
   },
   {
     id: 'understanding-fears',
@@ -262,6 +294,11 @@ export const workshopTopics = [
       'Manage fear and self-doubt with practical tools',
       'Build confidence to take courageous action',
       'Turn fear into opportunities for growth',
+    ],
+    audience: [
+      'People who find themselves avoiding situations because of fear',
+      'Those who want to understand the thoughts and patterns behind their fears',
+      'Anyone ready to build a healthier relationship with fear and move forward with greater freedom',
     ],
   },
 ];

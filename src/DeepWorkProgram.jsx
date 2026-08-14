@@ -6,10 +6,8 @@ import {
   Check,
   Globe,
   Mail,
-  Monitor,
   Target,
   Users,
-  Zap,
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
@@ -51,10 +49,9 @@ const outcomeItems = [
 ];
 
 const audienceItems = [
-  'Professionals seeking deeper focus and fewer distractions',
-  'Individuals working on high-value projects and goals',
-  'Teams who want shared accountability for deep work',
-  'Anyone ready to build sustainable focus habits',
+  'Knowledge workers whose most important tasks require uninterrupted concentration',
+  'Those with ambitious projects that keep getting pushed aside by day-to-day work',
+  'Individuals who want to experience what they can accomplish when distractions are deliberately removed',
 ];
 
 const footerNav = [
@@ -62,7 +59,6 @@ const footerNav = [
   { label: 'Program Highlights', href: '#program-highlights' },
   { label: 'Expected Outcomes', href: '#expected-outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
-  { label: 'Delivery Options', href: '#delivery-options' },
   { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
   { label: 'Contact', href: mailtoLink, external: true },
 ];
@@ -183,7 +179,7 @@ export default function DeepWorkProgram() {
                 </span>
                 <span className="workshop-landing-meta-item">
                   <Globe size={18} aria-hidden="true" />
-                  Format: Online
+                  Delivery option: Online
                 </span>
               </div>
 
@@ -276,41 +272,6 @@ export default function DeepWorkProgram() {
           </div>
         </section>
 
-        <section className="section workshop-landing-section" id="delivery-options">
-          <div className="container">
-            <div className="workshop-landing-section-head">
-              <span className="section-tag">Flexible delivery</span>
-              <h2 className="section-title workshop-landing-section-title">Delivery Options</h2>
-            </div>
-
-            <div className="workshop-landing-delivery-grid">
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <Monitor size={28} aria-hidden="true" />
-                </div>
-                <h3>Online</h3>
-                <ul>
-                  <li>Virtual deep work sprint sessions</li>
-                  <li>Group accountability check-ins</li>
-                  <li>Accessible from anywhere</li>
-                </ul>
-              </article>
-
-              <article className="workshop-landing-delivery-card">
-                <div className="workshop-landing-delivery-icon">
-                  <Zap size={28} aria-hidden="true" />
-                </div>
-                <h3>Daily Structure</h3>
-                <ul>
-                  <li>60-minute focused sessions</li>
-                  <li>Facilitated focus conditions</li>
-                  <li>Practical flow-state habits</li>
-                </ul>
-              </article>
-            </div>
-          </div>
-        </section>
-
         <section className="workshop-landing-bottom-cta" id="book-a-call">
           <div className="container workshop-landing-bottom-cta-inner">
             <h2>Ready to Build Your Deep Work Habit?</h2>
@@ -319,16 +280,6 @@ export default function DeepWorkProgram() {
               for higher productivity and career momentum.
             </p>
             <ProgramCtaButtons className="workshop-landing-cta-group--centered" />
-          </div>
-        </section>
-
-        <section className="workshop-landing-contact-strip" id="contact">
-          <div className="container workshop-landing-contact-strip-inner">
-            <div>
-              <h2>Have questions?</h2>
-              <p>Reach out to discuss how Deep Work Sprints can support your focus and goals.</p>
-            </div>
-            <ProgramCtaButtons />
           </div>
         </section>
       </main>
