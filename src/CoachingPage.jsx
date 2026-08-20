@@ -1,8 +1,7 @@
 import { Link, useParams } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import OwnYourCareerProgram from './OwnYourCareerProgram';
-import LeadershipCoaching from './LeadershipCoaching';
+import WorkshopTopicLanding from './WorkshopTopicLanding';
 import { SITE_NAME, absoluteUrl } from './seoConfig';
 import { getCoachingOfferById } from './coachingData';
 import './index.css';
@@ -56,51 +55,5 @@ export default function CoachingPage() {
     );
   }
 
-  if (offer.id === 'own-your-career') {
-    return (
-      <OwnYourCareerProgram
-        path="/coaching/own-your-career"
-        backTo="/coaching"
-        backLabel="← Back to Coaching"
-      />
-    );
-  }
-
-  if (offer.id === 'leadership-coaching') {
-    return <LeadershipCoaching />;
-  }
-
-  const offerUrl = `/coaching/${offer.id}`;
-
-  return (
-    <div className="layout">
-      <SeoHead
-        title={`${offer.title} | One-on-One Coaching | ${SITE_NAME}`}
-        description={offer.excerpt}
-        canonical={absoluteUrl(offerUrl)}
-        image={absoluteUrl('/images/hero.png')}
-        type="website"
-      />
-      <SiteNavbar />
-
-      <main>
-        <section className="section workshop-detail-section">
-          <div className="container workshop-detail-container">
-            <Link to="/coaching" className="workshop-detail-back">
-              ← Back to Coaching
-            </Link>
-
-            <span className="workshop-program-card-badge workshop-detail-badge">
-              {offer.badge}
-            </span>
-
-            <h1 className="workshop-detail-title">{offer.title}</h1>
-            <p className="programs-detail-excerpt">{offer.excerpt}</p>
-          </div>
-        </section>
-      </main>
-
-      <SiteFooter />
-    </div>
-  );
+  return <WorkshopTopicLanding topic={offer} />;
 }

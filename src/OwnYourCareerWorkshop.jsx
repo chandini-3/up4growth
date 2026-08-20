@@ -170,7 +170,7 @@ export default function OwnYourCareerWorkshop() {
 
             <div className="workshop-landing-hero-content">
               <Link to="/workshops/topics" className="workshop-detail-back">
-                ← Back to Topics
+                ← Back to Corporate Workshops
               </Link>
 
               <span className="workshop-program-card-badge workshop-landing-hero-badge">Career</span>
@@ -183,7 +183,7 @@ export default function OwnYourCareerWorkshop() {
               <div className="workshop-landing-meta">
                 <span className="workshop-landing-meta-item">
                   <Calendar size={18} aria-hidden="true" />
-                  Duration: 12 Weeks
+                  Duration: 2 hours
                 </span>
                 <span className="workshop-landing-meta-item">
                   <Globe size={18} aria-hidden="true" />

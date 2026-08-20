@@ -41,11 +41,11 @@ export default function WorkshopTopicPage() {
           <section className="section workshop-detail-section">
             <div className="container workshop-detail-container">
               <Link to="/workshops/topics" className="workshop-detail-back">
-                ← Back to Topics
+                ← Back to Corporate Workshops
               </Link>
-              <h1 className="workshop-detail-title">Topic not found</h1>
+              <h1 className="workshop-detail-title">Workshop not found</h1>
               <p className="workshop-detail-empty">
-                This workshop topic does not exist or may have been moved.
+                This workshop does not exist or may have been moved.
               </p>
             </div>
           </section>

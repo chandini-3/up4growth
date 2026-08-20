@@ -7,9 +7,7 @@ import './index.css';
 
 function CoachingCard({ offer }) {
   const offerHref = `/coaching/${offer.id}`;
-  const cardImage = offer.heroImage
-    ? offer.heroImage.split('?')[0]
-    : null;
+  const cardImage = offer.heroImage ? offer.heroImage.split('?')[0] : null;
 
   return (
     <article className="workshop-program-card" aria-label={offer.title}>
@@ -73,7 +71,7 @@ export default function Coaching() {
     <div className="layout">
       <SeoHead
         title={`One-on-One Coaching | ${SITE_NAME}`}
-        description="Explore Up4Growth one-on-one coaching options focused on growth, career ownership, and leadership development."
+        description="Explore Up4Growth one-on-one coaching options designed to help you grow with clarity, confidence, and purposeful action."
         canonical={absoluteUrl('/coaching')}
         image={absoluteUrl('/images/hero.png')}
         type="website"
@@ -88,11 +86,10 @@ export default function Coaching() {
             </Link>
             <h1 className="workshop-topics-title">One-on-One Coaching</h1>
             <p className="programs-page-lead">
-              Personalized coaching sessions focused on self-awareness, goal setting, and performance improvement.
-              We empower professionals to reach their full potential.
+              Personalized coaching to help you grow with clarity, confidence, and purposeful action.
             </p>
 
-            <div className="workshop-program-grid">
+            <div className="workshop-program-grid workshop-program-grid--programs">
               {coachingOffers.map((offer) => (
                 <CoachingCard key={offer.id} offer={offer} />
               ))}

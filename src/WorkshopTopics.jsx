@@ -84,8 +84,8 @@ export default function WorkshopTopics() {
   return (
     <div className="layout">
       <SeoHead
-        title={`Workshop Topics | ${SITE_NAME}`}
-        description="Explore Up4Growth corporate workshop topics across career development, wellbeing, leadership, and productivity."
+        title={`Corporate Workshops | ${SITE_NAME}`}
+        description="Explore Up4Growth corporate workshops across career development, wellbeing, leadership, and productivity."
         canonical={absoluteUrl('/workshops/topics')}
         image={absoluteUrl('/images/hero.png')}
         type="website"
@@ -98,9 +98,9 @@ export default function WorkshopTopics() {
             <Link to="/" className="programs-back-home">
               ← Back to Home
             </Link>
-            <h1 className="workshop-topics-title">Topics</h1>
+            <h1 className="workshop-topics-title">Corporate Workshops</h1>
 
-            <div className="workshop-topics-filters" role="tablist" aria-label="Workshop topics">
+            <div className="workshop-topics-filters" role="tablist" aria-label="Corporate workshops">
               {workshopTopicCategories.map((filter) => {
                 const isActive = activeTopic === filter.key;
                 return (
@@ -124,7 +124,7 @@ export default function WorkshopTopics() {
                   <WorkshopTopicCard key={topic.id} topic={topic} />
                 ))
               ) : (
-                <p className="workshop-program-empty">No topics found for this category.</p>
+                <p className="workshop-program-empty">No workshops found for this category.</p>
               )}
             </div>
           </div>

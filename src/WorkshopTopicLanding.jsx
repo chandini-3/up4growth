@@ -1,12 +1,14 @@
 import { Link } from 'react-router-dom';
 import {
   ArrowRight,
+  Award,
   Briefcase,
   Calendar,
   Check,
   Globe,
   Mail,
   Target,
+  TrendingUp,
   Users,
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
@@ -60,6 +62,12 @@ Best regards,
   return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`;
 }
 
+const howItWorksIcons = {
+  calendar: Calendar,
+  award: Award,
+  'trending-up': TrendingUp,
+};
+
 function WorkshopCtaButtons({ mailtoLink, className = '' }) {
   return (
     <div className={`workshop-landing-cta-group ${className}`.trim()}>
@@ -80,9 +88,10 @@ function WorkshopCtaButtons({ mailtoLink, className = '' }) {
   );
 }
 
-function WorkshopLandingFooter({ mailtoLink }) {
+function WorkshopLandingFooter({ mailtoLink, howItWorksTitle }) {
   const footerNav = [
     { label: 'Purpose', href: '#purpose' },
+    ...(howItWorksTitle ? [{ label: howItWorksTitle, href: '#how-it-works' }] : []),
     { label: 'Outcomes', href: '#outcomes' },
     { label: 'Who Is This For?', href: '#who-is-this-for' },
     { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
@@ -140,14 +149,15 @@ function WorkshopLandingFooter({ mailtoLink }) {
 
 export default function WorkshopTopicLanding({ topic }) {
   const categoryMeta = getWorkshopCategoryMeta(topic.category);
-  const topicUrl = `/workshops/topics/${topic.id}`;
+  const topicUrl = topic.canonicalPath || `/workshops/topics/${topic.id}`;
   const displayTitle = topic.shortTitle || topic.title;
   const mailtoLink = buildMailto(displayTitle);
   const heroImage = topic.heroImage || DEFAULT_HERO_IMAGE;
   const heroVideo = topic.heroVideo || null;
   const heroImageClass = topic.heroImageClass || '';
-  const duration = topic.duration || 'Interactive workshop';
+  const duration = topic.duration || '2 hours';
   const format = topic.format || 'Online or In-Person';
+  const formatLabel = topic.formatLabel || 'Delivery option';
   const purposeItems = topic.purpose || [];
   const outcomeItems = topic.outcomes || [];
   const highlightItems = topic.highlights || [];
@@ -156,11 +166,16 @@ export default function WorkshopTopicLanding({ topic }) {
   const ctaTitle = topic.ctaTitle || `Ready to explore ${displayTitle}?`;
   const ctaText = topic.ctaText
     || 'Book a call to discuss how this workshop can support your goals and next steps.';
+  const backTo = topic.backTo || '/workshops/topics';
+  const backLabel = topic.backLabel || '← Back to Corporate Workshops';
+  const whyTag = topic.whyTag || 'Why this workshop';
+  const badgeLabel = topic.badge || categoryMeta.badgeLabel || categoryMeta.label;
+  const howItWorks = topic.howItWorks || null;
 
   return (
     <div className="layout workshop-landing-page">
       <SeoHead
-        title={`${displayTitle} | Workshop | ${SITE_NAME}`}
+        title={`${displayTitle} | ${topic.seoSection || 'Workshop'} | ${SITE_NAME}`}
         description={description}
         canonical={absoluteUrl(topicUrl)}
         image={absoluteUrl(heroImage.split('?')[0])}
@@ -196,13 +211,13 @@ export default function WorkshopTopicLanding({ topic }) {
             </div>
 
             <div className="workshop-landing-hero-content">
-              <Link to="/workshops/topics" className="workshop-detail-back">
-                ← Back to Topics
+              <Link to={backTo} className="workshop-detail-back">
+                {backLabel}
               </Link>
 
               <div className="workshop-topic-meta-row">
                 <span className="workshop-program-card-badge workshop-landing-hero-badge">
-                  {categoryMeta.badgeLabel ?? categoryMeta.label}
+                  {badgeLabel}
                 </span>
                 {topic.workshopNumber ? (
                   <span className="workshop-topic-number">
@@ -213,7 +228,11 @@ export default function WorkshopTopicLanding({ topic }) {
 
               <h1 className="workshop-landing-hero-title">{displayTitle}</h1>
               {topic.outcomeTitle ? (
-                <p className="workshop-landing-hero-subtitle">{topic.outcomeTitle}</p>
+                <p
+                  className={`workshop-landing-hero-subtitle${topic.outcomeTitleItalic ? ' workshop-landing-hero-subtitle--italic' : ''}`}
+                >
+                  {topic.outcomeTitle}
+                </p>
               ) : null}
 
               <div className="workshop-landing-meta">
@@ -223,7 +242,7 @@ export default function WorkshopTopicLanding({ topic }) {
                 </span>
                 <span className="workshop-landing-meta-item">
                   <Globe size={18} aria-hidden="true" />
-                  Delivery option: {format}
+                  {formatLabel}: {format}
                 </span>
               </div>
 
@@ -236,11 +255,43 @@ export default function WorkshopTopicLanding({ topic }) {
           </div>
         </header>
 
+        {howItWorks ? (
+          <section className="section workshop-landing-section workshop-landing-section--alt" id="how-it-works">
+            <div className="container">
+              <div className="workshop-landing-how-it-works-head">
+                <h2 className="section-title workshop-landing-section-title">{howItWorks.title}</h2>
+                {howItWorks.intro ? (
+                  <p className="workshop-landing-how-it-works-intro">{howItWorks.intro}</p>
+                ) : null}
+              </div>
+
+              <div className="workshop-landing-how-it-works-grid">
+                {howItWorks.steps.map((step) => {
+                  const StepIcon = howItWorksIcons[step.icon] || Calendar;
+
+                  return (
+                    <article
+                      key={step.title}
+                      className={`workshop-landing-how-it-works-card workshop-landing-how-it-works-card--${step.color}`}
+                    >
+                      <div className="workshop-landing-how-it-works-icon">
+                        <StepIcon size={28} aria-hidden="true" />
+                      </div>
+                      <h3>{step.title}</h3>
+                      <p>{step.description}</p>
+                    </article>
+                  );
+                })}
+              </div>
+            </div>
+          </section>
+        ) : null}
+
         {purposeItems.length > 0 ? (
           <section className="section workshop-landing-section" id="purpose">
             <div className="container">
               <div className="workshop-landing-section-head">
-                <span className="section-tag">Why this workshop</span>
+                <span className="section-tag">{whyTag}</span>
                 <h2 className="section-title workshop-landing-section-title">Purpose</h2>
               </div>
 
@@ -326,7 +377,10 @@ export default function WorkshopTopicLanding({ topic }) {
         </section>
       </main>
 
-      <WorkshopLandingFooter mailtoLink={mailtoLink} />
+      <WorkshopLandingFooter
+        mailtoLink={mailtoLink}
+        howItWorksTitle={howItWorks?.title}
+      />
     </div>
   );
 }

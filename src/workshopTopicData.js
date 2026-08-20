@@ -1,5 +1,5 @@
 export const workshopTopicCategories = [
-  { key: 'all', label: 'All Topics' },
+  { key: 'all', label: 'All Workshops' },
   { key: 'career', label: 'Career Development', badgeLabel: 'Career' },
   { key: 'wellbeing', label: 'Wellbeing', badgeLabel: 'Well-Being' },
   { key: 'leadership', label: 'Leadership', badgeLabel: 'Leadership' },
@@ -97,7 +97,7 @@ export const workshopTopics = [
     category: 'career',
     workshopNumber: '04 / 10',
     outcomeTitle: 'Take Charge of Your Professional Growth',
-    duration: '12 Weeks',
+    duration: '2 hours',
     format: 'Online or In-Person',
     heroImage: '/images/own-your-career-hero.png?v=4',
     description:
