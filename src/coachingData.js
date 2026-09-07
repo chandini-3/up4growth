@@ -72,9 +72,9 @@ export const coachingOffers = [
         },
       ],
     },
-    ctaTitle: 'Register! 45 minutes discovery session.',
+    ctaTitle: 'Ready to take your personal growth to the next level?',
     ctaText:
-      'Experience personal coaching with a FREE confidential, no obligation discovery session to find out how you can maximize your personal and professional potential with personal coaching program',
+      'Join the journey to a more fulfilling and successful life with personal growth coaching. Book a call to discuss how this programme can support you.',
   },
 ];
 

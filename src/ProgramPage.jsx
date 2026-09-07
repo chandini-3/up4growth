@@ -3,7 +3,7 @@ import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
 import OwnYourCareerProgram from './OwnYourCareerProgram';
 import DeepWorkProgram from './DeepWorkProgram';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import { SITE_NAME, absoluteUrl, buildPageSeoJsonLd, truncateDescription } from './seoConfig';
 import { getProgramById } from './programData';
 import './index.css';
 
@@ -36,6 +36,7 @@ export default function ProgramPage() {
           title={`Program Not Found | ${SITE_NAME}`}
           description="The requested Up4Growth program could not be found."
           canonical={absoluteUrl('/programs')}
+          noIndex
         />
         <SiteNavbar />
         <main>
@@ -65,15 +66,31 @@ export default function ProgramPage() {
   }
 
   const programUrl = `/programs/${program.id}`;
+  const seoDescription = truncateDescription(program.excerpt);
+  const heroImage = program.heroImage?.split('?')[0] || '/images/hero.png';
 
   return (
     <div className="layout">
       <SeoHead
         title={`${program.title} | Up4Growth Programs | ${SITE_NAME}`}
-        description={program.excerpt}
+        description={seoDescription}
         canonical={absoluteUrl(programUrl)}
-        image={absoluteUrl('/images/hero.png')}
+        image={absoluteUrl(heroImage)}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Up4Growth Programs', path: '/programs' },
+            { name: program.title, path: programUrl },
+          ],
+          service: {
+            name: program.title,
+            description: seoDescription,
+            url: programUrl,
+            image: heroImage,
+            serviceType: program.badge || 'Up4Growth Program',
+          },
+        })}
       />
       <SiteNavbar />
 

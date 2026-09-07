@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import {
+  SITE_NAME,
+  absoluteUrl,
+  buildPageSeoJsonLd,
+  truncateDescription,
+} from './seoConfig';
 import { programs } from './programData';
 import './index.css';
+
+const PROGRAMS_DESCRIPTION = truncateDescription(
+  'Explore customized Up4Growth programs designed to help individuals and teams achieve clarity, focus, and meaningful progress through practical, tailored solutions.',
+);
 
 function ProgramCard({ program }) {
   const programHref = `/programs/${program.id}`;
@@ -73,10 +82,25 @@ export default function Programs() {
     <div className="layout">
       <SeoHead
         title={`Up4Growth Programs | ${SITE_NAME}`}
-        description="Explore customized Up4Growth programs designed to help individuals and teams achieve clarity, focus, and meaningful progress."
+        description={PROGRAMS_DESCRIPTION}
         canonical={absoluteUrl('/programs')}
-        image={absoluteUrl('/images/hero.png')}
+        image={absoluteUrl(programs[0]?.heroImage || '/images/hero.png')}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Up4Growth Programs', path: '/programs' },
+          ],
+          collection: {
+            name: 'Up4Growth Programs',
+            description: PROGRAMS_DESCRIPTION,
+            url: '/programs',
+            items: programs.map((program) => ({
+              name: program.title,
+              path: `/programs/${program.id}`,
+            })),
+          },
+        })}
       />
       <SiteNavbar />
 

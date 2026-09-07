@@ -14,7 +14,7 @@ export const workshopTopics = [
     workshopNumber: '01 / 10',
     outcomeTitle: 'How to Stop Drowning and Start Thriving',
     heroVideo: '/images/ai-vs-human.mp4',
-    heroImage: '/images/ai-anxiety-to-ai-advantage-poster.png',
+    heroImage: '/images/ai-anxiety-to-ai-advantage-cover.png',
     description:
       'This workshop helps professionals overwhelmed by AI (AI - Artificial Intelligence)’s rapid evolution move from anxiety, self-doubt, and fear of irrelevance to clarity, confidence, and actionable momentum.',
     purpose: [
@@ -196,8 +196,7 @@ export const workshopTopics = [
     category: 'leadership',
     workshopNumber: '07 / 10',
     outcomeTitle: 'How Startup Founders Turn Uncertainty into Growth',
-    heroImage: '/images/fearless-founder-hero.jpg',
-    heroImageClass: 'workshop-landing-hero-image--focus-top',
+    heroImage: '/images/fearless-founder-hero.png',
     description:
       'Building a startup means making high-stakes decisions in the face of constant uncertainty. This workshop helps startup founders recognize and navigate the fears that can limit growth—from fear of failure and rejection to imposter syndrome and difficult leadership decisions. Through practical reflection and proven mindset techniques, participants will learn how to transform fear into clarity, confidence, and decisive action.',
     purpose: [

@@ -11,10 +11,10 @@ import {
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
+import { CalendlyLink } from './CalendlyInline';
 import { SITE_NAME, absoluteUrl } from './seoConfig';
 import './index.css';
 
-const BOOK_CALL_URL = 'https://calendly.com/gade';
 const CONTACT_EMAIL = 'contact@up4growth.ch';
 const WORKSHOP_PATH = '/workshops/topics/own-your-career';
 const WORKSHOP_HERO_IMAGE = '/images/own-your-career-hero.png?v=4';
@@ -69,22 +69,17 @@ const footerNav = [
   { label: 'Purpose', href: '#purpose' },
   { label: 'Outcomes', href: '#outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
-  { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
+  { label: 'Book a Call', href: '#book-a-call' },
   { label: 'Contact', href: mailtoLink, external: true },
 ];
 
 function WorkshopCtaButtons({ className = '' }) {
   return (
     <div className={`workshop-landing-cta-group ${className}`.trim()}>
-      <a
-        href={BOOK_CALL_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="btn btn-primary"
-      >
+      <CalendlyLink className="btn btn-primary">
         Book a Call
         <ArrowRight size={18} aria-hidden="true" />
-      </a>
+      </CalendlyLink>
       <a href={mailtoLink} className="btn btn-outline workshop-landing-btn-outline">
         <Mail size={18} aria-hidden="true" />
         Contact

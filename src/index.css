@@ -684,21 +684,13 @@ a {
 
 .blog-card-summary {
   margin: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
   flex: 1;
   min-width: 0;
-}
-
-.blog-card-summary-line {
-  margin: 0;
   font-size: 0.9rem;
   line-height: 1.5;
   color: var(--color-text-secondary);
-  white-space: nowrap;
+  max-height: calc(1.5em * 2);
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .blog-card-read-more {
@@ -1685,6 +1677,49 @@ a {
 .workshop-landing-bottom-cta .workshop-landing-btn-outline:hover {
   background: #fff;
   color: var(--color-text-primary);
+}
+
+.workshop-landing-calendly {
+  margin-top: 2.5rem;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.18);
+}
+
+.workshop-landing-calendly-section {
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.workshop-landing-calendly-section .workshop-landing-section-title {
+  margin-bottom: 0.75rem;
+}
+
+.workshop-landing-calendly-section .programs-page-lead {
+  max-width: 640px;
+  margin: 0 auto 2rem;
+}
+
+.workshop-landing-calendly-section .calendly-inline-widget {
+  margin: 0 auto;
+  max-width: 900px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.book-consultation-section {
+  padding-top: 7rem;
+}
+
+.book-consultation-calendly {
+  margin-top: 2.5rem;
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .workshop-landing-footer {

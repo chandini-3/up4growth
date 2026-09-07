@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CalendlyLink } from './CalendlyInline';
 import {
   PolarAngleAxis,
   PolarGrid,
@@ -424,14 +425,9 @@ export default function Assessment({ onClose }) {
                     <p className="text-gray-700 leading-relaxed mb-6">
                       If you'd like personalized support to accelerate your career growth, schedule a <strong>free discovery session</strong> with one of our coaches to explore whether we're the right fit to support you on your journey toward your goals.
                     </p>
-                    <a 
-                      href="https://calendly.com/gade" 
-                      target="_blank" 
-                      rel="noopener noreferrer"
-                      className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-sm"
-                    >
+                    <CalendlyLink className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition-colors shadow-sm">
                       BOOK A FREE CONSULTATION
-                    </a>
+                    </CalendlyLink>
                   </div>
 
                   {/* Navigation back to questions */}

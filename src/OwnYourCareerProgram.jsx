@@ -11,13 +11,16 @@ import {
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import { CalendlyLink } from './CalendlyInline';
+import { SITE_NAME, absoluteUrl, buildPageSeoJsonLd, truncateDescription } from './seoConfig';
 import './index.css';
 
-const BOOK_CALL_URL = 'https://calendly.com/gade';
 const CONTACT_EMAIL = 'contact@up4growth.ch';
 const DEFAULT_PROGRAM_PATH = '/programs/custom-growth';
 const PROGRAM_HERO_IMAGE = '/images/own-your-career-hero.png?v=4';
+const PROGRAM_SEO_DESCRIPTION = truncateDescription(
+  'Take charge of your professional growth with the Own Your Career coaching program — personalized coaching, career clarity, and a practical roadmap for long-term aspirations.',
+);
 
 const emailSubject = 'Own Your Career Program Inquiry';
 const emailBody = `Hello Up4Growth Team,
@@ -63,22 +66,17 @@ const footerNav = [
   { label: 'Program Highlights', href: '#program-highlights' },
   { label: 'Expected Outcomes', href: '#expected-outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
-  { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
+  { label: 'Book a Call', href: '#book-a-call' },
   { label: 'Contact', href: mailtoLink, external: true },
 ];
 
 function ProgramCtaButtons({ className = '' }) {
   return (
     <div className={`workshop-landing-cta-group ${className}`.trim()}>
-      <a
-        href={BOOK_CALL_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="btn btn-primary"
-      >
+      <CalendlyLink className="btn btn-primary">
         Book a Call
         <ArrowRight size={18} aria-hidden="true" />
-      </a>
+      </CalendlyLink>
       <a href={mailtoLink} className="btn btn-outline workshop-landing-btn-outline">
         <Mail size={18} aria-hidden="true" />
         Contact
@@ -146,10 +144,24 @@ export default function OwnYourCareerProgram({
     <div className="layout workshop-landing-page">
       <SeoHead
         title={`Own Your Career | Career Coaching Program | ${SITE_NAME}`}
-        description="Take charge of your professional growth with the Own Your Career coaching program — personalized coaching, career clarity, and a practical roadmap for long-term aspirations."
+        description={PROGRAM_SEO_DESCRIPTION}
         canonical={absoluteUrl(path)}
         image={absoluteUrl('/images/own-your-career-hero.png')}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: backTo === '/coaching' ? 'One-on-One Coaching' : 'Up4Growth Programs', path: backTo },
+            { name: 'Own Your Career', path },
+          ],
+          service: {
+            name: 'Own Your Career',
+            description: PROGRAM_SEO_DESCRIPTION,
+            url: path,
+            image: '/images/own-your-career-hero.png',
+            serviceType: 'Career Coaching Program',
+          },
+        })}
       />
       <SiteNavbar />
 

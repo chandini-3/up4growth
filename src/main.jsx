@@ -1,6 +1,10 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
+  window.history.scrollRestoration = 'manual'
+}
 import './index.css'
 import App from './App.jsx'
 import Blog from './Blog'
@@ -10,12 +14,18 @@ import Programs from './Programs.jsx'
 import ProgramPage from './ProgramPage.jsx'
 import Coaching from './Coaching.jsx'
 import CoachingPage from './CoachingPage.jsx'
+import ScrollToTop from './ScrollToTop.jsx'
+import BookConsultation from './BookConsultation.jsx'
+import { CalendlyBadge } from './CalendlyInline.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
+      <CalendlyBadge />
       <Routes>
         <Route path="/" element={<App />} />
+        <Route path="/book" element={<BookConsultation />} />
         <Route path="/workshops/topics" element={<WorkshopTopics />} />
         <Route path="/workshops/topics/:slug" element={<WorkshopTopicPage />} />
         <Route path="/programs" element={<Programs />} />

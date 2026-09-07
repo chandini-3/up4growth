@@ -1,14 +1,23 @@
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import {
+  SITE_NAME,
+  absoluteUrl,
+  buildPageSeoJsonLd,
+  truncateDescription,
+} from './seoConfig';
 import {
   getWorkshopCategoryMeta,
   workshopTopicCategories,
   workshopTopics,
 } from './workshopTopicData';
 import './index.css';
+
+const WORKSHOPS_DESCRIPTION = truncateDescription(
+  'Explore Up4Growth corporate workshops across career development, wellbeing, leadership, and productivity. Interactive sessions designed for teams and professionals.',
+);
 
 function WorkshopTopicCard({ topic }) {
   const categoryMeta = getWorkshopCategoryMeta(topic.category);
@@ -75,6 +84,17 @@ function SiteFooter() {
 
 export default function WorkshopTopics() {
   const [activeTopic, setActiveTopic] = useState('all');
+
+  useLayoutEffect(() => {
+    const html = document.documentElement;
+    const previousBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = 'auto';
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    html.scrollTop = 0;
+    document.body.scrollTop = 0;
+    html.style.scrollBehavior = previousBehavior;
+  }, []);
+
   const visibleTopics = useMemo(() => (
     activeTopic === 'all'
       ? workshopTopics
@@ -85,10 +105,25 @@ export default function WorkshopTopics() {
     <div className="layout">
       <SeoHead
         title={`Corporate Workshops | ${SITE_NAME}`}
-        description="Explore Up4Growth corporate workshops across career development, wellbeing, leadership, and productivity."
+        description={WORKSHOPS_DESCRIPTION}
         canonical={absoluteUrl('/workshops/topics')}
         image={absoluteUrl('/images/hero.png')}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Corporate Workshops', path: '/workshops/topics' },
+          ],
+          collection: {
+            name: 'Corporate Workshops',
+            description: WORKSHOPS_DESCRIPTION,
+            url: '/workshops/topics',
+            items: workshopTopics.map((topic) => ({
+              name: topic.shortTitle || topic.title,
+              path: `/workshops/topics/${topic.id}`,
+            })),
+          },
+        })}
       />
       <SiteNavbar />
 

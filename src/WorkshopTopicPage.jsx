@@ -35,6 +35,7 @@ export default function WorkshopTopicPage() {
           title={`Workshop Topic Not Found | ${SITE_NAME}`}
           description="The requested workshop topic could not be found."
           canonical={absoluteUrl('/workshops/topics')}
+          noIndex
         />
         <SiteNavbar />
         <main>

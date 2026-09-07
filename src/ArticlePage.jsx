@@ -1,14 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { BOOK_PAGE_PATH } from './calendlyConfig';
+import { isCalendlyUrl } from './CalendlyInline';
 
-function getBlogCardPreview(summary) {
-  if (!summary) return '';
+function renderSummaryParagraphs(summary) {
+  if (!summary) return null;
   return summary
-    .split('\n')
+    .split(/\n+/)
     .map((line) => line.trim())
     .filter(Boolean)
-    .slice(0, 3)
-    .join('\n');
+    .map((paragraph) => (
+      <p key={paragraph} className="article-summary-text">{paragraph}</p>
+    ));
 }
 
 function renderRichText(text) {
@@ -21,18 +24,26 @@ function renderRichText(text) {
     if (match.index > lastIndex) {
       parts.push(text.slice(lastIndex, match.index));
     }
+    const href = match[2];
+    const label = match[1];
     parts.push(
-      match[2].startsWith('/')
+      href.startsWith('/')
         ? (
-          <Link key={match.index} to={match[2]}>
-            {match[1]}
+          <Link key={match.index} to={href}>
+            {label}
           </Link>
         )
-        : (
-          <a key={match.index} href={match[2]} target="_blank" rel="noreferrer">
-            {match[1]}
-          </a>
-        ),
+        : isCalendlyUrl(href)
+          ? (
+            <Link key={match.index} to={BOOK_PAGE_PATH}>
+              {label}
+            </Link>
+          )
+          : (
+            <a key={match.index} href={href} target="_blank" rel="noreferrer">
+              {label}
+            </a>
+          ),
     );
     lastIndex = match.index + match[0].length;
   }
@@ -184,7 +195,7 @@ export default function ArticlePage({ content }) {
           {content.summary && (
             <div className="article-callout">
               <p><strong>Summary</strong></p>
-              <p className="article-summary-text">{getBlogCardPreview(content.summary)}</p>
+              {renderSummaryParagraphs(content.summary)}
             </div>
           )}
 

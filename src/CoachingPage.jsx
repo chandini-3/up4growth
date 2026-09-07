@@ -35,6 +35,7 @@ export default function CoachingPage() {
           title={`Coaching Not Found | ${SITE_NAME}`}
           description="The requested coaching option could not be found."
           canonical={absoluteUrl('/coaching')}
+          noIndex
         />
         <SiteNavbar />
         <main>

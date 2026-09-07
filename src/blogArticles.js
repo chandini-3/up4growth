@@ -6,12 +6,7 @@ export const articleContents = {
     category: 'Leadership',
     date: 'May 6, 2026',
     summary:
-      'Automatic "How are you?" greetings often end before real connection begins.\nBetter questions invite context, honesty, and more meaningful responses at work and in life.\nLearn simple alternatives that turn everyday exchanges into moments of genuine engagement.',
-    intro: [
-      '"Hi, how are you?" - a question we ask almost automatically. And just as automatically, we respond: "I\'m fine." Conversation over.',
-      'While it\'s polite, it rarely creates connection. In a world where meaningful conversations are becoming more valuable than ever - at work, in leadership, and in life - it\'s worth asking: Are we asking the right questions?',
-      'This article explores why "How are you?" often falls flat and offers practical, situation-based alternatives that can spark deeper, more authentic conversations.',
-    ],
+      '"Hi, how are you?" - a question we ask almost automatically. And just as automatically, we respond: "I\'m fine." Conversation over.\n\nWhile it\'s polite, it rarely creates connection. In a world where meaningful conversations are becoming more valuable than ever - at work, in leadership, and in life - it\'s worth asking: Are we asking the right questions?\n\nThis article explores why "How are you?" often falls flat and offers practical, situation-based alternatives that can spark deeper, more authentic conversations.',
     sections: [
       {
         title: 'The Problem with "How Are You?"',
@@ -136,7 +131,7 @@ export const articleContents = {
     category: 'Productivity',
     date: 'November 8, 2025',
     summary:
-      'Procrastination is often driven by emotions, not laziness or poor time management alone.\nThe FOCUS framework helps you notice triggers, reframe resistance, and take grounded action.\nUse it to move from stuck to started and build sustainable productivity.',
+      'This article helps you uncover the real reasons behind your procrastination and introduces a simple, practical framework to transform awareness into action, enabling you to unlock your full potential.',
     sections: [
       {
         title: '1. What Is Procrastination?',
@@ -223,7 +218,7 @@ export const articleContents = {
         paragraphs: [
           'If procrastination or productivity challenges are getting in your way, know that you\'re not alone. Many professionals I coach experience the same resistance — but with the right mindset, structure, and emotional awareness, it\'s possible to move from stuck to started.',
           '📅👐 Would you like to explore this further? I\'d love to offer you a free consultation to see if we\'re a good fit to work together on your goals and aspirations.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
           '☞ Learn More About Me: Discover my coaching journey and expertise [here.](https://www.icf-coaching.org/gade/)',
         ],
       },
@@ -250,7 +245,7 @@ export const articleContents = {
     category: 'Career Development',
     date: 'June 16, 2026',
     summary:
-      'Career growth doesn\'t happen by accident.\nThe Career Model Canvas helps you see where you are, where you\'re going, and move forward with purpose.',
+      'Successful companies do not grow by accident, they actively design, review, and invest in their future. Yet many professionals do not apply the same level of intention to their own careers. The Career Model Canvas is a simple framework that helps you view your career as a complete ecosystem rather than just a job title. It provides a practical way to reflect, gain clarity, make intentional choices, and take ownership of your professional growth and future success.',
     sections: [
       {
         title: 'Inspiration from the Business Model Canvas',
@@ -394,7 +389,7 @@ export const articleContents = {
         title: 'Want Personal Guidance?',
         paragraphs: [
           'Sometimes, having the right guidance makes all the difference. Let\'s create a personalized career model canvas tailored to your dreams.',
-          '📅 [Click here to Schedule your free consultation](https://calendly.com/gade) and let\'s see if we are a good fit to work together on designing your next stage of growth.',
+          '📅 [Click here to Schedule your free consultation](https://calendly.com/gade/schedule_your_free_consultation) and let\'s see if we are a good fit to work together on designing your next stage of growth.',
         ],
       },
     ],
@@ -407,7 +402,7 @@ export const articleContents = {
     category: 'Career Development',
     date: 'November 9, 2024',
     summary:
-      'Conscious career design begins with clarity about where you are and where you want to go.\nTools like the Wheel of Life and structured goals turn broad dreams into workable plans.\nRead this to align daily choices with the future you genuinely want to create.',
+      'This article will guide you in consciously designing your future, ensuring that your goals align seamlessly with your dreams.',
     sections: [
       {
         title: '01. What\'s Your Dream?',
@@ -536,7 +531,7 @@ export const articleContents = {
         title: '06. Want Personal Guidance?',
         paragraphs: [
           '📅👐 I\'d love to offer you a free consultation to see if we\'re a good fit to work together on your goals.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
           'Click [here](https://www.icf-coaching.org/gade/) to learn more about me and my coaching experience.',
         ],
       },
@@ -550,7 +545,7 @@ export const articleContents = {
     category: 'Career Development',
     date: 'December 20, 2024',
     summary:
-      'A vision board turns goals into images, words, and reminders you can see every day.\nVisualization strengthens focus, motivation, and emotional alignment with what matters most.\nLearn how to build one that inspires action and keeps your priorities visible.',
+      'In a world buzzing with distractions, staying focused on your goals can feel like a challenge. Enter the vision board — a powerful tool that transforms your aspirations into tangible outcomes through visualization. This article explores what a vision board is, why it works, and how you can create one to achieve clarity, motivation, and success in all aspects of life.',
     sections: [
       {
         title: '01. What Is a Vision Board?',
@@ -658,7 +653,7 @@ export const articleContents = {
               'Sometimes, having the right guidance makes all the difference. Let\'s create a personalized roadmap tailored to your dreams:',
             ],
             list: [
-              '✍️ Schedule Your Free Consultation: 📅 [Click here to book a session.](https://calendly.com/gade)',
+              '✍️ Schedule Your Free Consultation: 📅 [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
               '☞ Learn More About Me: Discover my coaching journey and expertise [here.](https://www.icf-coaching.org/gade/)',
             ],
             paragraphsAfterList: [
@@ -677,7 +672,7 @@ export const articleContents = {
     category: 'Career Development',
     date: 'February 28, 2025',
     summary:
-      'Self-appreciation builds confidence by helping you recognize growth, effort, and steady progress.\nA simple monthly reflection practice can reduce dependence on external validation over time.\nDiscover how celebrating your wins improves resilience, performance, and self-belief.',
+      'In a world driven by external validation, we often overlook the power of appreciating ourselves. Self-appreciation isn\'t just about achievements—it\'s about recognizing our growth, resilience, and efforts. Through my journey, I discovered how this simple practice transformed my confidence and motivation. In this article, I share its benefits and how you can make it a part of your life.',
     sections: [
       {
         title: '01. My Personal Story: How Self-Appreciation Changed My Life',
@@ -720,7 +715,7 @@ export const articleContents = {
         title: '04. Want Personal Guidance?',
         paragraphs: [
           'If you\'re ready to build confidence, navigate career growth, or create a success mindset, let\'s work together.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
           '☞ Learn More About Me: Discover my coaching journey and expertise [here.](https://www.icf-coaching.org/gade/)',
         ],
       },
@@ -734,7 +729,7 @@ export const articleContents = {
     category: 'Career Development',
     date: 'March 20, 2026',
     summary:
-      'We often overthink how others judge our choices, appearance, and small daily decisions.\nMost people remember how you made them feel, not the details you worry about.\nThis article helps you release unnecessary pressure and lead with greater authenticity.',
+      'A simple phrase "Who cares?" from a 5-year-old during a casual game sparked a powerful reflection on how much we overestimate others\' attention to our daily choices. In reality, people rarely remember the small details we stress over, like outfits or appearances. What truly leaves a lasting impression is the impact we create, the authenticity we show, and how we make others feel. This article invites you to challenge the habit of overthinking and shift focus from seeking approval to creating meaningful impact.',
     sections: [
       {
         title: 'A Simple Moment, A Powerful Reminder',
@@ -799,7 +794,7 @@ export const articleContents = {
     category: 'Leadership',
     date: 'September 11, 2024',
     summary:
-      'Constructive feedback helps people grow by revealing blind spots and strengthening performance with clarity.\nThe CLEAR model offers a structured way to give feedback that is heard and acted on.\nLearn to communicate with care, context, and confidence in workplace conversations.',
+      'In this article, you will learn what is feedback, why we need feedback and how to deliver feedback in a structured and effective manner using CLEAR feedback model.',
     sections: [
       {
         title: 'What is Feedback?',
@@ -974,7 +969,7 @@ export const articleContents = {
         title: '04. Want Personal Guidance?',
         paragraphs: [
           'As a coach, I now support others in overcoming similar challenges in both their professional and personal lives. 📅👐 I\'d be happy to offer you a free consultation to explore how we can work together on your goals and aspirations.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
           '☞ Learn More About Me: Discover my coaching journey and expertise [here.](https://www.icf-coaching.org/gade/)',
         ],
       },
@@ -988,7 +983,7 @@ export const articleContents = {
     category: 'Productivity',
     date: 'May 6, 2025',
     summary:
-      'An amazing day is not luck; it is a deliberate structure for energy, focus, and balance.\nMorning routines, work blocks, and recovery time can support peak performance without burnout.\nUse this blueprint to design days that feel purposeful, productive, and personally fulfilling.',
+      'Have you ever imagined what your perfect day would look like? Most of us race through life reacting to circumstances rather than consciously designing our days. Inspired by Robin Sharma\'s The 5 AM Club and my own evolving ideal schedule, I discovered that a thoughtfully structured day, balancing deep work, family, health, and reflection, isn\'t just a dream. It\'s a lifestyle choice that can lead to greater happiness, productivity, and purpose. Here, I share my personal blueprint for an amazing day and invite you to envision and craft yours.',
     sections: [
       {
         title: '01. The Power of Designing Your Day',
@@ -1084,7 +1079,7 @@ export const articleContents = {
         title: '05. Ready to Design Your Amazing Days Too?',
         paragraphs: [
           'I\'d love to offer you a free consultation to see if we\'re a good fit to work together on crafting a life of intention and fulfillment.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
           '☞ Learn More About Me: Discover my coaching journey and expertise [here.](https://www.icf-coaching.org/gade/)',
         ],
       },
@@ -1098,7 +1093,7 @@ export const articleContents = {
     category: 'Productivity',
     date: 'April 22, 2026',
     summary:
-      'Building a reading habit becomes easier when the process feels enjoyable and realistically sustainable.\nSmall environment changes, pairing, and consistent routines can replace years of failed attempts.\nLearn a practical approach to finally make reading a regular part of life.',
+      'For nearly two decades, I struggled to build a simple habit — reading books. I tried multiple approaches, from buying devices to reading summaries, but nothing worked. In this article, I share my personal turning point and the simple, practical framework that helped me finally become a consistent reader. If you\'ve ever struggled to build a habit, this might resonate more than you expect.',
     sections: [
       {
         title: 'My Story: Wanting to Read, But Never Starting',
@@ -1210,7 +1205,7 @@ export const articleContents = {
         title: 'Want Personal Guidance?',
         paragraphs: [
           'As a coach, I now support others in overcoming similar challenges in both their professional and personal lives. I\'d be happy to offer you a free consultation to explore how we can work together on your goals and aspirations.',
-          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade)',
+          '✍️ Schedule Your Free Consultation: 🗓️ [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
         ],
       },
     ],
@@ -1223,7 +1218,7 @@ export const articleContents = {
     category: 'Wellbeing',
     date: 'October 10, 2024',
     summary:
-      'Fear is a natural signal, but unchecked fear can limit decisions, health, and relationships.\nThe CALM model helps you check feelings, accept them, find roots, and act forward.\nRead this to understand fear better and manage it with more clarity and calm.',
+      'In this article, you\'ll gain insights into what fear is, its impact on our lives, and how to manage it using the CALM model.',
     sections: [
       {
         title: '01. What is Fear?',
@@ -1411,6 +1406,108 @@ export const articleContents = {
         title: '09. Hashtags',
         paragraphs: [
           '#FearManagement #PersonalGrowth #ProfessionalDevelopment #MentalHealth #AnyoneWhoWantsToGrow #GadeCreations',
+        ],
+      },
+    ],
+  },
+  'networking-authenticity-build-meaningful-connections': {
+    title: 'Networking with Authenticity: Build Meaningful Connections',
+    author: 'Madhu Gade',
+    role: 'Technology Leader | Product Owner | Certified Coach (ICF ACC)',
+    category: 'Career Development',
+    date: 'August 23, 2026',
+    summary:
+      'When you hear the word networking, what comes to mind? For many professionals, it evokes images of awkward conversations, collecting business cards, or trying to impress strangers. But what if networking wasn\'t about expanding your contact list — what if it was about building genuine relationships based on curiosity, trust, and mutual value? On February 4, 2026, I facilitated a workshop titled "Networking with Authenticity: Build Meaningful Connections" at the Basel headquarters of a leading agriculture technology company. This article shares what came out of that room — and what every professional can start practicing today.',
+    sections: [
+      {
+        title: '01. What Is Networking?',
+        paragraphs: [
+          'For years, I hesitated to speak with senior leaders. Not because I didn\'t want to, but because I was afraid I didn\'t know enough.',
+          'What could I possibly add to a conversation with someone that senior?',
+          'That fear kept me quiet in rooms where I should have been curious instead.',
+          'The shift happened when I stopped asking "What can this person do for me?" and started asking "What can I learn from this person?"',
+          'That one question changed everything.',
+          'In recent years, I\'ve had genuine, unhurried conversations with senior leaders including CxOs of billion-dollar companies—not because I finally had impressive answers, but because I finally stopped needing to.',
+          'That\'s the real definition of networking. Not a transaction. A relationship.',
+          'Everyone you will ever meet knows something you don\'t. Approach every conversation with curiosity, not expectation.',
+        ],
+        image: {
+          src: '/images/networking-authenticity-inline.png',
+          alt: 'Networking with Authenticity image from LinkedIn article',
+          caption: 'Networking with Authenticity',
+        },
+      },
+      {
+        title: '02. What Is the Real Challenge With Networking and How Do You Address It?',
+        paragraphs: [
+          'Most people believe networking is about speaking confidently. It isn\'t. Great networkers are great listeners.',
+          'There are three ways people listen:',
+          'Only the third one builds trust. When people feel heard, they remember you—not for what you said, but for how you made them feel.',
+          'A second challenge sits quietly underneath the first: most professionals don\'t think they\'re interesting enough to be worth someone\'s time.',
+          'The challenge was never becoming interesting. It was learning to share the story instead of the job title.',
+          'So the next time you\'re in a conversation, try this instead of preparing your next point:',
+        ],
+        list: [
+          '"Tell me more."',
+          '"How did you get into that?"',
+          '"What are you excited about these days?"',
+          'People rarely remember exactly what you said. They remember how you made them feel.',
+        ],
+      },
+      {
+        title: '03. Where to Start for Building Authentic Networking?',
+        paragraphs: [
+          'You don\'t need to meet hundreds of new people. The best place to start is with the people already around you in three circles.',
+          'Current Connections: These are often your most powerful connections, yet they are easy to overlook. They are the people who already know you, trust you, and understand the value you bring.',
+        ],
+        subsections: [
+          {
+            title: 'Current Connections',
+            body: 'In 2024, when my role was impacted, I found a new opportunity within four months through a referral from someone in my existing network—someone who already knew me and trusted my work.',
+            image: {
+              src: '/images/networking-authenticity-refer-quote.png',
+              alt: 'People are more likely to refer you when they know you, trust you, and value the relationship.',
+            },
+          },
+          {
+            title: 'Easy Connections',
+            body: 'People you can reach through someone you already know. I met Etienne Claverie through a mutual connection—he\'s now my thinking partner and co-facilitator for the corporate workshops I run.',
+          },
+          {
+            title: 'Aspirational Connections',
+            body: 'People whose work inspires you—reached not by asking for a favor, but by genuinely engaging with what they do first. By June 2026, Eduardo dos Santos Silva was on stage as a guest speaker at one of my workshops.\n\nNone of these started as a strategy. They started as a relationship before there was ever an ask.\nAnd once you build one authentic relationship, you don\'t just gain one contact. You gain access to an entire ecosystem of people, knowledge, and opportunity.\nThe strongest networkers don\'t ask "Who can help me?" They ask "Who should know each other?"\nNetworking isn\'t an event on your calendar. It\'s a mindset you carry into every meeting, every coffee break, every conversation while waiting in line.',
+          },
+        ],
+      },
+      {
+        title: '04. Reflection Questions',
+        paragraphs: [
+          'Before closing this article, ask yourself:',
+        ],
+        list: [
+          'What does networking truly mean to me?',
+          'Do I enter conversations to impress, or to learn?',
+          'Which relationship have I neglected that deserves attention?',
+          'What small action can I take this week to strengthen one meaningful connection?',
+        ],
+      },
+      {
+        title: '05. Final Thought',
+        paragraphs: [
+          'Networking is not about knowing more people. It is about knowing people more deeply.',
+          'The next opportunity, partnership, mentor, collaborator, or even lifelong friend may begin with one authentic conversation.',
+          'So stay curious. Listen deeply. Offer value generously.',
+          'And remember: every connection is a seed. Keep planting. 🌱',
+        ],
+      },
+      {
+        title: '06. Want Personal Guidance?',
+        paragraphs: [
+          "I'd be happy to offer you a free consultation to explore how we can work together on your goals and aspirations.",
+          'Anyone who wants to grow!',
+        ],
+        list: [
+          '✍️ Schedule Your Free Consultation: 📅 [Click here to book a session.](https://calendly.com/gade/schedule_your_free_consultation)',
         ],
       },
     ],

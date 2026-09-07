@@ -129,6 +129,17 @@ export const blogArticles = [
     imageAlt: 'Wooden letter tiles spelling the word FEAR on a rustic wooden surface',
     imagePosition: 'center 55%',
   },
+  {
+    id: 'networking-authenticity-build-meaningful-connections',
+    title: 'Networking with Authenticity: Build Meaningful Connections',
+    categories: ['career'],
+    date: 'August 23, 2026',
+    dateISO: '2026-08-23',
+    readTime: 9,
+    image: '/images/networking-authenticity.png',
+    imageAlt: 'Four people talking together in a bright lounge, building genuine connections',
+    imagePosition: 'center 40%',
+  },
 ].map((article) => ({
   ...article,
   href: `/blog/${article.id}`,

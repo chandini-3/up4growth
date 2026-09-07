@@ -11,13 +11,16 @@ import {
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import { CalendlyLink } from './CalendlyInline';
+import { SITE_NAME, absoluteUrl, buildPageSeoJsonLd, truncateDescription } from './seoConfig';
 import './index.css';
 
-const BOOK_CALL_URL = 'https://calendly.com/gade';
 const CONTACT_EMAIL = 'contact@up4growth.ch';
 const PROGRAM_PATH = '/programs/deep-work';
 const PROGRAM_HERO_IMAGE = '/images/deep-work-hero.png';
+const PROGRAM_SEO_DESCRIPTION = truncateDescription(
+  'Build discipline, focus, and consistency with the Deep Work Sprints Program — 60-minute daily focus sessions for 6 weeks with group accountability.',
+);
 
 const emailSubject = 'Deep Work Sprints Program Inquiry';
 const emailBody = `Hello Up4Growth Team,
@@ -59,22 +62,17 @@ const footerNav = [
   { label: 'Program Highlights', href: '#program-highlights' },
   { label: 'Expected Outcomes', href: '#expected-outcomes' },
   { label: 'Who Is This For?', href: '#who-is-this-for' },
-  { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
+  { label: 'Book a Call', href: '#book-a-call' },
   { label: 'Contact', href: mailtoLink, external: true },
 ];
 
 function ProgramCtaButtons({ className = '' }) {
   return (
     <div className={`workshop-landing-cta-group ${className}`.trim()}>
-      <a
-        href={BOOK_CALL_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="btn btn-primary"
-      >
+      <CalendlyLink className="btn btn-primary">
         Book a Call
         <ArrowRight size={18} aria-hidden="true" />
-      </a>
+      </CalendlyLink>
       <a href={mailtoLink} className="btn btn-outline workshop-landing-btn-outline">
         <Mail size={18} aria-hidden="true" />
         Contact
@@ -138,10 +136,24 @@ export default function DeepWorkProgram() {
     <div className="layout workshop-landing-page">
       <SeoHead
         title={`Deep Work Sprints Program | ${SITE_NAME}`}
-        description="Build discipline, focus, and consistency with the Deep Work Sprints Program — 60-minute daily focus sessions for 6 weeks with group accountability."
+        description={PROGRAM_SEO_DESCRIPTION}
         canonical={absoluteUrl(PROGRAM_PATH)}
         image={absoluteUrl('/images/deep-work-hero.png')}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Up4Growth Programs', path: '/programs' },
+            { name: 'Deep Work Sprints', path: PROGRAM_PATH },
+          ],
+          service: {
+            name: 'Deep Work Sprints',
+            description: PROGRAM_SEO_DESCRIPTION,
+            url: PROGRAM_PATH,
+            image: '/images/deep-work-hero.png',
+            serviceType: 'Productivity Program',
+          },
+        })}
       />
       <SiteNavbar />
 

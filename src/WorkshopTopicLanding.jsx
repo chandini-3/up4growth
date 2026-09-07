@@ -13,11 +13,11 @@ import {
 } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import { CalendlyLink } from './CalendlyInline';
+import { SITE_NAME, absoluteUrl, buildPageSeoJsonLd, truncateDescription } from './seoConfig';
 import { getWorkshopCategoryMeta } from './workshopTopicData';
 import './index.css';
 
-const BOOK_CALL_URL = 'https://calendly.com/gade';
 const CONTACT_EMAIL = 'contact@up4growth.ch';
 const DEFAULT_HERO_IMAGE = '/images/hero.png';
 
@@ -68,18 +68,13 @@ const howItWorksIcons = {
   'trending-up': TrendingUp,
 };
 
-function WorkshopCtaButtons({ mailtoLink, className = '' }) {
+function WorkshopCtaButtons({ mailtoLink, className = '', bookLabel = 'Book a Call' }) {
   return (
     <div className={`workshop-landing-cta-group ${className}`.trim()}>
-      <a
-        href={BOOK_CALL_URL}
-        target="_blank"
-        rel="noreferrer"
-        className="btn btn-primary"
-      >
-        Book a Call
+      <CalendlyLink className="btn btn-primary">
+        {bookLabel}
         <ArrowRight size={18} aria-hidden="true" />
-      </a>
+      </CalendlyLink>
       <a href={mailtoLink} className="btn btn-outline workshop-landing-btn-outline">
         <Mail size={18} aria-hidden="true" />
         Contact
@@ -88,13 +83,13 @@ function WorkshopCtaButtons({ mailtoLink, className = '' }) {
   );
 }
 
-function WorkshopLandingFooter({ mailtoLink, howItWorksTitle }) {
+function WorkshopLandingFooter({ mailtoLink, howItWorksTitle, bookLabel = 'Book a Call' }) {
   const footerNav = [
     { label: 'Purpose', href: '#purpose' },
     ...(howItWorksTitle ? [{ label: howItWorksTitle, href: '#how-it-works' }] : []),
     { label: 'Outcomes', href: '#outcomes' },
     { label: 'Who Is This For?', href: '#who-is-this-for' },
-    { label: 'Book a Call', href: BOOK_CALL_URL, external: true },
+    { label: bookLabel, href: '#book-a-call' },
     { label: 'Contact', href: mailtoLink, external: true },
   ];
 
@@ -163,6 +158,7 @@ export default function WorkshopTopicLanding({ topic }) {
   const highlightItems = topic.highlights || [];
   const audienceItems = topic.audience || defaultAudienceByCategory[topic.category] || defaultAudienceByCategory.career;
   const description = topic.description || `Learn more about the ${displayTitle} workshop from Up4Growth.`;
+  const seoDescription = truncateDescription(topic.seoDescription || topic.excerpt || description);
   const ctaTitle = topic.ctaTitle || `Ready to explore ${displayTitle}?`;
   const ctaText = topic.ctaText
     || 'Book a call to discuss how this workshop can support your goals and next steps.';
@@ -171,15 +167,39 @@ export default function WorkshopTopicLanding({ topic }) {
   const whyTag = topic.whyTag || 'Why this workshop';
   const badgeLabel = topic.badge || categoryMeta.badgeLabel || categoryMeta.label;
   const howItWorks = topic.howItWorks || null;
+  const seoSection = topic.seoSection || 'Workshop';
+  const parentLabel = topic.backTo === '/coaching'
+    ? 'One-on-One Coaching'
+    : topic.backTo === '/programs'
+      ? 'Up4Growth Programs'
+      : 'Corporate Workshops';
+  const isCoachingPage = topic.backTo === '/coaching';
+  const bookLabel = isCoachingPage ? 'Book Discovery Session' : 'Book a Call';
+  const parentPath = topic.backTo || '/workshops/topics';
+  const heroImagePath = heroImage.split('?')[0];
 
   return (
     <div className="layout workshop-landing-page">
       <SeoHead
-        title={`${displayTitle} | ${topic.seoSection || 'Workshop'} | ${SITE_NAME}`}
-        description={description}
+        title={`${displayTitle} | ${seoSection} | ${SITE_NAME}`}
+        description={seoDescription}
         canonical={absoluteUrl(topicUrl)}
-        image={absoluteUrl(heroImage.split('?')[0])}
+        image={absoluteUrl(heroImagePath)}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: parentLabel, path: parentPath },
+            { name: displayTitle, path: topicUrl },
+          ],
+          service: {
+            name: topic.title || displayTitle,
+            description: seoDescription,
+            url: topicUrl,
+            image: heroImagePath,
+            serviceType: seoSection,
+          },
+        })}
       />
       <SiteNavbar />
 
@@ -250,7 +270,7 @@ export default function WorkshopTopicLanding({ topic }) {
                 <p>{description}</p>
               </div>
 
-              <WorkshopCtaButtons mailtoLink={mailtoLink} />
+              <WorkshopCtaButtons mailtoLink={mailtoLink} bookLabel={bookLabel} />
             </div>
           </div>
         </header>
@@ -372,7 +392,7 @@ export default function WorkshopTopicLanding({ topic }) {
           <div className="container workshop-landing-bottom-cta-inner">
             <h2>{ctaTitle}</h2>
             <p>{ctaText}</p>
-            <WorkshopCtaButtons mailtoLink={mailtoLink} className="workshop-landing-cta-group--centered" />
+            <WorkshopCtaButtons mailtoLink={mailtoLink} className="workshop-landing-cta-group--centered" bookLabel={bookLabel} />
           </div>
         </section>
       </main>
@@ -380,6 +400,7 @@ export default function WorkshopTopicLanding({ topic }) {
       <WorkshopLandingFooter
         mailtoLink={mailtoLink}
         howItWorksTitle={howItWorks?.title}
+        bookLabel={bookLabel}
       />
     </div>
   );

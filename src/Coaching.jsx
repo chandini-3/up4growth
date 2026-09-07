@@ -1,9 +1,19 @@
 import { Link } from 'react-router-dom';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { SITE_NAME, absoluteUrl } from './seoConfig';
+import { BOOK_PAGE_PATH } from './calendlyConfig';
+import {
+  SITE_NAME,
+  absoluteUrl,
+  buildPageSeoJsonLd,
+  truncateDescription,
+} from './seoConfig';
 import { coachingOffers } from './coachingData';
 import './index.css';
+
+const COACHING_DESCRIPTION = truncateDescription(
+  'Explore Up4Growth one-on-one coaching options designed to help you grow with clarity, confidence, and purposeful action in your career and life.',
+);
 
 function CoachingCard({ offer }) {
   const offerHref = `/coaching/${offer.id}`;
@@ -71,10 +81,27 @@ export default function Coaching() {
     <div className="layout">
       <SeoHead
         title={`One-on-One Coaching | ${SITE_NAME}`}
-        description="Explore Up4Growth one-on-one coaching options designed to help you grow with clarity, confidence, and purposeful action."
+        description={COACHING_DESCRIPTION}
         canonical={absoluteUrl('/coaching')}
-        image={absoluteUrl('/images/hero.png')}
+        image={absoluteUrl(
+          coachingOffers[0]?.heroImage?.split('?')[0] || '/images/hero.png',
+        )}
         type="website"
+        jsonLd={buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'One-on-One Coaching', path: '/coaching' },
+          ],
+          collection: {
+            name: 'One-on-One Coaching',
+            description: COACHING_DESCRIPTION,
+            url: '/coaching',
+            items: coachingOffers.map((offer) => ({
+              name: offer.shortTitle || offer.title,
+              path: `/coaching/${offer.id}`,
+            })),
+          },
+        })}
       />
       <SiteNavbar />
 
@@ -94,6 +121,16 @@ export default function Coaching() {
                 <CoachingCard key={offer.id} offer={offer} />
               ))}
             </div>
+
+            <section className="workshop-landing-calendly-section" id="book-discovery-session" aria-label="Book a discovery session">
+              <h2 className="workshop-landing-section-title">Book your free discovery session</h2>
+              <p className="programs-page-lead">
+                Choose a time that works for you. The first session is an opportunity to explore whether coaching is the right fit.
+              </p>
+              <Link to={BOOK_PAGE_PATH} className="btn btn-primary">
+                Schedule Your Free Consultation
+              </Link>
+            </section>
           </div>
         </section>
       </main>

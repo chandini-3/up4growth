@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { defaultSeo } from './seoConfig';
+import { SITE_NAME, defaultSeo } from './seoConfig';
 
 const MANAGED_JSON_LD_ID = 'page-json-ld';
 
@@ -53,6 +53,7 @@ export default function SeoHead({
   publishedTime,
   author,
   jsonLd,
+  noIndex = false,
 }) {
   useEffect(() => {
     document.title = title;
@@ -63,12 +64,19 @@ export default function SeoHead({
     upsertMeta('property', 'og:type', type);
     upsertMeta('property', 'og:url', canonical);
     upsertMeta('property', 'og:image', image);
+    upsertMeta('property', 'og:site_name', SITE_NAME);
     upsertMeta('property', 'og:locale', 'en_CH');
     upsertMeta('name', 'twitter:card', 'summary_large_image');
     upsertMeta('name', 'twitter:title', title);
     upsertMeta('name', 'twitter:description', description);
     upsertMeta('name', 'twitter:image', image);
     upsertLink('canonical', canonical);
+
+    if (noIndex) {
+      upsertMeta('name', 'robots', 'noindex, follow');
+    } else {
+      document.querySelector('meta[name="robots"]')?.remove();
+    }
 
     if (publishedTime) {
       upsertMeta('property', 'article:published_time', publishedTime);
@@ -87,7 +95,7 @@ export default function SeoHead({
     return () => {
       removeJsonLd(MANAGED_JSON_LD_ID);
     };
-  }, [title, description, canonical, image, type, publishedTime, author, jsonLd]);
+  }, [title, description, canonical, image, type, publishedTime, author, jsonLd, noIndex]);
 
   return null;
 }
