@@ -112,13 +112,19 @@ function BlogCard({ article }) {
         article={article}
         aria-label={`Read article: ${article.title}`}
       >
-        <div className="blog-card-image-wrap">
+        <div
+          className="blog-card-image-wrap"
+          style={article.imageBackground ? { background: article.imageBackground } : undefined}
+        >
           {article.image ? (
             <img
               src={article.image}
               alt={article.imageAlt || article.title}
               className="blog-card-image"
-              style={article.imagePosition ? { objectPosition: article.imagePosition } : undefined}
+              style={{
+                ...(article.imagePosition ? { objectPosition: article.imagePosition } : {}),
+                ...(article.imageFit ? { objectFit: article.imageFit } : {}),
+              }}
               loading="lazy"
               decoding="async"
             />

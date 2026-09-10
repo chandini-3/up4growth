@@ -30,18 +30,14 @@ export default function BookConsultation() {
 
       <main>
         <section className="section book-consultation-section" id="book-discovery-session">
-          <div className="container">
+          <div className="container book-consultation-container">
             <Link to="/" className="programs-back-home">
               ← Back to Home
             </Link>
-            <h1 className="workshop-topics-title">Schedule Your Free Consultation</h1>
-            <p className="programs-page-lead">
-              Book a free 30-minute discovery call with Madhu Gade. Pick a time that works for you —
-              right here on this page.
-            </p>
+            <h1 className="visually-hidden">Schedule Your Free Consultation</h1>
 
-            <div className="workshop-landing-calendly book-consultation-calendly">
-              <CalendlyInline minHeight={750} />
+            <div className="book-consultation-calendly">
+              <CalendlyInline className="book-consultation-calendly-widget" minHeight={700} />
             </div>
           </div>
         </section>

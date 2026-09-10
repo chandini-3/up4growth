@@ -16,13 +16,11 @@ import Coaching from './Coaching.jsx'
 import CoachingPage from './CoachingPage.jsx'
 import ScrollToTop from './ScrollToTop.jsx'
 import BookConsultation from './BookConsultation.jsx'
-import { CalendlyBadge } from './CalendlyInline.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
       <ScrollToTop />
-      <CalendlyBadge />
       <Routes>
         <Route path="/" element={<App />} />
         <Route path="/book" element={<BookConsultation />} />

@@ -1,5 +1,18 @@
 export const blogArticles = [
   {
+    id: 'how-stay-positive-during-difficult-times',
+    title: 'How to Stay Positive During Difficult Times',
+    categories: ['wellbeing', 'career'],
+    date: 'September 8, 2026',
+    dateISO: '2026-09-08',
+    readTime: 6,
+    image: '/images/stay-positive-cover.png',
+    imageAlt: 'How To STAY POSITIVE During Difficult Times — black graphic with orange quote frame',
+    imagePosition: 'center center',
+    imageFit: 'contain',
+    imageBackground: '#000000',
+  },
+  {
     id: 'career-model-canvas',
     title: 'Career Model Canvas',
     categories: ['career'],
@@ -94,7 +107,9 @@ export const blogArticles = [
     date: 'November 8, 2025',
     dateISO: '2025-11-08',
     readTime: 10,
-    image: '/images/hero.png',
+    image: '/images/breaking-through-procrastination.png',
+    imageAlt: 'Woman focused on laptop work in a bright modern office at sunset',
+    imagePosition: 'center 40%',
   },
   {
     id: 'amazing-day',

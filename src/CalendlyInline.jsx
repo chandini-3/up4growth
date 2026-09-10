@@ -139,16 +139,36 @@ export function CalendlyBadge({
   return null;
 }
 
+/** Compact inline embed params — calendar only, no nested landing scroll. */
+export function buildCalendlyEmbedUrl(url = CALENDLY_SCHEDULING_URL, { compact = false } = {}) {
+  try {
+    const parsed = new URL(url);
+    if (compact) {
+      parsed.searchParams.set('hide_event_type_details', '1');
+      parsed.searchParams.set('hide_gdpr_banner', '1');
+    }
+    return parsed.toString();
+  } catch {
+    return url;
+  }
+}
+
 /**
  * Inline embed — Calendly.initInlineWidget({ url: myLink, parentElement })
  * Keeps the full scheduling page open inside the Up4Growth page.
+ *
+ * For the full side-by-side layout (details | calendar), parent width must be
+ * ~1000px+ and height ~700px — otherwise Calendly stacks and scrolls inside.
  */
 export default function CalendlyInline({
   url = CALENDLY_SCHEDULING_URL,
   minHeight = 700,
+  minWidth = 320,
+  compact = false,
   className = '',
 }) {
   const containerRef = useRef(null);
+  const embedUrl = buildCalendlyEmbedUrl(url, { compact });
 
   useEffect(() => {
     let cancelled = false;
@@ -160,7 +180,7 @@ export default function CalendlyInline({
 
         containerRef.current.innerHTML = '';
         Calendly.initInlineWidget({
-          url,
+          url: embedUrl,
           parentElement: containerRef.current,
         });
       })
@@ -169,14 +189,14 @@ export default function CalendlyInline({
     return () => {
       cancelled = true;
     };
-  }, [url]);
+  }, [embedUrl]);
 
   return (
     <div
       ref={containerRef}
       className={`calendly-inline-widget ${className}`.trim()}
-      data-url={url}
-      style={{ minWidth: '320px', height: `${minHeight}px` }}
+      data-url={embedUrl}
+      style={{ minWidth: `${minWidth}px`, height: `${minHeight}px` }}
     />
   );
 }

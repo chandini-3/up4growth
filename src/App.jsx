@@ -107,7 +107,7 @@ function App() {
           <div className="hero-image-container">
             <img 
               src="/images/hero.png" 
-              alt="Corporate Growth" 
+              alt="Professionals collaborating in small groups during a workshop"
               className="hero-image" 
               fetchPriority="high"
               decoding="async"
