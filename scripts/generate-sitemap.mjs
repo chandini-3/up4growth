@@ -23,6 +23,8 @@ function formatUrl({ loc, lastmod, changefreq, priority }) {
 
 const staticPages = [
   { loc: `${SITE_URL}/`, changefreq: 'weekly', priority: '1.0' },
+  { loc: `${SITE_URL}/book`, changefreq: 'monthly', priority: '0.8' },
+  { loc: `${SITE_URL}/get-in-touch`, changefreq: 'monthly', priority: '0.8' },
   { loc: `${SITE_URL}/blog`, changefreq: 'weekly', priority: '0.9' },
   { loc: `${SITE_URL}/data-protection.html`, lastmod: '2026-05-09', changefreq: 'yearly', priority: '0.1' },
   { loc: `${SITE_URL}/imprint.html`, lastmod: '2026-05-09', changefreq: 'yearly', priority: '0.1' },

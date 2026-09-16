@@ -4,7 +4,7 @@ import { ArrowRight, Users, Target, BookOpen, Quote, Zap, Heart, ExternalLink, M
 import SiteNavbar, { LinkedInIcon } from './SiteNavbar';
 import SeoHead from './SeoHead';
 import { defaultSeo } from './seoConfig';
-import { BOOK_PAGE_PATH } from './calendlyConfig';
+import { GET_IN_TOUCH_PAGE_PATH } from './calendlyConfig';
 import Assessment from './Assessment';
 import './index.css';
 
@@ -97,7 +97,7 @@ function App() {
               <a href="#expertise" className="btn btn-primary">
                 View Expertise <ArrowRight size={18} />
               </a>
-              <Link to={BOOK_PAGE_PATH} className="btn btn-outline" style={{ background: '#fff' }}>
+              <Link to={GET_IN_TOUCH_PAGE_PATH} className="btn btn-outline" style={{ background: '#fff' }}>
                 GET IN TOUCH
               </Link>
             </div>
@@ -382,7 +382,11 @@ function App() {
               </p>
             </div>
             <div className="reveal text-center cta-action" ref={addToRefs} style={{ transitionDelay: '0.2s' }}>
-              <Link to={BOOK_PAGE_PATH} className="btn btn-primary cta-button" style={{ backgroundColor: '#fff', color: 'var(--color-text-primary)' }}>
+              <Link
+                to={GET_IN_TOUCH_PAGE_PATH}
+                className="btn btn-primary cta-button"
+                style={{ backgroundColor: '#fff', color: 'var(--color-text-primary)' }}
+              >
                 <Mail /> Get in Touch
               </Link>
               <p style={{ marginTop: '1rem', opacity: 0.6 }}>Free 30-minute discovery call</p>

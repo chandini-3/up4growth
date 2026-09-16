@@ -1746,33 +1746,39 @@ a {
 }
 
 .book-consultation-calendly .calendly-inline-widget,
-.book-consultation-calendly .calendly-inline-widget iframe {
+.book-consultation-calendly .calendly-inline-widget iframe,
+.book-consultation-calendly .cal-inline-widget,
+.book-consultation-calendly .cal-inline-widget iframe {
   display: block;
   width: 100% !important;
   border: 0;
 }
 
-/* Desktop wide enough for Calendly’s side-by-side (details | calendar) */
+/* Desktop wide enough for side-by-side booking layout */
 @media (min-width: 1080px) {
   .book-consultation-calendly .book-consultation-calendly-widget,
-  .book-consultation-calendly .calendly-inline-widget {
+  .book-consultation-calendly .calendly-inline-widget,
+  .book-consultation-calendly .cal-inline-widget {
     min-width: 1000px !important;
     height: 700px !important;
   }
 
-  .book-consultation-calendly .calendly-inline-widget iframe {
+  .book-consultation-calendly .calendly-inline-widget iframe,
+  .book-consultation-calendly .cal-inline-widget iframe {
     height: 700px !important;
   }
 }
 
 /* Narrower viewports: stacked layout — taller iframe so page scrolls, not the widget */
 @media (max-width: 1079px) {
-  .book-consultation-calendly .calendly-inline-widget {
+  .book-consultation-calendly .calendly-inline-widget,
+  .book-consultation-calendly .cal-inline-widget {
     min-width: 0 !important;
     height: 1180px !important;
   }
 
-  .book-consultation-calendly .calendly-inline-widget iframe {
+  .book-consultation-calendly .calendly-inline-widget iframe,
+  .book-consultation-calendly .cal-inline-widget iframe {
     height: 1180px !important;
   }
 }
@@ -1784,7 +1790,9 @@ a {
   }
 
   .book-consultation-calendly .calendly-inline-widget,
-  .book-consultation-calendly .calendly-inline-widget iframe {
+  .book-consultation-calendly .calendly-inline-widget iframe,
+  .book-consultation-calendly .cal-inline-widget,
+  .book-consultation-calendly .cal-inline-widget iframe {
     height: 1260px !important;
   }
 }
