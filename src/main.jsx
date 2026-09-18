@@ -15,26 +15,31 @@ import ProgramPage from './ProgramPage.jsx'
 import Coaching from './Coaching.jsx'
 import CoachingPage from './CoachingPage.jsx'
 import ScrollToTop from './ScrollToTop.jsx'
-import GetInTouch from './GetInTouch.jsx'
 import BookConsultation from './BookConsultation.jsx'
+import Assessments from './Assessments.jsx'
+import GetInTouch from './GetInTouch.jsx'
+import { AssessmentProvider } from './AssessmentProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="/book" element={<BookConsultation />} />
-        <Route path="/get-in-touch" element={<GetInTouch />} />
-        <Route path="/workshops/topics" element={<WorkshopTopics />} />
-        <Route path="/workshops/topics/:slug" element={<WorkshopTopicPage />} />
-        <Route path="/programs" element={<Programs />} />
-        <Route path="/programs/:slug" element={<ProgramPage />} />
-        <Route path="/coaching" element={<Coaching />} />
-        <Route path="/coaching/:slug" element={<CoachingPage />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<Blog />} />
-      </Routes>
+      <AssessmentProvider>
+        <ScrollToTop />
+        <Routes>
+          <Route path="/" element={<App />} />
+          <Route path="/book" element={<BookConsultation />} />
+          <Route path="/assessments" element={<Assessments />} />
+          <Route path="/get-in-touch" element={<GetInTouch />} />
+          <Route path="/workshops/topics" element={<WorkshopTopics />} />
+          <Route path="/workshops/topics/:slug" element={<WorkshopTopicPage />} />
+          <Route path="/programs" element={<Programs />} />
+          <Route path="/programs/:slug" element={<ProgramPage />} />
+          <Route path="/coaching" element={<Coaching />} />
+          <Route path="/coaching/:slug" element={<CoachingPage />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<Blog />} />
+        </Routes>
+      </AssessmentProvider>
     </BrowserRouter>
   </StrictMode>,
 )

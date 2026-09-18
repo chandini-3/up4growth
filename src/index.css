@@ -567,6 +567,234 @@ a {
   background: var(--color-bg);
 }
 
+.assessments-page .assessments-hero {
+  padding: 5rem 0 0.15rem;
+  border-bottom: none;
+}
+
+.assessments-page .assessments-hero .blog-hero-tag {
+  margin-bottom: 0.35rem;
+}
+
+.assessments-page .assessments-hero .blog-hero-title {
+  font-size: clamp(1.85rem, 3.5vw, 2.35rem);
+  margin-bottom: 0.4rem;
+}
+
+.assessments-page .assessments-hero .blog-hero-description {
+  margin-bottom: 0;
+  font-size: 0.98rem;
+  line-height: 1.45;
+  max-width: 560px;
+}
+
+.assessments-page .assessments-index {
+  padding: 0.5rem 0 2.5rem;
+}
+
+.life-audit-info {
+  background: #0b1b33;
+  color: #e8eef7;
+  padding: 3.5rem 0 4rem;
+}
+
+.life-audit-info-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 2.75rem 3.5rem;
+  align-items: start;
+}
+
+.life-audit-info-copy h2 {
+  margin: 0 0 1.15rem;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: clamp(1.55rem, 2.6vw, 2rem);
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.life-audit-info-copy p {
+  margin: 0 0 1rem;
+  max-width: 42rem;
+  color: rgba(232, 238, 247, 0.88);
+  font-size: 1.02rem;
+  line-height: 1.7;
+}
+
+.life-audit-info-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.life-audit-info-domains h3 {
+  margin: 0 0 1.15rem;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.life-audit-domain-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem 1.75rem;
+}
+
+.life-audit-domain-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+
+.life-audit-domain-swatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.life-audit-domain-name {
+  color: rgba(232, 238, 247, 0.92);
+  font-size: 0.95rem;
+  line-height: 1.35;
+  border-bottom: 1px dotted rgba(232, 238, 247, 0.45);
+  padding-bottom: 1px;
+}
+
+@media (max-width: 900px) {
+  .life-audit-info-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .life-audit-domain-list {
+    max-width: 34rem;
+  }
+}
+
+@media (max-width: 520px) {
+  .life-audit-info {
+    padding: 2.75rem 0 3rem;
+  }
+
+  .life-audit-domain-list {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+.assessments-page .assessments-cards-grid {
+  grid-template-columns: minmax(0, 480px);
+  max-width: 480px;
+  gap: 1rem;
+}
+
+.assessments-page .blog-card,
+.assessments-page .assessments-card {
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  margin-top: 0;
+  height: auto;
+  max-height: calc(100vh - 11.5rem);
+  display: flex;
+  flex-direction: column;
+}
+
+.assessments-page .blog-card-image-link {
+  flex-shrink: 1;
+  min-height: 0;
+}
+
+.assessments-page .blog-card-image-wrap {
+  aspect-ratio: auto;
+  height: clamp(180px, 34vh, 280px);
+  min-height: 180px;
+  max-height: 280px;
+  overflow: hidden;
+  background: #000;
+  line-height: 0;
+}
+
+.assessments-page .blog-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  transform: none;
+}
+
+.assessments-page .blog-card-image-link:hover .blog-card-image {
+  transform: none;
+}
+
+.assessments-page .blog-card-body {
+  background: #fff;
+  padding: 0.85rem 1rem 1rem;
+  gap: 0.4rem;
+  flex: 0 0 auto;
+}
+
+.assessments-page .blog-card-title {
+  font-size: 1.15rem;
+  margin: 0;
+  -webkit-line-clamp: 2;
+}
+
+.assessments-page .blog-card-meta {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.assessments-page .blog-card-summary {
+  margin: 0;
+  max-height: 2.8em;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.assessments-page .blog-card-summary-line {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.assessments-page .blog-card-read-more {
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 768px) {
+  .assessments-page .assessments-hero {
+    padding: 4.75rem 0 0.15rem;
+  }
+
+  .assessments-page .assessments-index {
+    padding: 0.4rem 0 2rem;
+  }
+
+  .assessments-page .assessments-cards-grid {
+    max-width: none;
+    grid-template-columns: 1fr;
+  }
+
+  .assessments-page .blog-card,
+  .assessments-page .assessments-card {
+    max-height: calc(100vh - 10.5rem);
+  }
+
+  .assessments-page .blog-card-image-wrap {
+    height: clamp(120px, 24vh, 180px);
+    min-height: 120px;
+    max-height: 180px;
+  }
+}
+
 .blog-cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1723,78 +1951,72 @@ a {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
-.book-consultation-section {
-  padding-top: 5.5rem;
-  padding-bottom: 2rem;
+/* Lock document scroll only while /book is open */
+html.book-page-lock,
+html.book-page-lock body {
+  height: 100%;
+  overflow: hidden !important;
 }
 
-/* Inner width must stay ~1000px+ or Calendly stacks and scrolls inside the iframe */
+/* Book page: one viewport, no page/iframe scrollbars */
+.book-consultation-page {
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-consultation-main {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.section.book-consultation-section {
+  flex: 1 1 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4.5rem 0 0.75rem;
+  min-height: 0;
+  overflow: hidden;
+}
+
 .book-consultation-container {
-  max-width: 1100px;
+  max-width: 1040px;
+  width: 100%;
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
 .book-consultation-calendly {
-  margin-top: 0.75rem;
   width: 100%;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
   background: #fff;
   border: 1px solid var(--color-border);
   box-shadow: 0 8px 28px rgba(0, 0, 0, 0.08);
 }
 
+.book-consultation-calendly-scale {
+  transform-origin: top left;
+}
+
 .book-consultation-calendly .calendly-inline-widget,
-.book-consultation-calendly .calendly-inline-widget iframe,
-.book-consultation-calendly .cal-inline-widget,
-.book-consultation-calendly .cal-inline-widget iframe {
+.book-consultation-calendly .calendly-inline-widget iframe {
   display: block;
   width: 100% !important;
+  height: 750px !important;
   border: 0;
+  overflow: hidden !important;
 }
 
-/* Desktop wide enough for side-by-side booking layout */
-@media (min-width: 1080px) {
-  .book-consultation-calendly .book-consultation-calendly-widget,
-  .book-consultation-calendly .calendly-inline-widget,
-  .book-consultation-calendly .cal-inline-widget {
-    min-width: 1000px !important;
-    height: 700px !important;
-  }
-
-  .book-consultation-calendly .calendly-inline-widget iframe,
-  .book-consultation-calendly .cal-inline-widget iframe {
-    height: 700px !important;
-  }
-}
-
-/* Narrower viewports: stacked layout — taller iframe so page scrolls, not the widget */
-@media (max-width: 1079px) {
-  .book-consultation-calendly .calendly-inline-widget,
-  .book-consultation-calendly .cal-inline-widget {
-    min-width: 0 !important;
-    height: 1180px !important;
-  }
-
-  .book-consultation-calendly .calendly-inline-widget iframe,
-  .book-consultation-calendly .cal-inline-widget iframe {
-    height: 1180px !important;
-  }
-}
-
-@media (max-width: 640px) {
-  .book-consultation-section {
-    padding-top: 5rem;
-    padding-bottom: 1.5rem;
-  }
-
-  .book-consultation-calendly .calendly-inline-widget,
-  .book-consultation-calendly .calendly-inline-widget iframe,
-  .book-consultation-calendly .cal-inline-widget,
-  .book-consultation-calendly .cal-inline-widget iframe {
-    height: 1260px !important;
-  }
+.book-consultation-calendly .book-consultation-calendly-widget,
+.book-consultation-calendly .calendly-inline-widget {
+  min-width: 1000px !important;
 }
 
 .workshop-landing-footer {
@@ -2362,4 +2584,205 @@ a {
   .testimonial-card { padding: 1.75rem; }
   .cta-text h2 { font-size: 2rem; }
   .footer-bottom-bar { font-size: 0.88rem; }
+}
+
+/* Life Audit — compact question layout (no scroll for score buttons) */
+.life-audit-question-card {
+  padding: 0.85rem 1rem 1rem;
+}
+
+.life-audit-domain-title {
+  margin: 0 0 0.25rem;
+  font-size: clamp(0.85rem, 1.6vw, 1.05rem);
+}
+
+.life-audit-domain-desc {
+  margin: 0 0 0.55rem;
+  font-size: clamp(0.8rem, 1.4vw, 0.95rem);
+  line-height: 1.35;
+}
+
+.life-audit-question-text {
+  margin: 0 0 0.75rem;
+  font-size: clamp(1.05rem, 2.2vw, 1.55rem);
+}
+
+.life-audit-score-divider {
+  margin: 0.45rem auto 0.55rem;
+}
+
+.life-audit-score-row {
+  width: 100%;
+  max-width: 40rem;
+  margin: 0 auto 0.35rem;
+}
+
+.life-audit-score-row-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.75rem;
+  margin-bottom: 0.4rem;
+}
+
+.life-audit-score-row-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.life-audit-score-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+.life-audit-score-row-label p {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.life-audit-score-hint {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+}
+
+.life-audit-score-track {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(0, 1fr));
+  gap: 0.3rem;
+  padding: 0.45rem;
+  border-radius: 14px;
+  border: 1px solid #e5e7eb;
+  background: #f8fafc;
+}
+
+.life-audit-score-track--now {
+  background: linear-gradient(180deg, #fff7ed 0%, #fff 100%);
+  border-color: #fed7aa;
+}
+
+.life-audit-score-track--future {
+  background: linear-gradient(180deg, #ecfdf5 0%, #fff 100%);
+  border-color: #a7f3d0;
+}
+
+.life-audit-score-btn {
+  aspect-ratio: 1;
+  width: 100%;
+  min-height: 2.15rem;
+  border-radius: 999px;
+  border: 1.5px solid #d1d5db;
+  background: #fff;
+  color: #4b5563;
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, color 0.15s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.life-audit-score-btn:hover {
+  transform: translateY(-1px);
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.life-audit-score-btn--now:hover {
+  border-color: #fb923c;
+  color: #ea580c;
+}
+
+.life-audit-score-btn--future:hover {
+  border-color: #34d399;
+  color: #059669;
+}
+
+.life-audit-score-btn.is-selected {
+  color: #fff !important;
+  border-color: transparent !important;
+  transform: scale(1.06);
+  box-shadow: 0 5px 14px rgba(15, 23, 42, 0.14);
+}
+
+.life-audit-score-btn--now.is-selected {
+  background: linear-gradient(180deg, #fb923c 0%, #f97316 100%) !important;
+}
+
+.life-audit-score-btn--future.is-selected {
+  background: linear-gradient(180deg, #34d399 0%, #10b981 100%) !important;
+}
+
+.life-audit-score-btn:focus-visible {
+  outline: 2px solid #f97316;
+  outline-offset: 2px;
+}
+
+.life-audit-score-btn--future:focus-visible {
+  outline-color: #10b981;
+}
+
+.life-audit-score-ends {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.3rem;
+  padding: 0 0.1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #9ca3af;
+}
+
+@media (max-width: 640px) {
+  .life-audit-question-card {
+    padding: 0.7rem 0.75rem 0.85rem;
+  }
+
+  .life-audit-domain-desc {
+    display: none;
+  }
+
+  .life-audit-question-text {
+    margin-bottom: 0.55rem;
+    font-size: 1.05rem;
+  }
+
+  .life-audit-score-track {
+    gap: 0.22rem;
+    padding: 0.35rem;
+  }
+
+  .life-audit-score-btn {
+    min-height: 1.9rem;
+    font-size: 0.78rem;
+  }
+
+  .life-audit-score-hint {
+    display: none;
+  }
+}
+
+@media (max-height: 760px) {
+  .life-audit-domain-desc {
+    display: none;
+  }
+
+  .life-audit-question-card {
+    padding: 0.65rem 0.85rem 0.75rem;
+  }
+
+  .life-audit-question-text {
+    margin-bottom: 0.5rem;
+    font-size: clamp(1rem, 1.8vw, 1.25rem);
+  }
+
+  .life-audit-score-btn {
+    min-height: 1.95rem;
+  }
 }

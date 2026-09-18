@@ -145,6 +145,7 @@ export function buildCalendlyEmbedUrl(url = CALENDLY_SCHEDULING_URL, { compact =
     const parsed = new URL(url);
     if (compact) {
       parsed.searchParams.set('hide_event_type_details', '1');
+      parsed.searchParams.set('hide_landing_page_details', '1');
       parsed.searchParams.set('hide_gdpr_banner', '1');
     }
     return parsed.toString();
@@ -158,7 +159,7 @@ export function buildCalendlyEmbedUrl(url = CALENDLY_SCHEDULING_URL, { compact =
  * Keeps the full scheduling page open inside the Up4Growth page.
  *
  * For the full side-by-side layout (details | calendar), parent width must be
- * ~1000px+ and height ~700px — otherwise Calendly stacks and scrolls inside.
+ * ~1000px+ and height ~700px. Pass compact={true} to hide event details.
  */
 export default function CalendlyInline({
   url = CALENDLY_SCHEDULING_URL,

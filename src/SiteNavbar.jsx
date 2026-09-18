@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useAssessment } from './AssessmentProvider';
 
 const navSections = [
   { id: 'home', label: 'Home' },
@@ -36,6 +37,7 @@ export default function SiteNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { closeAssessment, isAssessmentOpen } = useAssessment() || {};
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,19 +49,29 @@ export default function SiteNavbar() {
   }, []);
 
   useEffect(() => {
+    if (isAssessmentOpen) return undefined;
     document.body.style.overflow = mobileMenuOpen ? 'hidden' : '';
     return () => {
-      document.body.style.overflow = '';
+      if (!isAssessmentOpen) {
+        document.body.style.overflow = '';
+      }
     };
-  }, [mobileMenuOpen]);
+  }, [mobileMenuOpen, isAssessmentOpen]);
 
   const closeMobileMenu = () => setMobileMenuOpen(false);
 
   const goToSection = (sectionId) => {
     closeMobileMenu();
-    if (location.pathname === '/') {
+    closeAssessment?.();
+
+    const scrollHomeSection = () => {
       scrollToSection(sectionId);
       window.history.replaceState(null, '', `#${sectionId}`);
+    };
+
+    if (location.pathname === '/') {
+      // Close overlay first, then scroll so the section is visible
+      window.setTimeout(scrollHomeSection, isAssessmentOpen ? 50 : 0);
       return;
     }
     navigate({ pathname: '/', hash: sectionId });
@@ -70,10 +82,32 @@ export default function SiteNavbar() {
     goToSection(sectionId);
   };
 
+  const handleAssessmentClick = () => {
+    closeMobileMenu();
+    closeAssessment?.();
+  };
+
+  const handleLogoClick = (event) => {
+    closeMobileMenu();
+    closeAssessment?.();
+    if (location.pathname === '/') {
+      event.preventDefault();
+      window.setTimeout(() => {
+        scrollToSection('home');
+        window.history.replaceState(null, '', '#home');
+      }, isAssessmentOpen ? 50 : 0);
+    }
+  };
+
+  const handleBlogClick = () => {
+    closeMobileMenu();
+    closeAssessment?.();
+  };
+
   return (
     <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
       <div className="container">
-        <Link to="/" className="logo logo-frame">
+        <Link to="/" className="logo logo-frame" onClick={handleLogoClick}>
           <img src="/images/logo-clean.png" alt="Up4Growth" className="logo-img" fetchPriority="high" decoding="async" />
         </Link>
         <ul className="nav-links">
@@ -84,7 +118,7 @@ export default function SiteNavbar() {
               </a>
             </li>
           ))}
-          <li><Link to="/blog" className="nav-link">Blog</Link></li>
+          <li><Link to="/blog" className="nav-link" onClick={handleBlogClick}>Blog</Link></li>
           {navSections.slice(3).map(({ id, label }) => (
             <li key={id}>
               <a href={`/#${id}`} className="nav-link" onClick={(event) => handleSectionClick(event, id)}>
@@ -92,6 +126,11 @@ export default function SiteNavbar() {
               </a>
             </li>
           ))}
+          <li>
+            <Link to="/assessments" className="nav-link" onClick={handleAssessmentClick}>
+              Assessment
+            </Link>
+          </li>
           <li>
             <a
               href="https://www.linkedin.com/company/up4growth/"
@@ -126,7 +165,7 @@ export default function SiteNavbar() {
             {mobileLabel ?? label}
           </a>
         ))}
-        <Link to="/blog" className="mobile-menu-link" onClick={closeMobileMenu}>Blog</Link>
+        <Link to="/blog" className="mobile-menu-link" onClick={handleBlogClick}>Blog</Link>
         {navSections.slice(3).map(({ id, label, mobileLabel }) => (
           <a
             key={id}
@@ -137,6 +176,9 @@ export default function SiteNavbar() {
             {mobileLabel ?? label}
           </a>
         ))}
+        <Link to="/assessments" className="mobile-menu-link" onClick={handleAssessmentClick}>
+          Assessment
+        </Link>
         <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={closeMobileMenu}>
           LinkedIn
         </a>

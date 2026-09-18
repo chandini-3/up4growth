@@ -1,16 +1,14 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Users, Target, BookOpen, Quote, Zap, Heart, ExternalLink, Mail, Briefcase, Trophy } from 'lucide-react';
 import SiteNavbar, { LinkedInIcon } from './SiteNavbar';
 import SeoHead from './SeoHead';
 import { defaultSeo } from './seoConfig';
 import { GET_IN_TOUCH_PAGE_PATH } from './calendlyConfig';
-import Assessment from './Assessment';
 import './index.css';
 
 function App() {
   const location = useLocation();
-  const [showAssessment, setShowAssessment] = useState(false);
   const revealRefs = useRef([]);
   const emailSubject = 'Request for Details on Up4Growth Programs';
   const emailBody = `Hello Up4Growth Team,\n\nI recently came across Up4Growth and I'm interested in understanding more about your coaching programs and workshops.\n\nCould you please share further details on your offerings and how I can get started?\n\nThank you, and I look forward to your response.\n\nBest regards,\n[Your Name]`;
@@ -417,7 +415,6 @@ function App() {
         </div>
       </footer>
 
-      {showAssessment && <Assessment onClose={() => setShowAssessment(false)} />}
     </div>
   );
 }
