@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import Assessment from './Assessment';
+import { createContext, useContext, useEffect, useMemo, useState, lazy, Suspense } from 'react';
+
+const Assessment = lazy(() => import('./Assessment'));
 
 const AssessmentContext = createContext(null);
 
@@ -7,11 +8,14 @@ export function AssessmentProvider({ children }) {
   const [activeId, setActiveId] = useState(null);
 
   useEffect(() => {
-    if (!activeId) return undefined;
+    if (!activeId) {
+      document.body.style.overflow = '';
+      return undefined;
+    }
     const previous = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = previous;
+      document.body.style.overflow = previous || '';
     };
   }, [activeId]);
 
@@ -28,7 +32,11 @@ export function AssessmentProvider({ children }) {
   return (
     <AssessmentContext.Provider value={value}>
       {children}
-      {activeId === 'life-audit' && <Assessment onClose={() => setActiveId(null)} />}
+      {activeId === 'life-audit' ? (
+        <Suspense fallback={null}>
+          <Assessment onClose={() => setActiveId(null)} />
+        </Suspense>
+      ) : null}
     </AssessmentContext.Provider>
   );
 }

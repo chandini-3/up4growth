@@ -12,11 +12,8 @@ import {
   ResponsiveContainer,
   Tooltip
 } from 'recharts';
-import { ArrowLeft, ArrowRight, Mail } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download } from 'lucide-react';
 import { lifeAuditDomains } from './assessmentsData';
-
-const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const PRIVACY_POLICY_HREF = '/data-protection.html';
 
 const SCORE_SCALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const FULL_MARK = 10;
@@ -33,14 +30,14 @@ const dimensionsKey = [
 ];
 
 const dimensionQuestions = {
-  Career: 'How fulfilled and on-track do you feel in your career right now?',
-  Health: 'How satisfied are you with your physical and mental health?',
-  'Financial Well-Being': 'How secure and content do you feel with your financial situation?',
-  Relationships: 'How satisfied are you with the quality of your personal relationships?',
-  'Fun and Recreation': 'How much time and joy do you experience through fun and recreation?',
-  'Physical Environment': 'How satisfied are you with your home and physical surroundings?',
-  'Personal Growth': 'How intentional and consistent are you about your personal growth?',
-  Spirituality: 'How connected and aligned do you feel with your sense of purpose or spirituality?'
+  Career: 'How satisfied are you with your career now, and how confident are you about your future?',
+  Health: 'How satisfied are you with your health now, and how confident are you about your future?',
+  'Financial Well-Being': 'How secure do you feel financially today, and how ready are you for what lies ahead?',
+  Relationships: 'How satisfied are you currently with your relationships, and how strong do you want them to become?',
+  'Fun and Recreation': 'How satisfied are you currently with your fun & recreation, and how much joy do you want ahead?',
+  'Physical Environment': 'How satisfied are you with your home and physical surroundings now, and in the future?',
+  'Personal Growth': 'How intentional and consistent are you about your personal growth now, and in the future?',
+  Spirituality: 'How connected and aligned do you feel with your sense of purpose or spirituality now, and in the future?'
 };
 
 const dimensionDescriptions = {
@@ -217,9 +214,7 @@ export default function Assessment({ onClose }) {
   const [currentQuestionGlobalIndex, setCurrentQuestionGlobalIndex] = useState(0);
   const [answers, setAnswers] = useState({});
   const [scores, setScores] = useState([]);
-  const [email, setEmail] = useState('');
-  const [emailError, setEmailError] = useState('');
-  const [isSubmittingEmail, setIsSubmittingEmail] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const autoNextTimeoutRef = useRef(null);
 
   const clearAutoNext = () => {
@@ -277,37 +272,9 @@ export default function Assessment({ onClose }) {
       document.getElementById('assessment-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       calculateScores();
-      setStep('email');
+      setStep('results');
       document.getElementById('assessment-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
-
-  const handleEmailSubmit = (event) => {
-    event.preventDefault();
-    const trimmed = email.trim();
-    if (!EMAIL_PATTERN.test(trimmed)) {
-      setEmailError('Please enter a valid email address.');
-      return;
-    }
-
-    setEmailError('');
-    setIsSubmittingEmail(true);
-    try {
-      sessionStorage.setItem(
-        'lifeAuditLead',
-        JSON.stringify({
-          email: trimmed,
-          scores,
-          capturedAt: new Date().toISOString(),
-        }),
-      );
-    } catch {
-      // Ignore storage failures; still unlock results.
-    }
-    setEmail(trimmed);
-    setIsSubmittingEmail(false);
-    setStep('results');
-    document.getElementById('assessment-scroll')?.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handlePrev = () => {
@@ -342,6 +309,292 @@ export default function Assessment({ onClose }) {
       .filter((s) => s.futureScore > s.nowScore)
       .sort((a, b) => b.futureScore - b.nowScore - (a.futureScore - a.nowScore));
     return sorted.slice(0, 3).map((s) => s.dimension);
+  };
+
+  const drawResultsCanvas = () => {
+    const width = 1600;
+    const height = 900;
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, width, height);
+
+    const tableX = 40;
+    const tableY = 40;
+    const tableW = 740;
+    const rowH = 52;
+    const headerH = 58;
+    const colW = [70, 280, 130, 130, 130];
+
+    // Title bar
+    ctx.fillStyle = '#1e3a5f';
+    ctx.fillRect(tableX, tableY, tableW, headerH);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 28px Arial, Helvetica, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('Wheel of Life', tableX + tableW / 2, tableY + headerH / 2);
+
+    // Column headers
+    const headers = ['S.No', 'Life Domain', 'Now', 'Future', 'Gap'];
+    const headerColors = ['#f2c94c', '#f2c94c', '#9dc3e6', '#a9d08e', '#f2c94c'];
+    let x = tableX;
+    const headerY = tableY + headerH;
+    headers.forEach((header, index) => {
+      ctx.fillStyle = headerColors[index];
+      ctx.fillRect(x, headerY, colW[index], rowH);
+      ctx.strokeStyle = '#d1d5db';
+      ctx.strokeRect(x, headerY, colW[index], rowH);
+      ctx.fillStyle = '#111827';
+      ctx.font = 'bold 18px Arial, Helvetica, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(header, x + colW[index] / 2, headerY + rowH / 2);
+      x += colW[index];
+    });
+
+    // Rows
+    scores.forEach((row, index) => {
+      const y = headerY + rowH * (index + 1);
+      const values = [
+        String(index + 1),
+        row.dimension,
+        String(row.nowScore),
+        String(row.futureScore),
+        String(row.gap),
+      ];
+      const fills = [null, null, '#deebf7', '#e2efda', null];
+      let cellX = tableX;
+      values.forEach((value, colIndex) => {
+        if (fills[colIndex]) {
+          ctx.fillStyle = fills[colIndex];
+          ctx.fillRect(cellX, y, colW[colIndex], rowH);
+        }
+        ctx.strokeStyle = '#d1d5db';
+        ctx.strokeRect(cellX, y, colW[colIndex], rowH);
+        ctx.fillStyle = '#111827';
+        ctx.font = `${colIndex === 1 ? 'normal' : 'bold'} 17px Arial, Helvetica, sans-serif`;
+        if (colIndex === 1) {
+          ctx.textAlign = 'left';
+          ctx.fillText(value, cellX + 14, y + rowH / 2);
+        } else {
+          ctx.textAlign = 'center';
+          ctx.fillText(value, cellX + colW[colIndex] / 2, y + rowH / 2);
+        }
+        cellX += colW[colIndex];
+      });
+    });
+
+    // Radar chart
+    const chartBoxX = 820;
+    const chartBoxY = 40;
+    const chartBoxW = 740;
+    const chartBoxH = 820;
+    ctx.strokeStyle = '#d1d5db';
+    ctx.strokeRect(chartBoxX, chartBoxY, chartBoxW, chartBoxH);
+
+    // Legend
+    ctx.strokeStyle = '#2563eb';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(chartBoxX + 40, chartBoxY + 28);
+    ctx.lineTo(chartBoxX + 80, chartBoxY + 28);
+    ctx.stroke();
+    ctx.fillStyle = '#111827';
+    ctx.font = 'bold 16px Arial, Helvetica, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('Future', chartBoxX + 90, chartBoxY + 32);
+
+    ctx.strokeStyle = '#ea580c';
+    ctx.beginPath();
+    ctx.moveTo(chartBoxX + 180, chartBoxY + 28);
+    ctx.lineTo(chartBoxX + 220, chartBoxY + 28);
+    ctx.stroke();
+    ctx.fillStyle = '#111827';
+    ctx.fillText('Now', chartBoxX + 230, chartBoxY + 32);
+
+    const cx = chartBoxX + chartBoxW / 2;
+    const cy = chartBoxY + chartBoxH / 2 + 10;
+    const radius = 250;
+    const n = scores.length;
+
+    const pointAt = (value, index) => {
+      const angle = (Math.PI * 2 * index) / n - Math.PI / 2;
+      const r = (value / FULL_MARK) * radius;
+      return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
+    };
+
+    // Rings
+    for (let level = 1; level <= 5; level += 1) {
+      ctx.beginPath();
+      for (let i = 0; i < n; i += 1) {
+        const [px, py] = pointAt((FULL_MARK * level) / 5, i);
+        if (i === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    }
+
+    // Axes + labels
+    scores.forEach((row, index) => {
+      const [ex, ey] = pointAt(FULL_MARK, index);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(ex, ey);
+      ctx.strokeStyle = '#d1d5db';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      const [lx, ly] = pointAt(FULL_MARK + 1.25, index);
+      ctx.fillStyle = '#374151';
+      ctx.font = '14px Arial, Helvetica, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      const words = row.dimension.split(' ');
+      if (words.length > 1) {
+        ctx.fillText(words[0], lx, ly - 8);
+        ctx.fillText(words.slice(1).join(' '), lx, ly + 10);
+      } else {
+        ctx.fillText(row.dimension, lx, ly);
+      }
+    });
+
+    const drawPolygon = (key, stroke, fill) => {
+      ctx.beginPath();
+      scores.forEach((row, index) => {
+        const [px, py] = pointAt(row[key], index);
+        if (index === 0) ctx.moveTo(px, py);
+        else ctx.lineTo(px, py);
+      });
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = stroke;
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    };
+
+    drawPolygon('futureScore', '#2563eb', 'rgba(37, 99, 235, 0.12)');
+    drawPolygon('nowScore', '#ea580c', 'rgba(234, 88, 12, 0.2)');
+
+    return canvas;
+  };
+
+  const canvasToPdfBlob = (canvas) => {
+    const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+    const jpegBase64 = jpegDataUrl.replace(/^data:image\/jpeg;base64,/, '');
+    const binary = window.atob(jpegBase64);
+    const jpegBytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i += 1) {
+      jpegBytes[i] = binary.charCodeAt(i);
+    }
+
+    const pageWidth = 842;
+    const pageHeight = 595;
+    const margin = 24;
+    const maxW = pageWidth - margin * 2;
+    const maxH = pageHeight - margin * 2;
+    const scale = Math.min(maxW / canvas.width, maxH / canvas.height);
+    const drawW = canvas.width * scale;
+    const drawH = canvas.height * scale;
+    const drawX = (pageWidth - drawW) / 2;
+    const drawY = (pageHeight - drawH) / 2;
+
+    const encoder = new TextEncoder();
+    const chunks = [];
+    const offsets = [0];
+
+    const append = (value) => {
+      if (typeof value === 'string') {
+        chunks.push(encoder.encode(value));
+      } else {
+        chunks.push(value);
+      }
+    };
+
+    const currentLength = () => chunks.reduce((sum, chunk) => sum + chunk.length, 0);
+
+    const addObject = (writeBody) => {
+      offsets.push(currentLength());
+      writeBody();
+    };
+
+    append('%PDF-1.4\n');
+
+    addObject(() => {
+      append('1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n');
+    });
+    addObject(() => {
+      append('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
+    });
+    addObject(() => {
+      append(
+        '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Contents 4 0 R /Resources << /XObject << /Im0 5 0 R >> >> >>\nendobj\n',
+      );
+    });
+
+    const contentStream = `q\n${drawW.toFixed(2)} 0 0 ${drawH.toFixed(2)} ${drawX.toFixed(2)} ${drawY.toFixed(2)} cm\n/Im0 Do\nQ\n`;
+    const contentBytes = encoder.encode(contentStream);
+    addObject(() => {
+      append(`4 0 obj\n<< /Length ${contentBytes.length} >>\nstream\n`);
+      append(contentBytes);
+      append('endstream\nendobj\n');
+    });
+
+    addObject(() => {
+      append('5 0 obj\n');
+      append(
+        `<< /Type /XObject /Subtype /Image /Width ${canvas.width} /Height ${canvas.height} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpegBytes.length} >>\nstream\n`,
+      );
+      append(jpegBytes);
+      append('\nendstream\nendobj\n');
+    });
+
+    const xrefStart = currentLength();
+    append(`xref\n0 ${offsets.length}\n`);
+    append('0000000000 65535 f \n');
+    for (let i = 1; i < offsets.length; i += 1) {
+      append(`${String(offsets[i]).padStart(10, '0')} 00000 n \n`);
+    }
+    append(`trailer\n<< /Size ${offsets.length} /Root 1 0 R >>\nstartxref\n${xrefStart}\n%%EOF`);
+
+    const total = currentLength();
+    const output = new Uint8Array(total);
+    let offset = 0;
+    chunks.forEach((chunk) => {
+      output.set(chunk, offset);
+      offset += chunk.length;
+    });
+    return new Blob([output], { type: 'application/pdf' });
+  };
+
+  const handleDownloadResults = () => {
+    if (!scores.length || isDownloading) return;
+
+    setIsDownloading(true);
+
+    try {
+      const canvas = drawResultsCanvas();
+      const blob = canvasToPdfBlob(canvas);
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'life-audit-results.pdf';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Failed to download assessment PDF:', error);
+      window.alert('Unable to download your results right now. Please try again.');
+    } finally {
+      setIsDownloading(false);
+    }
   };
 
   return (
@@ -495,91 +748,6 @@ export default function Assessment({ onClose }) {
             </motion.div>
           )}
 
-          {step === 'email' && (
-            <motion.div
-              key="email"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="flex-grow flex flex-col items-center justify-center w-full max-w-md mx-auto px-4 sm:px-6 py-10 sm:py-14 text-center"
-            >
-              <div className="w-16 h-16 rounded-full bg-[#dbe7ff] flex items-center justify-center mb-6">
-                <Mail className="w-7 h-7 text-[#1e3a8a]" strokeWidth={2} />
-              </div>
-
-              <h2 className="text-2xl sm:text-3xl font-bold text-[#1e3a5f] mb-3 leading-tight">
-                Get Your Personalized Results
-              </h2>
-              <p className="text-base text-gray-500 leading-relaxed mb-8">
-                Enter your email to receive your Wheel of Life analysis and discover which areas need
-                your attention most.
-              </p>
-
-              <form onSubmit={handleEmailSubmit} className="w-full space-y-4 text-left" noValidate>
-                <div>
-                  <label htmlFor="life-audit-email" className="sr-only">
-                    Email address
-                  </label>
-                  <input
-                    id="life-audit-email"
-                    type="email"
-                    name="email"
-                    autoComplete="email"
-                    inputMode="email"
-                    value={email}
-                    onChange={(e) => {
-                      setEmail(e.target.value);
-                      if (emailError) setEmailError('');
-                    }}
-                    placeholder="Enter your email address"
-                    className={`w-full rounded-xl border bg-white px-4 py-3.5 text-base text-gray-900 placeholder:text-gray-400 outline-none transition-shadow focus:ring-2 focus:ring-[#9db4f5]/
-                      emailError ? 'border-red-400' : 'border-gray-900'
-                    }`}
-                    aria-invalid={Boolean(emailError)}
-                    aria-describedby={emailError ? 'life-audit-email-error' : undefined}
-                  />
-                  {emailError ? (
-                    <p id="life-audit-email-error" className="mt-2 text-sm text-red-600">
-                      {emailError}
-                    </p>
-                  ) : null}
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={isSubmittingEmail}
-                  className="w-full rounded-xl bg-[#9db4f5] hover:bg-[#8aa6ef] disabled:opacity-70 text-white font-bold py-3.5 px-4 transition-colors flex items-center justify-center gap-2"
-                >
-                  Email My Results <ArrowRight className="w-5 h-5" />
-                </button>
-              </form>
-
-              <p className="mt-6 text-xs text-gray-400 leading-relaxed max-w-sm">
-                By continuing, you agree to receive your results and occasional tips from Up4Growth.
-                Unsubscribe anytime.{' '}
-                <a
-                  href={PRIVACY_POLICY_HREF}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="underline hover:text-gray-600"
-                >
-                  Privacy Policy
-                </a>
-                .
-              </p>
-
-              <button
-                type="button"
-                onClick={() => {
-                  clearAutoNext();
-                  setStep('questions');
-                }}
-                className="mt-8 flex items-center gap-2 text-sm font-medium text-gray-500 hover:text-gray-800 transition-colors"
-              >
-                <ArrowLeft className="w-4 h-4" /> Back to questions
-              </button>
-            </motion.div>
-          )}
-
           {step === 'results' && (
             <motion.div
               key="results"
@@ -587,9 +755,20 @@ export default function Assessment({ onClose }) {
               animate={{ opacity: 1, scale: 1 }}
               className="flex-grow flex flex-col w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6"
             >
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-6 md:mb-8">
-                Assessment
-              </h2>
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 md:mb-8">
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-gray-900">
+                  Assessment
+                </h2>
+                <button
+                  type="button"
+                  onClick={handleDownloadResults}
+                  disabled={isDownloading}
+                  className="inline-flex items-center justify-center gap-2 self-start sm:self-auto bg-[#1e3a5f] hover:bg-[#152a45] disabled:opacity-70 text-white font-semibold py-2.5 px-5 rounded-xl transition-colors shadow-sm"
+                >
+                  <Download className="w-4 h-4" />
+                  {isDownloading ? 'Preparing PDF...' : 'Download Results'}
+                </button>
+              </div>
 
               <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
                 {/* Wheel of Life table */}
@@ -781,7 +960,7 @@ export default function Assessment({ onClose }) {
                     type="button"
                     onClick={() => {
                       clearAutoNext();
-                      setStep('email');
+                      setStep('questions');
                     }}
                     className="flex items-center gap-2 px-6 py-3 rounded-lg font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
                   >

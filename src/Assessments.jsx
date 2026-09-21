@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { ArrowRight } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
@@ -104,6 +104,10 @@ function AssessmentCard({ assessment, onStart }) {
 
 export default function Assessments() {
   const { openAssessment } = useAssessment() || {};
+
+  useEffect(() => {
+    document.body.style.overflow = '';
+  }, []);
 
   const seo = useMemo(
     () => ({
