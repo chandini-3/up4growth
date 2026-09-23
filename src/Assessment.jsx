@@ -30,14 +30,38 @@ const dimensionsKey = [
 ];
 
 const dimensionQuestions = {
-  Career: 'How satisfied are you with your career now, and how confident are you about your future?',
-  Health: 'How satisfied are you with your health now, and how confident are you about your future?',
-  'Financial Well-Being': 'How secure do you feel financially today, and how ready are you for what lies ahead?',
-  Relationships: 'How satisfied are you currently with your relationships, and how strong do you want them to become?',
-  'Fun and Recreation': 'How satisfied are you currently with your fun & recreation, and how much joy do you want ahead?',
-  'Physical Environment': 'How satisfied are you with your home and physical surroundings now, and in the future?',
-  'Personal Growth': 'How intentional and consistent are you about your personal growth now, and in the future?',
-  Spirituality: 'How connected and aligned do you feel with your sense of purpose or spirituality now, and in the future?'
+  Career: {
+    now: 'How satisfied are you with your career now?',
+    future: 'How confident are you about your future?'
+  },
+  Health: {
+    now: 'How satisfied are you with your health now?',
+    future: 'How confident are you about your future?'
+  },
+  'Financial Well-Being': {
+    now: 'How secure do you feel financially today?',
+    future: 'How ready are you for what lies ahead?'
+  },
+  Relationships: {
+    now: 'How satisfied are you currently with your relationships?',
+    future: 'How strong do you want them to become?'
+  },
+  'Fun and Recreation': {
+    now: 'How satisfied are you currently with your fun & recreation?',
+    future: 'How much joy do you want ahead?'
+  },
+  'Physical Environment': {
+    now: 'How satisfied are you with your home and physical surroundings now?',
+    future: 'How satisfied are you with your home and physical surroundings in the future?'
+  },
+  'Personal Growth': {
+    now: 'How intentional and consistent are you about your personal growth now?',
+    future: 'How intentional and consistent are you about your personal growth in the future?'
+  },
+  Spirituality: {
+    now: 'How connected and aligned do you feel with your sense of purpose or spirituality now?',
+    future: 'How connected and aligned do you feel with your sense of purpose or spirituality in the future?'
+  }
 };
 
 const dimensionDescriptions = {
@@ -63,7 +87,7 @@ const ratingSteps = [
   {
     key: 'future',
     label: 'Future (Ideal)',
-    hint: 'Your ideal state in ~5 years',
+    hint: 'Your ideal state',
     tone: 'future',
     hintClass: 'text-emerald-800 bg-emerald-50',
     dotClass: 'bg-emerald-500'
@@ -72,7 +96,8 @@ const ratingSteps = [
 
 const allQuestions = dimensionsKey.map((dim) => ({
   dimension: dim,
-  question: dimensionQuestions[dim]
+  now: dimensionQuestions[dim].now,
+  future: dimensionQuestions[dim].future
 }));
 
 /** Sample wedge levels for the intro Wheel of Life graphic (1–10 scale). */
@@ -255,7 +280,7 @@ export default function Assessment({ onClose }) {
   };
 
   const currentQ = allQuestions[currentQuestionGlobalIndex] || allQuestions[0];
-  const { dimension: currentDimension, question: currentQuestionText } = currentQ;
+  const { dimension: currentDimension, now: nowQuestion, future: futureQuestion } = currentQ;
   const currentAnswerObj = answers[currentDimension] || {};
   const { now: nowScore, future: futureScore } = currentAnswerObj;
 
@@ -311,9 +336,31 @@ export default function Assessment({ onClose }) {
     return sorted.slice(0, 3).map((s) => s.dimension);
   };
 
-  const drawResultsCanvas = () => {
+  const loadImage = (src) => new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = () => reject(new Error('Unable to load results logo'));
+    image.src = src;
+  });
+
+  const drawResultsCanvas = async () => {
+    const logo = await loadImage('/images/logo-clean.png');
     const width = 1600;
-    const height = 900;
+    const logoPadX = 40;
+    const logoPadY = 28;
+    const logoHeight = 88;
+    const logoWidth = logoHeight * (logo.naturalWidth / logo.naturalHeight);
+    const tableX = 40;
+    const tableY = logoPadY + logoHeight + 24;
+    const tableW = 740;
+    const rowH = 52;
+    const headerH = 58;
+    const colW = [70, 280, 130, 130, 130];
+    const chartBoxX = 820;
+    const chartBoxY = tableY;
+    const chartBoxW = 740;
+    const chartBoxH = 820;
+    const height = chartBoxY + chartBoxH + 40;
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
@@ -321,13 +368,7 @@ export default function Assessment({ onClose }) {
 
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
-
-    const tableX = 40;
-    const tableY = 40;
-    const tableW = 740;
-    const rowH = 52;
-    const headerH = 58;
-    const colW = [70, 280, 130, 130, 130];
+    ctx.drawImage(logo, logoPadX, logoPadY, logoWidth, logoHeight);
 
     // Title bar
     ctx.fillStyle = '#1e3a5f';
@@ -388,10 +429,6 @@ export default function Assessment({ onClose }) {
     });
 
     // Radar chart
-    const chartBoxX = 820;
-    const chartBoxY = 40;
-    const chartBoxW = 740;
-    const chartBoxH = 820;
     ctx.strokeStyle = '#d1d5db';
     ctx.strokeRect(chartBoxX, chartBoxY, chartBoxW, chartBoxH);
 
@@ -573,13 +610,13 @@ export default function Assessment({ onClose }) {
     return new Blob([output], { type: 'application/pdf' });
   };
 
-  const handleDownloadResults = () => {
+  const handleDownloadResults = async () => {
     if (!scores.length || isDownloading) return;
 
     setIsDownloading(true);
 
     try {
-      const canvas = drawResultsCanvas();
+      const canvas = await drawResultsCanvas();
       const blob = canvasToPdfBlob(canvas);
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
@@ -728,7 +765,7 @@ export default function Assessment({ onClose }) {
                 </p>
 
                 <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
-                  {currentQuestionText}
+                  {nowQuestion}
                 </h2>
 
                 <ScoreRow
@@ -738,6 +775,10 @@ export default function Assessment({ onClose }) {
                 />
 
                 <div className="life-audit-score-divider border-t border-gray-100 max-w-3xl mx-auto w-full"></div>
+
+                <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
+                  {futureQuestion}
+                </h2>
 
                 <ScoreRow
                   step={ratingSteps[1]}
