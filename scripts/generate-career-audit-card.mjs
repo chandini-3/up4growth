@@ -3,14 +3,14 @@ import path from 'node:path';
 import sharp from 'sharp';
 
 /**
- * Career Audit card image — eight career dimensions around a wheel.
+ * Career Audit card image — high-resolution wheel for crisp display.
  */
-const SIZE = 3200;
+const SIZE = 4800;
 const CX = SIZE / 2;
 const CY = SIZE / 2;
-const OUTER_R = 980;
-const LABEL_R = 1140;
-const DOT_R = OUTER_R + 28;
+const OUTER_R = 1470;
+const LABEL_R = 1710;
+const DOT_R = OUTER_R + 42;
 const GRID_LEVELS = 10;
 const FONT =
   "system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif";
@@ -51,8 +51,8 @@ function escapeXml(text) {
 }
 
 function labelAnchor(midAngle) {
-  if (midAngle > 22 && midAngle < 158) return { anchor: 'start', dx: 26 };
-  if (midAngle > 202 && midAngle < 338) return { anchor: 'end', dx: -26 };
+  if (midAngle > 22 && midAngle < 158) return { anchor: 'start', dx: 39 };
+  if (midAngle > 202 && midAngle < 338) return { anchor: 'end', dx: -39 };
   return { anchor: 'middle', dx: 0 };
 }
 
@@ -79,25 +79,25 @@ const gradients = segments
   .join('');
 
 const wedges = segments
-  .map((_, i) => `<path d="${wedgePath(i)}" fill="url(#g${i})" stroke="#ffffff" stroke-width="12"/>`)
+  .map((_, i) => `<path d="${wedgePath(i)}" fill="url(#g${i})" stroke="#ffffff" stroke-width="18"/>`)
   .join('\n');
 
 const rings = Array.from({ length: GRID_LEVELS }, (_, i) => {
   const level = i + 1;
   const r = (level / GRID_LEVELS) * OUTER_R;
-  return `<circle cx="${CX}" cy="${CY}" r="${r.toFixed(2)}" fill="none" stroke="#ffffff" stroke-opacity="${level === GRID_LEVELS ? 0.98 : 0.62}" stroke-width="${level === GRID_LEVELS ? 9 : 4.5}"/>`;
+  return `<circle cx="${CX}" cy="${CY}" r="${r.toFixed(2)}" fill="none" stroke="#ffffff" stroke-opacity="${level === GRID_LEVELS ? 0.98 : 0.62}" stroke-width="${level === GRID_LEVELS ? 13.5 : 6.75}"/>`;
 }).join('\n');
 
 const spokes = Array.from({ length: n }, (_, i) => {
   const [x, y] = polar(OUTER_R, i * slice);
-  return `<line x1="${CX}" y1="${CY}" x2="${x.toFixed(2)}" y2="${y.toFixed(2)}" stroke="#ffffff" stroke-opacity="0.96" stroke-width="9"/>`;
+  return `<line x1="${CX}" y1="${CY}" x2="${x.toFixed(2)}" y2="${y.toFixed(2)}" stroke="#ffffff" stroke-opacity="0.96" stroke-width="13.5"/>`;
 }).join('\n');
 
 const dots = segments
   .map((seg, i) => {
     const mid = i * slice + slice / 2;
     const [x, y] = polar(DOT_R, mid);
-    return `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="26" fill="${seg.stroke}"/>`;
+    return `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="39" fill="${seg.stroke}"/>`;
   })
   .join('\n');
 
@@ -107,7 +107,7 @@ const labels = segments
     const [x, y] = polar(LABEL_R, mid);
     const { anchor, dx } = labelAnchor(mid);
     const lines = labelLines(seg.name);
-    const lineHeight = 70;
+    const lineHeight = 105;
     const startDy = -((lines.length - 1) * lineHeight) / 2;
     const tspans = lines
       .map((line, li) => {
@@ -115,12 +115,12 @@ const labels = segments
         return `<tspan x="${(x + dx).toFixed(2)}" dy="${dy}">${escapeXml(line)}</tspan>`;
       })
       .join('');
-    return `<text x="${(x + dx).toFixed(2)}" y="${y.toFixed(2)}" text-anchor="${anchor}" dominant-baseline="middle" font-family="${FONT}" font-size="56" font-weight="700" fill="#1a3558">${tspans}</text>`;
+    return `<text x="${(x + dx).toFixed(2)}" y="${y.toFixed(2)}" text-anchor="${anchor}" dominant-baseline="middle" font-family="${FONT}" font-size="84" font-weight="700" fill="#1a3558" style="text-rendering:geometricPrecision">${tspans}</text>`;
   })
   .join('\n');
 
 const svg = `<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}">
+<svg xmlns="http://www.w3.org/2000/svg" width="${SIZE}" height="${SIZE}" viewBox="0 0 ${SIZE} ${SIZE}" shape-rendering="geometricPrecision">
   <rect width="${SIZE}" height="${SIZE}" fill="#ffffff"/>
   <defs>${gradients}</defs>
   ${wedges}
@@ -128,11 +128,19 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
   ${spokes}
   ${dots}
   ${labels}
-  <circle cx="${CX}" cy="${CY}" r="16" fill="#94a3b8"/>
+  <circle cx="${CX}" cy="${CY}" r="24" fill="#94a3b8"/>
 </svg>
 `;
 
 const outPath = path.resolve('public/images/career-audit-card.png');
-const png = await sharp(Buffer.from(svg)).png({ compressionLevel: 6, effort: 10 }).toBuffer();
+const png = await sharp(Buffer.from(svg))
+  .png({
+    compressionLevel: 1,
+    quality: 100,
+    effort: 10,
+    palette: false,
+    adaptiveFiltering: true,
+  })
+  .toBuffer();
 await writeFile(outPath, png);
 console.log(`saved ${outPath} (${png.length} bytes, ${SIZE}x${SIZE})`);

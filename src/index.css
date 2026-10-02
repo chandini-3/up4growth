@@ -711,9 +711,9 @@ a {
 
 .assessments-page .blog-card-image-wrap {
   aspect-ratio: auto;
-  height: clamp(220px, 32vh, 340px);
-  min-height: 220px;
-  max-height: 340px;
+  height: clamp(260px, 38vh, 400px);
+  min-height: 260px;
+  max-height: 400px;
   overflow: hidden;
   background: #fff;
   line-height: 0;
@@ -728,8 +728,19 @@ a {
   transform: none;
 }
 
+.assessments-page .assessments-card--career .blog-card-image {
+  transform: scale(1.28);
+  transform-origin: center center;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: high-quality;
+}
+
 .assessments-page .blog-card-image-link:hover .blog-card-image {
   transform: none;
+}
+
+.assessments-page .assessments-card--career .blog-card-image-link:hover .blog-card-image {
+  transform: scale(1.28);
 }
 
 .assessments-page .blog-card-body {
@@ -784,9 +795,14 @@ a {
   }
 
   .assessments-page .blog-card-image-wrap {
-    height: clamp(200px, 36vh, 300px);
-    min-height: 200px;
-    max-height: 300px;
+    height: clamp(230px, 40vh, 320px);
+    min-height: 230px;
+    max-height: 320px;
+  }
+
+  .assessments-page .assessments-card--career .blog-card-image,
+  .assessments-page .assessments-card--career .blog-card-image-link:hover .blog-card-image {
+    transform: scale(1.2);
   }
 }
 

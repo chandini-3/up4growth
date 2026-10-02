@@ -27,9 +27,13 @@ function SiteFooter() {
 
 function AssessmentCard({ assessment }) {
   const path = getAssessmentPath(assessment);
+  const cardClass =
+    assessment.id === 'career-audit'
+      ? 'blog-card assessments-card assessments-card--career'
+      : 'blog-card assessments-card';
 
   return (
-    <article className="blog-card assessments-card">
+    <article className={cardClass}>
       <Link
         to={path}
         className="blog-card-image-link"
@@ -117,7 +121,7 @@ export default function Assessments() {
     return {
       title: `Assessments | ${SITE_NAME}`,
       description: truncateDescription(
-        'Explore interactive Up4Growth assessments, including the Wheel of Life and Career Audit Assessment.',
+        'Explore interactive Up4Growth assessments, including the Wheel of Life and Career Audit.',
       ),
       canonical: absoluteUrl('/assessments'),
       image: absoluteUrl('/images/wheel-of-life-card.png'),
