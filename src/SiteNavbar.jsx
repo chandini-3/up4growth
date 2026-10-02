@@ -128,7 +128,7 @@ export default function SiteNavbar() {
           ))}
           <li>
             <Link to="/assessments" className="nav-link" onClick={handleAssessmentClick}>
-              Assessment
+              Assessments
             </Link>
           </li>
           <li>
@@ -177,7 +177,7 @@ export default function SiteNavbar() {
           </a>
         ))}
         <Link to="/assessments" className="mobile-menu-link" onClick={handleAssessmentClick}>
-          Assessment
+          Assessments
         </Link>
         <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="mobile-menu-link" onClick={closeMobileMenu}>
           LinkedIn

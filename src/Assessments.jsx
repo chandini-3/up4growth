@@ -1,9 +1,9 @@
 import { useEffect, useMemo } from 'react';
+import { Link, Navigate, useParams } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import SiteNavbar from './SiteNavbar';
 import SeoHead from './SeoHead';
-import { useAssessment } from './AssessmentProvider';
-import { assessments } from './assessmentsData';
+import { assessments, getAssessmentBySlug, getAssessmentPath } from './assessmentsData';
 import { SITE_NAME, absoluteUrl, buildPageSeoJsonLd, truncateDescription } from './seoConfig';
 import './index.css';
 
@@ -25,15 +25,15 @@ function SiteFooter() {
   );
 }
 
-function AssessmentCard({ assessment, onStart }) {
+function AssessmentCard({ assessment }) {
+  const path = getAssessmentPath(assessment);
+
   return (
     <article className="blog-card assessments-card">
-      <button
-        type="button"
+      <Link
+        to={path}
         className="blog-card-image-link"
-        onClick={() => onStart(assessment.id)}
         aria-label={`Start assessment: ${assessment.title}`}
-        style={{ width: '100%', padding: 0, border: 'none', background: 'none', cursor: 'pointer', textAlign: 'left' }}
       >
         <div
           className="blog-card-image-wrap"
@@ -55,25 +55,11 @@ function AssessmentCard({ assessment, onStart }) {
             <div className="blog-card-image blog-card-image--wellbeing" aria-hidden="true" />
           )}
         </div>
-      </button>
+      </Link>
 
       <div className="blog-card-body">
         <h3 className="blog-card-title">
-          <button
-            type="button"
-            onClick={() => onStart(assessment.id)}
-            style={{
-              background: 'none',
-              border: 'none',
-              padding: 0,
-              cursor: 'pointer',
-              textAlign: 'left',
-              color: 'inherit',
-              font: 'inherit',
-            }}
-          >
-            {assessment.title}
-          </button>
+          <Link to={path}>{assessment.title}</Link>
         </h3>
 
         <p className="blog-card-meta">
@@ -88,32 +74,50 @@ function AssessmentCard({ assessment, onStart }) {
           </div>
         )}
 
-        <button
-          type="button"
-          className="blog-card-read-more"
-          onClick={() => onStart(assessment.id)}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
-        >
+        <Link to={path} className="blog-card-read-more">
           {assessment.cta || 'Start assessment'}
           <ArrowRight size={16} aria-hidden="true" />
-        </button>
+        </Link>
       </div>
     </article>
   );
 }
 
 export default function Assessments() {
-  const { openAssessment } = useAssessment() || {};
+  const { slug } = useParams();
+  const routedAssessment = slug ? getAssessmentBySlug(slug) : null;
 
   useEffect(() => {
-    document.body.style.overflow = '';
-  }, []);
+    if (!slug) {
+      document.body.style.overflow = '';
+    }
+  }, [slug]);
 
-  const seo = useMemo(
-    () => ({
-      title: `Assessment | ${SITE_NAME}`,
+  const seo = useMemo(() => {
+    if (routedAssessment) {
+      return {
+        title: `${routedAssessment.title} | Assessments | ${SITE_NAME}`,
+        description: truncateDescription(
+          routedAssessment.summary ||
+            `Start the ${routedAssessment.title} assessment from Up4Growth.`,
+        ),
+        canonical: absoluteUrl(getAssessmentPath(routedAssessment)),
+        image: absoluteUrl(routedAssessment.image || '/images/wheel-of-life-card.png'),
+        type: 'website',
+        jsonLd: buildPageSeoJsonLd({
+          breadcrumbs: [
+            { name: 'Home', path: '/' },
+            { name: 'Assessments', path: '/assessments' },
+            { name: routedAssessment.title, path: getAssessmentPath(routedAssessment) },
+          ],
+        }),
+      };
+    }
+
+    return {
+      title: `Assessments | ${SITE_NAME}`,
       description: truncateDescription(
-        'Explore interactive Up4Growth assessments, including the Life Audit Assessment across eight life domains.',
+        'Explore interactive Up4Growth assessments, including the Wheel of Life and Career Audit Assessment.',
       ),
       canonical: absoluteUrl('/assessments'),
       image: absoluteUrl('/images/wheel-of-life-card.png'),
@@ -121,16 +125,15 @@ export default function Assessments() {
       jsonLd: buildPageSeoJsonLd({
         breadcrumbs: [
           { name: 'Home', path: '/' },
-          { name: 'Assessment', path: '/assessments' },
+          { name: 'Assessments', path: '/assessments' },
         ],
       }),
-    }),
-    [],
-  );
+    };
+  }, [routedAssessment]);
 
-  const handleStart = (id) => {
-    openAssessment?.(id);
-  };
+  if (slug && !routedAssessment) {
+    return <Navigate to="/assessments" replace />;
+  }
 
   return (
     <div className="layout assessments-page">
@@ -141,24 +144,16 @@ export default function Assessments() {
         <section className="blog-hero assessments-hero">
           <div className="container">
             <div className="blog-hero-inner">
-              <span className="section-tag blog-hero-tag">Tools</span>
-              <h1 className="blog-hero-title">Assessment</h1>
-              <p className="blog-hero-description">
-                Reflect on where you are and design where you want to grow.
-              </p>
+              <h1 className="blog-hero-title">Assessments</h1>
             </div>
           </div>
         </section>
 
         <section className="blog-index assessments-index">
           <div className="container">
-            <div className="blog-cards-grid assessments-cards-grid" role="feed" aria-label="Assessment">
+            <div className="blog-cards-grid assessments-cards-grid" role="feed" aria-label="Assessments">
               {assessments.map((assessment) => (
-                <AssessmentCard
-                  key={assessment.id}
-                  assessment={assessment}
-                  onStart={handleStart}
-                />
+                <AssessmentCard key={assessment.id} assessment={assessment} />
               ))}
             </div>
           </div>

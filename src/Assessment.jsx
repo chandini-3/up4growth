@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BOOK_PAGE_PATH } from './calendlyConfig';
+import { BOOK_PAGE_PATH, CALENDLY_PROFILE_URL } from './calendlyConfig';
 import {
   Legend,
   PolarAngleAxis,
@@ -13,67 +13,10 @@ import {
   Tooltip
 } from 'recharts';
 import { ArrowLeft, ArrowRight, Download } from 'lucide-react';
-import { lifeAuditDomains } from './assessmentsData';
+import { getAssessmentConfig } from './assessmentsData';
 
 const SCORE_SCALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const FULL_MARK = 10;
-
-const dimensionsKey = [
-  'Career',
-  'Health',
-  'Financial Well-Being',
-  'Relationships',
-  'Fun and Recreation',
-  'Physical Environment',
-  'Personal Growth',
-  'Spirituality'
-];
-
-const dimensionQuestions = {
-  Career: {
-    now: 'How satisfied are you with your career now?',
-    future: 'How confident are you about your future?'
-  },
-  Health: {
-    now: 'How satisfied are you with your health now?',
-    future: 'How confident are you about your future?'
-  },
-  'Financial Well-Being': {
-    now: 'How secure do you feel financially today?',
-    future: 'How ready are you for what lies ahead?'
-  },
-  Relationships: {
-    now: 'How satisfied are you currently with your relationships?',
-    future: 'How strong do you want them to become?'
-  },
-  'Fun and Recreation': {
-    now: 'How satisfied are you currently with your fun & recreation?',
-    future: 'How much joy do you want ahead?'
-  },
-  'Physical Environment': {
-    now: 'How satisfied are you with your home and physical surroundings now?',
-    future: 'How satisfied are you with your home and physical surroundings in the future?'
-  },
-  'Personal Growth': {
-    now: 'How intentional and consistent are you about your personal growth now?',
-    future: 'How intentional and consistent are you about your personal growth in the future?'
-  },
-  Spirituality: {
-    now: 'How connected and aligned do you feel with your sense of purpose or spirituality now?',
-    future: 'How connected and aligned do you feel with your sense of purpose or spirituality in the future?'
-  }
-};
-
-const dimensionDescriptions = {
-  Career: 'Your work direction, fulfillment, and professional progress.',
-  Health: 'Your energy, wellbeing, and care for body and mind.',
-  'Financial Well-Being': 'Your income, savings, security, and financial peace of mind.',
-  Relationships: 'Your connection with family, friends, and people who matter.',
-  'Fun and Recreation': 'Your leisure, hobbies, play, and enjoyment of life.',
-  'Physical Environment': 'Your living space, workspace, and everyday surroundings.',
-  'Personal Growth': 'Your learning, skills, self-awareness, and development.',
-  Spirituality: 'Your meaning, values, inner peace, and sense of purpose.'
-};
 
 const ratingSteps = [
   {
@@ -94,30 +37,13 @@ const ratingSteps = [
   }
 ];
 
-const allQuestions = dimensionsKey.map((dim) => ({
-  dimension: dim,
-  now: dimensionQuestions[dim].now,
-  future: dimensionQuestions[dim].future
-}));
-
-/** Sample wedge levels for the intro Wheel of Life graphic (1–10 scale). */
-const introWheelSegments = [
-  { value: 6, color: '#ef4444' },
-  { value: 8, color: '#f97316' },
-  { value: 9, color: '#eab308' },
-  { value: 4, color: '#a3e635' },
-  { value: 8, color: '#22c55e' },
-  { value: 8, color: '#38bdf8' },
-  { value: 10, color: '#6366f1' },
-  { value: 3, color: '#a855f7' }
-];
-
-function IntroWheelGraphic({ className = '' }) {
+function IntroWheelGraphic({ domains, ariaLabel, className = '' }) {
   const size = 420;
   const cx = size / 2;
   const cy = size / 2;
   const maxR = size / 2 - 12;
-  const n = introWheelSegments.length;
+  const n = domains.length;
+  const sampleValues = [6, 8, 9, 4, 8, 8, 10, 3, 7];
 
   const polar = (r, angleDeg) => {
     const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -138,7 +64,7 @@ function IntroWheelGraphic({ className = '' }) {
       viewBox={`0 0 ${size} ${size}`}
       className={className}
       role="img"
-      aria-label="Example Wheel of Life chart across eight life domains"
+      aria-label={ariaLabel}
     >
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((level) => (
         <circle
@@ -166,11 +92,11 @@ function IntroWheelGraphic({ className = '' }) {
           />
         );
       })}
-      {introWheelSegments.map((segment, index) => (
+      {domains.map((domain, index) => (
         <path
-          key={index}
-          d={wedgePath(segment.value, index)}
-          fill={segment.color}
+          key={domain.name}
+          d={wedgePath(sampleValues[index % sampleValues.length], index)}
+          fill={domain.color}
           fillOpacity="0.78"
           stroke="#fff"
           strokeWidth="2"
@@ -197,7 +123,7 @@ const CustomTooltip = ({ active, payload }) => {
   return null;
 };
 
-function ScoreRow({ step, value, onSelect }) {
+function ScoreRow({ step, value, onSelect, lowLabel = 'Very Dissatisfied', highLabel = 'Fully Satisfied' }) {
   return (
     <div className="life-audit-score-row">
       <div className="life-audit-score-row-head">
@@ -226,15 +152,35 @@ function ScoreRow({ step, value, onSelect }) {
       </div>
 
       <div className="life-audit-score-ends">
-        <span>Very Dissatisfied</span>
-        <span>Fully Satisfied</span>
+        <span>{lowLabel} (1)</span>
+        <span>{highLabel} (10)</span>
       </div>
     </div>
   );
 }
 
-export default function Assessment({ onClose }) {
+export default function Assessment({ onClose, assessmentId = 'life-audit' }) {
   const navigate = useNavigate();
+  const config = getAssessmentConfig(assessmentId) || getAssessmentConfig('life-audit');
+  const domains = config.domains;
+  const domainByName = useMemo(
+    () => Object.fromEntries(domains.map((d) => [d.name, d])),
+    [domains],
+  );
+
+  const allQuestions = useMemo(
+    () =>
+      domains.map((dim) => ({
+        dimension: dim.name,
+        now: dim.now,
+        future: dim.future,
+      })),
+    [domains],
+  );
+
+  const scoreLowLabel = config.scoreLowLabel || 'Very Dissatisfied';
+  const scoreHighLabel = config.scoreHighLabel || 'Fully Satisfied';
+
   const [step, setStep] = useState('intro');
   const [currentQuestionGlobalIndex, setCurrentQuestionGlobalIndex] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -280,7 +226,11 @@ export default function Assessment({ onClose }) {
   };
 
   const currentQ = allQuestions[currentQuestionGlobalIndex] || allQuestions[0];
-  const { dimension: currentDimension, now: nowQuestion, future: futureQuestion } = currentQ;
+  const {
+    dimension: currentDimension,
+    now: nowQuestion,
+    future: futureQuestion,
+  } = currentQ;
   const currentAnswerObj = answers[currentDimension] || {};
   const { now: nowScore, future: futureScore } = currentAnswerObj;
 
@@ -313,27 +263,29 @@ export default function Assessment({ onClose }) {
   };
 
   const calculateScores = () => {
-    const finalScores = dimensionsKey.map((dim) => {
-      const ans = answers[dim] || {};
-      const nowScore = ans.now || 0;
-      const futureScore = ans.future || 0;
+    const finalScores = domains.map((dim) => {
+      const ans = answers[dim.name] || {};
+      const nowVal = ans.now || 0;
+      const futureVal = ans.future || 0;
       return {
-        dimension: dim,
-        nowScore,
-        futureScore,
-        gap: Math.max(0, futureScore - nowScore),
+        dimension: dim.name,
+        nowScore: nowVal,
+        futureScore: futureVal,
+        gap: Math.max(0, futureVal - nowVal),
         fullMark: FULL_MARK
       };
     });
     setScores(finalScores);
   };
 
+  const scoresByGapDesc = [...scores].sort((a, b) => b.gap - a.gap);
+
   const getRecommendations = () => {
     if (!scores.length) return [];
-    const sorted = [...scores]
-      .filter((s) => s.futureScore > s.nowScore)
-      .sort((a, b) => b.futureScore - b.nowScore - (a.futureScore - a.nowScore));
-    return sorted.slice(0, 3).map((s) => s.dimension);
+    return scoresByGapDesc
+      .filter((s) => s.gap > 0)
+      .slice(0, 3)
+      .map((s) => s.dimension);
   };
 
   const loadImage = (src) => new Promise((resolve, reject) => {
@@ -343,119 +295,77 @@ export default function Assessment({ onClose }) {
     image.src = src;
   });
 
+  const PDF_PAGE_W = 595.28;
+  const PDF_PAGE_H = 841.89;
+  const PDF_SCALE = 3;
+  const PDF_NAVY = '#203c61';
+  const PDF_GRAY = '#566273';
+  const PDF_ORANGE = '#ec751f';
+  const PDF_DESIRED = '#4777b8';
+  const PDF_PEACH = '#fff7e9';
+  const PDF_ZEBRA = '#f8f9fa';
+  const PDF_DIVIDER = '#e2e7eb';
+  const PDF_BLOG_URL = 'https://up4growth.ch/blog/';
+
+  const drawRoundRect = (ctx, x, y, w, h, r) => {
+    const radius = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + radius, y);
+    ctx.arcTo(x + w, y, x + w, y + h, radius);
+    ctx.arcTo(x + w, y + h, x, y + h, radius);
+    ctx.arcTo(x, y + h, x, y, radius);
+    ctx.arcTo(x, y, x + w, y, radius);
+    ctx.closePath();
+  };
+
   const drawResultsCanvas = async () => {
     const logo = await loadImage('/images/logo-clean.png');
-    const width = 1600;
-    const logoPadX = 40;
-    const logoPadY = 28;
-    const logoHeight = 88;
-    const logoWidth = logoHeight * (logo.naturalWidth / logo.naturalHeight);
-    const tableX = 40;
-    const tableY = logoPadY + logoHeight + 24;
-    const tableW = 740;
-    const rowH = 52;
-    const headerH = 58;
-    const colW = [70, 280, 130, 130, 130];
-    const chartBoxX = 820;
-    const chartBoxY = tableY;
-    const chartBoxW = 740;
-    const chartBoxH = 820;
-    const height = chartBoxY + chartBoxH + 40;
+    const S = PDF_SCALE;
+    const width = Math.round(PDF_PAGE_W * S);
+    const height = Math.round(PDF_PAGE_H * S);
     const canvas = document.createElement('canvas');
     canvas.width = width;
     canvas.height = height;
     const ctx = canvas.getContext('2d');
+    const px = (pt) => pt * S;
 
     ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
-    ctx.drawImage(logo, logoPadX, logoPadY, logoWidth, logoHeight);
+    ctx.textBaseline = 'alphabetic';
 
-    // Title bar
-    ctx.fillStyle = '#1e3a5f';
-    ctx.fillRect(tableX, tableY, tableW, headerH);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 28px Arial, Helvetica, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText('Wheel of Life', tableX + tableW / 2, tableY + headerH / 2);
+    const marginX = px(42);
+    const contentW = px(511);
 
-    // Column headers
-    const headers = ['S.No', 'Life Domain', 'Now', 'Future', 'Gap'];
-    const headerColors = ['#f2c94c', '#f2c94c', '#9dc3e6', '#a9d08e', '#f2c94c'];
-    let x = tableX;
-    const headerY = tableY + headerH;
-    headers.forEach((header, index) => {
-      ctx.fillStyle = headerColors[index];
-      ctx.fillRect(x, headerY, colW[index], rowH);
-      ctx.strokeStyle = '#d1d5db';
-      ctx.strokeRect(x, headerY, colW[index], rowH);
-      ctx.fillStyle = '#111827';
-      ctx.font = 'bold 18px Arial, Helvetica, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(header, x + colW[index] / 2, headerY + rowH / 2);
-      x += colW[index];
-    });
+    const logoH = px(53);
+    const logoW = logoH * (logo.naturalWidth / logo.naturalHeight);
+    ctx.drawImage(logo, px(39), px(26), logoW, logoH);
 
-    // Rows
-    scores.forEach((row, index) => {
-      const y = headerY + rowH * (index + 1);
-      const values = [
-        String(index + 1),
-        row.dimension,
-        String(row.nowScore),
-        String(row.futureScore),
-        String(row.gap),
-      ];
-      const fills = [null, null, '#deebf7', '#e2efda', null];
-      let cellX = tableX;
-      values.forEach((value, colIndex) => {
-        if (fills[colIndex]) {
-          ctx.fillStyle = fills[colIndex];
-          ctx.fillRect(cellX, y, colW[colIndex], rowH);
-        }
-        ctx.strokeStyle = '#d1d5db';
-        ctx.strokeRect(cellX, y, colW[colIndex], rowH);
-        ctx.fillStyle = '#111827';
-        ctx.font = `${colIndex === 1 ? 'normal' : 'bold'} 17px Arial, Helvetica, sans-serif`;
-        if (colIndex === 1) {
-          ctx.textAlign = 'left';
-          ctx.fillText(value, cellX + 14, y + rowH / 2);
-        } else {
-          ctx.textAlign = 'center';
-          ctx.fillText(value, cellX + colW[colIndex] / 2, y + rowH / 2);
-        }
-        cellX += colW[colIndex];
-      });
-    });
-
-    // Radar chart
-    ctx.strokeStyle = '#d1d5db';
-    ctx.strokeRect(chartBoxX, chartBoxY, chartBoxW, chartBoxH);
-
-    // Legend
-    ctx.strokeStyle = '#2563eb';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.moveTo(chartBoxX + 40, chartBoxY + 28);
-    ctx.lineTo(chartBoxX + 80, chartBoxY + 28);
-    ctx.stroke();
-    ctx.fillStyle = '#111827';
-    ctx.font = 'bold 16px Arial, Helvetica, sans-serif';
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(22)}px Helvetica, Arial, sans-serif`;
     ctx.textAlign = 'left';
-    ctx.fillText('Future', chartBoxX + 90, chartBoxY + 32);
+    ctx.fillText(config.pdfTitle, marginX, px(110));
 
-    ctx.strokeStyle = '#ea580c';
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(10)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText(config.pdfSubtitle, marginX, px(130));
+
+    ctx.strokeStyle = PDF_DIVIDER;
+    ctx.lineWidth = px(0.7);
     ctx.beginPath();
-    ctx.moveTo(chartBoxX + 180, chartBoxY + 28);
-    ctx.lineTo(chartBoxX + 220, chartBoxY + 28);
+    ctx.moveTo(marginX, px(144));
+    ctx.lineTo(marginX + contentW, px(144));
     ctx.stroke();
-    ctx.fillStyle = '#111827';
-    ctx.fillText('Now', chartBoxX + 230, chartBoxY + 32);
 
-    const cx = chartBoxX + chartBoxW / 2;
-    const cy = chartBoxY + chartBoxH / 2 + 10;
-    const radius = 250;
-    const n = scores.length;
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(10)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('YOUR ASSESSMENT', marginX, px(166));
+
+    const scoreByDim = Object.fromEntries(scores.map((row) => [row.dimension, row]));
+    const chartRows = config.chartOrder.map((dim) => scoreByDim[dim]).filter(Boolean);
+    const n = chartRows.length;
+    const cx = px(175);
+    const cy = px(275);
+    const radius = px(91);
 
     const pointAt = (value, index) => {
       const angle = (Math.PI * 2 * index) / n - Math.PI / 2;
@@ -463,67 +373,223 @@ export default function Assessment({ onClose }) {
       return [cx + r * Math.cos(angle), cy + r * Math.sin(angle)];
     };
 
-    // Rings
     for (let level = 1; level <= 5; level += 1) {
       ctx.beginPath();
       for (let i = 0; i < n; i += 1) {
-        const [px, py] = pointAt((FULL_MARK * level) / 5, i);
-        if (i === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
+        const [pxPt, pyPt] = pointAt((FULL_MARK * level) / 5, i);
+        if (i === 0) ctx.moveTo(pxPt, pyPt);
+        else ctx.lineTo(pxPt, pyPt);
       }
       ctx.closePath();
-      ctx.strokeStyle = '#d1d5db';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = PDF_DIVIDER;
+      ctx.lineWidth = px(0.65);
       ctx.stroke();
     }
-
-    // Axes + labels
-    scores.forEach((row, index) => {
-      const [ex, ey] = pointAt(FULL_MARK, index);
+    for (let i = 0; i < n; i += 1) {
+      const [ex, ey] = pointAt(FULL_MARK, i);
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(ex, ey);
-      ctx.strokeStyle = '#d1d5db';
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = PDF_DIVIDER;
+      ctx.lineWidth = px(0.65);
       ctx.stroke();
-
-      const [lx, ly] = pointAt(FULL_MARK + 1.25, index);
-      ctx.fillStyle = '#374151';
-      ctx.font = '14px Arial, Helvetica, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
-      const words = row.dimension.split(' ');
-      if (words.length > 1) {
-        ctx.fillText(words[0], lx, ly - 8);
-        ctx.fillText(words.slice(1).join(' '), lx, ly + 10);
-      } else {
-        ctx.fillText(row.dimension, lx, ly);
-      }
-    });
+    }
 
     const drawPolygon = (key, stroke, fill) => {
       ctx.beginPath();
-      scores.forEach((row, index) => {
-        const [px, py] = pointAt(row[key], index);
-        if (index === 0) ctx.moveTo(px, py);
-        else ctx.lineTo(px, py);
+      chartRows.forEach((row, index) => {
+        const [x, y] = pointAt(row[key], index);
+        if (index === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
       });
       ctx.closePath();
       ctx.fillStyle = fill;
       ctx.fill();
       ctx.strokeStyle = stroke;
-      ctx.lineWidth = 3;
+      ctx.lineWidth = px(2.2);
       ctx.stroke();
     };
 
-    drawPolygon('futureScore', '#2563eb', 'rgba(37, 99, 235, 0.12)');
-    drawPolygon('nowScore', '#ea580c', 'rgba(234, 88, 12, 0.2)');
+    drawPolygon('futureScore', PDF_DESIRED, 'rgba(71, 119, 184, 0.16)');
+    drawPolygon('nowScore', PDF_ORANGE, 'rgba(236, 117, 31, 0.18)');
 
-    return canvas;
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(8)}px Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    chartRows.forEach((row, index) => {
+      const [lx, ly] = pointAt(FULL_MARK + 1.55, index);
+      const meta = domainByName[row.dimension];
+      ctx.fillText(meta?.shortLabel || row.dimension, lx, ly);
+    });
+    ctx.textBaseline = 'alphabetic';
+
+    const legendX = px(375);
+    ctx.strokeStyle = PDF_ORANGE;
+    ctx.lineWidth = px(2.3);
+    ctx.beginPath();
+    ctx.moveTo(legendX, px(186));
+    ctx.lineTo(legendX + px(24), px(186));
+    ctx.stroke();
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(10)}px Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText('Now', legendX + px(32), px(189));
+
+    ctx.strokeStyle = PDF_DESIRED;
+    ctx.beginPath();
+    ctx.moveTo(legendX, px(209));
+    ctx.lineTo(legendX + px(24), px(209));
+    ctx.stroke();
+    ctx.fillStyle = PDF_GRAY;
+    ctx.fillText('Desired', legendX + px(32), px(212));
+
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(12)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Notice what stands out.', legendX, px(256));
+
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(9)}px Helvetica, Arial, sans-serif`;
+    const insightLines = [
+      'A larger gap can be a useful',
+      'conversation starter. You decide',
+      'what matters most right now.',
+    ];
+    insightLines.forEach((line, i) => {
+      ctx.fillText(line, legendX, px(276 + i * 13));
+    });
+
+    ctx.font = `${px(8)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Scores reflect your own assessment on a scale of 1-10.', marginX, px(400));
+
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(10)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('YOUR RESULTS', marginX, px(426));
+
+    const tableX = marginX;
+    const tableW = contentW;
+    const colLife = px(280);
+    const colNum = (tableW - colLife) / 3;
+    const headerH = px(22);
+    const rowH = px(scores.length > 8 ? 17 : 19);
+    const headerY = px(434);
+    const tableRows = [...scores].sort((a, b) => b.gap - a.gap);
+
+    ctx.fillStyle = PDF_NAVY;
+    ctx.fillRect(tableX, headerY, tableW, headerH);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `bold ${px(8)}px Helvetica, Arial, sans-serif`;
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ctx.fillText(config.pdfAreaHeader, tableX + px(12), headerY + headerH / 2);
+    ctx.textAlign = 'center';
+    ctx.fillText('NOW', tableX + colLife + colNum / 2, headerY + headerH / 2);
+    ctx.fillText('DESIRED', tableX + colLife + colNum * 1.5, headerY + headerH / 2);
+    ctx.fillText('GAP', tableX + colLife + colNum * 2.5, headerY + headerH / 2);
+
+    tableRows.forEach((row, index) => {
+      const y = headerY + headerH + rowH * index;
+      if (index % 2 === 0) {
+        ctx.fillStyle = PDF_ZEBRA;
+        ctx.fillRect(tableX, y, tableW, rowH);
+      }
+      ctx.strokeStyle = PDF_DIVIDER;
+      ctx.lineWidth = px(0.7);
+      ctx.beginPath();
+      ctx.moveTo(tableX, y + rowH);
+      ctx.lineTo(tableX + tableW, y + rowH);
+      ctx.stroke();
+
+      const meta = domainByName[row.dimension];
+      ctx.fillStyle = PDF_NAVY;
+      ctx.font = `${px(9)}px Helvetica, Arial, sans-serif`;
+      ctx.textAlign = 'left';
+      ctx.fillText(meta?.tableLabel || row.dimension, tableX + px(12), y + rowH / 2);
+      ctx.textAlign = 'center';
+      ctx.fillText(String(row.nowScore), tableX + colLife + colNum / 2, y + rowH / 2);
+      ctx.fillText(String(row.futureScore), tableX + colLife + colNum * 1.5, y + rowH / 2);
+      ctx.fillText(String(row.gap), tableX + colLife + colNum * 2.5, y + rowH / 2);
+    });
+    ctx.textBaseline = 'alphabetic';
+
+    const tableBottom = headerY + headerH + rowH * tableRows.length;
+    const pauseY = Math.max(tableBottom + px(18), px(646));
+    const pauseH = px(57);
+    ctx.fillStyle = PDF_PEACH;
+    drawRoundRect(ctx, tableX, pauseY, tableW, pauseH, px(6));
+    ctx.fill();
+
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText('PAUSE & REFLECT', tableX + px(16), pauseY + px(20));
+    ctx.font = `${px(10)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Which area matters most to you now?', tableX + px(16), pauseY + px(40));
+    ctx.font = `${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText(
+      'What is one small step you could take?',
+      tableX + px(250),
+      pauseY + px(40),
+    );
+
+    const learnY = pauseY + pauseH + px(28);
+    ctx.fillStyle = PDF_NAVY;
+    ctx.font = `bold ${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('KEEP LEARNING', tableX, learnY);
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Practical articles on personal and professional growth', tableX, learnY + px(16));
+    ctx.fillStyle = PDF_ORANGE;
+    ctx.font = `bold ${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Read the Up4Growth blog  >', tableX, learnY + px(32));
+    const blogLink = {
+      x1: 42,
+      y1: PDF_PAGE_H - (learnY / S + 34),
+      x2: 225,
+      y2: PDF_PAGE_H - (learnY / S + 16),
+      uri: PDF_BLOG_URL,
+    };
+
+    const ctaX = px(319);
+    const ctaY = learnY - px(2);
+    const ctaW = px(234);
+    const ctaH = px(42);
+    ctx.fillStyle = PDF_ORANGE;
+    drawRoundRect(ctx, ctaX, ctaY, ctaW, ctaH, px(5));
+    ctx.fill();
+    ctx.fillStyle = '#ffffff';
+    ctx.font = `bold ${px(9)}px Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'center';
+    ctx.fillText('BOOK A FREE DISCOVERY CALL', ctaX + ctaW / 2, ctaY + px(17));
+    ctx.font = `${px(7)}px Helvetica, Arial, sans-serif`;
+    ctx.fillText('Personalized guidance and coaching', ctaX + ctaW / 2, ctaY + px(30));
+    const ctaLink = {
+      x1: 319,
+      y1: PDF_PAGE_H - (ctaY / S + ctaH / S),
+      x2: 553,
+      y2: PDF_PAGE_H - ctaY / S,
+      uri: CALENDLY_PROFILE_URL,
+    };
+
+    ctx.strokeStyle = PDF_DIVIDER;
+    ctx.lineWidth = px(0.7);
+    ctx.beginPath();
+    ctx.moveTo(tableX, px(791));
+    ctx.lineTo(tableX + tableW, px(791));
+    ctx.stroke();
+
+    ctx.fillStyle = PDF_GRAY;
+    ctx.font = `${px(8)}px Helvetica, Arial, sans-serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText('Up4Growth  |  Clarity. Intention. Growth.', tableX, px(808));
+    ctx.textAlign = 'right';
+    ctx.fillText('up4growth.ch', tableX + tableW, px(808));
+
+    return { canvas, links: [blogLink, ctaLink] };
   };
 
-  const canvasToPdfBlob = (canvas) => {
-    const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.92);
+  const canvasToPdfBlob = (canvas, links = []) => {
+    const jpegDataUrl = canvas.toDataURL('image/jpeg', 0.94);
     const jpegBase64 = jpegDataUrl.replace(/^data:image\/jpeg;base64,/, '');
     const binary = window.atob(jpegBase64);
     const jpegBytes = new Uint8Array(binary.length);
@@ -531,16 +597,12 @@ export default function Assessment({ onClose }) {
       jpegBytes[i] = binary.charCodeAt(i);
     }
 
-    const pageWidth = 842;
-    const pageHeight = 595;
-    const margin = 24;
-    const maxW = pageWidth - margin * 2;
-    const maxH = pageHeight - margin * 2;
-    const scale = Math.min(maxW / canvas.width, maxH / canvas.height);
-    const drawW = canvas.width * scale;
-    const drawH = canvas.height * scale;
-    const drawX = (pageWidth - drawW) / 2;
-    const drawY = (pageHeight - drawH) / 2;
+    const pageWidth = PDF_PAGE_W;
+    const pageHeight = PDF_PAGE_H;
+    const drawW = pageWidth;
+    const drawH = pageHeight;
+    const drawX = 0;
+    const drawY = 0;
 
     const encoder = new TextEncoder();
     const chunks = [];
@@ -561,6 +623,9 @@ export default function Assessment({ onClose }) {
       writeBody();
     };
 
+    const escapePdfString = (value) =>
+      value.replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+
     append('%PDF-1.4\n');
 
     addObject(() => {
@@ -569,9 +634,11 @@ export default function Assessment({ onClose }) {
     addObject(() => {
       append('2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n');
     });
+
+    const annotRefs = links.map((_, i) => `${6 + i} 0 R`).join(' ');
     addObject(() => {
       append(
-        '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 842 595] /Contents 4 0 R /Resources << /XObject << /Im0 5 0 R >> >> >>\nendobj\n',
+        `3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth} ${pageHeight}] /Contents 4 0 R /Resources << /XObject << /Im0 5 0 R >> >> /Annots [${annotRefs}] >>\nendobj\n`,
       );
     });
 
@@ -590,6 +657,14 @@ export default function Assessment({ onClose }) {
       );
       append(jpegBytes);
       append('\nendstream\nendobj\n');
+    });
+
+    links.forEach((link, index) => {
+      addObject(() => {
+        append(
+          `${6 + index} 0 obj\n<< /Type /Annot /Subtype /Link /Rect [${link.x1.toFixed(2)} ${link.y1.toFixed(2)} ${link.x2.toFixed(2)} ${link.y2.toFixed(2)}] /Border [0 0 0] /A << /S /URI /URI (${escapePdfString(link.uri)}) >> >>\nendobj\n`,
+        );
+      });
     });
 
     const xrefStart = currentLength();
@@ -616,12 +691,16 @@ export default function Assessment({ onClose }) {
     setIsDownloading(true);
 
     try {
-      const canvas = await drawResultsCanvas();
-      const blob = canvasToPdfBlob(canvas);
+      const { canvas, links } = await drawResultsCanvas();
+      const blob = canvasToPdfBlob(canvas, links);
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'life-audit-results.pdf';
+      const fileSlug =
+        assessmentId === 'career-audit'
+          ? 'Up4Growth_Career_Audit_Results.pdf'
+          : 'Up4Growth_Wheel_of_Life_Results.pdf';
+      link.download = fileSlug;
       document.body.appendChild(link);
       link.click();
       link.remove();
@@ -643,10 +722,10 @@ export default function Assessment({ onClose }) {
     >
       <div className="assessment-topbar shrink-0 border-b border-gray-100 bg-white px-5 sm:px-8 lg:px-10 pt-3 sm:pt-4 pb-3">
         <div className="w-full flex justify-between items-center gap-3">
-          <h2 className="text-base sm:text-lg font-bold text-gray-800 truncate">Life Audit Assessment</h2>
+          <h2 className="text-base sm:text-lg font-bold text-gray-800 truncate">{config.title}</h2>
           <button
             onClick={onClose}
-            className="shrink-0 text-gray-500 hover:text-gray-700 font-medium px-3 py-1.5 rounded-md hover:bg-gray-100 transition-colors"
+            className="shrink-0 bg-red-600 hover:bg-red-700 text-white font-medium px-3 py-1.5 rounded-md transition-colors"
           >
             Close
           </button>
@@ -672,9 +751,7 @@ export default function Assessment({ onClose }) {
 
       <div
         id="assessment-scroll"
-        className={`flex-1 min-h-0 ${
-          step === 'questions' ? 'overflow-hidden' : 'overflow-y-auto'
-        }`}
+        className={`flex-1 min-h-0 overflow-y-auto`}
       >
         <AnimatePresence mode="wait">
           {step === 'intro' && (
@@ -689,10 +766,10 @@ export default function Assessment({ onClose }) {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                   <div className="text-center lg:text-left order-2 lg:order-1">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-5 leading-tight">
-                      Life Audit Assessment
+                      {config.title}
                     </h1>
                     <p className="text-lg sm:text-xl text-gray-600 mb-4 leading-relaxed max-w-md mx-auto lg:mx-0">
-                      Get instant clarity on where your life feels aligned—and where it&apos;s asking for more.
+                      {config.summary}
                     </p>
                     <p className="text-base text-gray-500 mb-8 max-w-md mx-auto lg:mx-0">
                       Use a scale of 1 (very dissatisfied) to 10 (fully satisfied).
@@ -708,7 +785,11 @@ export default function Assessment({ onClose }) {
                   </div>
 
                   <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-                    <IntroWheelGraphic className="w-full max-w-[260px] sm:max-w-[320px] md:max-w-[380px] h-auto" />
+                    <IntroWheelGraphic
+                      domains={domains}
+                      ariaLabel={config.chartAriaLabel}
+                      className="w-full max-w-[260px] sm:max-w-[320px] md:max-w-[380px] h-auto"
+                    />
                   </div>
                 </div>
               </div>
@@ -716,22 +797,16 @@ export default function Assessment({ onClose }) {
               <section className="life-audit-info" aria-labelledby="assessment-intro-info-title">
                 <div className="container life-audit-info-grid">
                   <div className="life-audit-info-copy">
-                    <h2 id="assessment-intro-info-title">What is the Life Audit Assessment?</h2>
-                    <p>
-                      The Wheel of Life is a tool to help you explore where you are in your life right now
-                      and where you would like to be in the future.
-                    </p>
-                    <p>
-                      Get a panoramic view of your well-being across eight key life areas. Use this free
-                      assessment to spotlight your strengths, uncover blind-spots, and kick-start an action
-                      plan that moves you forward.
-                    </p>
+                    <h2 id="assessment-intro-info-title">{config.introInfoTitle}</h2>
+                    {config.introInfoParagraphs.map((paragraph) => (
+                      <p key={paragraph}>{paragraph}</p>
+                    ))}
                   </div>
 
                   <div className="life-audit-info-domains">
-                    <h3>Life Domains</h3>
+                    <h3>{config.domainsHeading}</h3>
                     <ul className="life-audit-domain-list">
-                      {lifeAuditDomains.map((domain) => (
+                      {domains.map((domain) => (
                         <li key={domain.name}>
                           <span
                             className="life-audit-domain-swatch"
@@ -754,36 +829,48 @@ export default function Assessment({ onClose }) {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: -20 }}
-              className="h-full flex flex-col min-h-0 max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 w-full"
+              className="min-h-full flex flex-col justify-start max-w-6xl mx-auto px-4 sm:px-6 py-3 sm:py-4 w-full"
             >
-              <div className="life-audit-question-card bg-white rounded-2xl shadow-sm border border-gray-100 flex-1 min-h-0 flex flex-col justify-center text-center overflow-hidden">
+              <div className="life-audit-question-card bg-white rounded-2xl shadow-sm border border-gray-100 w-full text-center">
                 <h3 className="life-audit-domain-title text-orange-500 tracking-wider uppercase font-bold">
                   {currentDimension}
                 </h3>
                 <p className="life-audit-domain-desc text-gray-500">
-                  {dimensionDescriptions[currentDimension]}
+                  {domainByName[currentDimension]?.description}
                 </p>
 
-                <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
-                  {nowQuestion}
-                </h2>
+                <div className="life-audit-question-block">
+                  <p className="life-audit-question-kicker">Current satisfaction</p>
+                  <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
+                    {nowQuestion}
+                  </h2>
+                </div>
 
                 <ScoreRow
                   step={ratingSteps[0]}
                   value={nowScore}
                   onSelect={(num) => handleAnswer('now', num)}
+                  lowLabel={scoreLowLabel}
+                  highLabel={scoreHighLabel}
                 />
 
                 <div className="life-audit-score-divider border-t border-gray-100 max-w-3xl mx-auto w-full"></div>
 
-                <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
-                  {futureQuestion}
-                </h2>
+                <div className="life-audit-question-block">
+                  <p className="life-audit-question-kicker life-audit-question-kicker--future">
+                    Future satisfaction
+                  </p>
+                  <h2 className="life-audit-question-text font-bold text-gray-900 leading-snug">
+                    {futureQuestion}
+                  </h2>
+                </div>
 
                 <ScoreRow
                   step={ratingSteps[1]}
                   value={futureScore}
                   onSelect={(num) => handleAnswer('future', num)}
+                  lowLabel={scoreLowLabel}
+                  highLabel={scoreHighLabel}
                 />
               </div>
             </motion.div>
@@ -798,7 +885,7 @@ export default function Assessment({ onClose }) {
             >
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 md:mb-8">
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-serif font-bold text-gray-900">
-                  Assessment
+                  {config.title}
                 </h2>
                 <button
                   type="button"
@@ -812,7 +899,6 @@ export default function Assessment({ onClose }) {
               </div>
 
               <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 items-start">
-                {/* Wheel of Life table */}
                 <div className="w-full overflow-x-auto border border-gray-300 bg-white shadow-sm">
                   <table className="w-full min-w-[420px] border-collapse text-sm sm:text-base">
                     <thead>
@@ -821,19 +907,21 @@ export default function Assessment({ onClose }) {
                           colSpan={5}
                           className="bg-[#1e3a5f] text-white text-center text-lg sm:text-xl font-bold py-3 tracking-wide"
                         >
-                          Wheel of Life
+                          {config.resultsTableTitle}
                         </th>
                       </tr>
                       <tr className="bg-[#f2c94c] text-gray-900">
                         <th className="border border-gray-300 px-2 py-2 font-bold w-14">S.No</th>
-                        <th className="border border-gray-300 px-3 py-2 font-bold text-left">Life Domain</th>
+                        <th className="border border-gray-300 px-3 py-2 font-bold text-left">
+                          {config.domainColumnLabel}
+                        </th>
                         <th className="border border-gray-300 px-2 py-2 font-bold bg-[#9dc3e6]">Now</th>
                         <th className="border border-gray-300 px-2 py-2 font-bold bg-[#a9d08e]">Future</th>
                         <th className="border border-gray-300 px-2 py-2 font-bold">Gap</th>
                       </tr>
                     </thead>
                     <tbody>
-                      {scores.map((row, index) => (
+                      {scoresByGapDesc.map((row, index) => (
                         <tr key={row.dimension} className="text-center">
                           <td className="border border-gray-300 px-2 py-2.5 font-medium text-gray-800">
                             {index + 1}
@@ -856,7 +944,6 @@ export default function Assessment({ onClose }) {
                   </table>
                 </div>
 
-                {/* Radar chart — Now vs Future */}
                 <div className="w-full bg-white border border-gray-300 shadow-sm p-3 sm:p-4 h-[340px] sm:h-[420px] lg:h-full lg:min-h-[420px]">
                   <ResponsiveContainer width="100%" height="100%">
                     <RadarChart
@@ -983,9 +1070,15 @@ export default function Assessment({ onClose }) {
                 <div className="bg-blue-50 p-6 rounded-2xl border border-blue-100">
                   <h3 className="text-xl font-bold text-gray-900 mb-4">Next Steps</h3>
                   <p className="text-gray-700 leading-relaxed mb-6">
-                    If you&apos;d like personalized support to close the gap between where you are and your
-                    ideal life balance, schedule a <strong>free discovery session</strong> with one of our
-                    coaches.
+                    {config.nextStepsCopy.includes('free discovery session') ? (
+                      <>
+                        {config.nextStepsCopy.split('free discovery session')[0]}
+                        <strong>free discovery session</strong>
+                        {config.nextStepsCopy.split('free discovery session')[1]}
+                      </>
+                    ) : (
+                      config.nextStepsCopy
+                    )}
                   </p>
                   <button
                     type="button"

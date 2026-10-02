@@ -4,7 +4,7 @@ import { ArrowRight, Users, Target, BookOpen, Quote, Zap, Heart, ExternalLink, M
 import SiteNavbar, { LinkedInIcon } from './SiteNavbar';
 import SeoHead from './SeoHead';
 import { defaultSeo } from './seoConfig';
-import { GET_IN_TOUCH_PAGE_PATH } from './calendlyConfig';
+import { BOOK_PAGE_PATH } from './calendlyConfig';
 import './index.css';
 
 function App() {
@@ -95,7 +95,7 @@ function App() {
               <a href="#expertise" className="btn btn-primary">
                 View Expertise <ArrowRight size={18} />
               </a>
-              <Link to={GET_IN_TOUCH_PAGE_PATH} className="btn btn-outline" style={{ background: '#fff' }}>
+              <Link to={BOOK_PAGE_PATH} className="btn btn-outline" style={{ background: '#fff' }}>
                 GET IN TOUCH
               </Link>
             </div>
@@ -248,7 +248,7 @@ function App() {
                   <li>• Empowered 1,000+ participants through workshops</li>
                   <li>• 20+ years of experience in Data & Analytics</li>
                 </ul>
-                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/in/madhugade/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -266,7 +266,7 @@ function App() {
                   <li>• 15 years in Agro-industries</li>
                   <li>• PhD in Applied Mathematics</li>
                 </ul>
-                <a href="https://www.linkedin.com/company/up4growth/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <a href="https://www.linkedin.com/in/etienne-claverie/" target="_blank" rel="noreferrer" className="nav-link" style={{ color: '#0077B5', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <ExternalLink size={18} /> LinkedIn
                 </a>
               </div>
@@ -381,7 +381,7 @@ function App() {
             </div>
             <div className="reveal text-center cta-action" ref={addToRefs} style={{ transitionDelay: '0.2s' }}>
               <Link
-                to={GET_IN_TOUCH_PAGE_PATH}
+                to={BOOK_PAGE_PATH}
                 className="btn btn-primary cta-button"
                 style={{ backgroundColor: '#fff', color: 'var(--color-text-primary)' }}
               >

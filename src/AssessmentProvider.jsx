@@ -1,11 +1,19 @@
-import { createContext, useContext, useEffect, useMemo, useState, lazy, Suspense } from 'react';
+import { createContext, useContext, useEffect, useMemo, lazy, Suspense } from 'react';
+import { matchPath, useLocation, useNavigate } from 'react-router-dom';
+import { getAssessmentBySlug, getAssessmentConfig, getAssessmentPath } from './assessmentsData';
 
 const Assessment = lazy(() => import('./Assessment'));
 
 const AssessmentContext = createContext(null);
 
 export function AssessmentProvider({ children }) {
-  const [activeId, setActiveId] = useState(null);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const routeMatch = matchPath({ path: '/assessments/:slug', end: true }, location.pathname);
+  const slug = routeMatch?.params?.slug;
+  const routedAssessment = getAssessmentBySlug(slug);
+  const activeId = routedAssessment?.id ?? null;
 
   useEffect(() => {
     if (!activeId) {
@@ -23,18 +31,24 @@ export function AssessmentProvider({ children }) {
     () => ({
       isAssessmentOpen: Boolean(activeId),
       activeAssessmentId: activeId,
-      openAssessment: (id = 'life-audit') => setActiveId(id),
-      closeAssessment: () => setActiveId(null),
+      openAssessment: (id = 'life-audit') => {
+        navigate(getAssessmentPath(id));
+      },
+      closeAssessment: () => {
+        navigate('/assessments');
+      },
     }),
-    [activeId],
+    [activeId, navigate],
   );
+
+  const hasAssessment = Boolean(activeId && getAssessmentConfig(activeId));
 
   return (
     <AssessmentContext.Provider value={value}>
       {children}
-      {activeId === 'life-audit' ? (
+      {hasAssessment ? (
         <Suspense fallback={null}>
-          <Assessment onClose={() => setActiveId(null)} />
+          <Assessment assessmentId={activeId} onClose={() => navigate('/assessments')} />
         </Suspense>
       ) : null}
     </AssessmentContext.Provider>

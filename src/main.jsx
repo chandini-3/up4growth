@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 
 if (typeof window !== 'undefined' && 'scrollRestoration' in window.history) {
   window.history.scrollRestoration = 'manual'
@@ -17,7 +17,6 @@ import CoachingPage from './CoachingPage.jsx'
 import ScrollToTop from './ScrollToTop.jsx'
 import BookConsultation from './BookConsultation.jsx'
 import Assessments from './Assessments.jsx'
-import GetInTouch from './GetInTouch.jsx'
 import { AssessmentProvider } from './AssessmentProvider.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -29,7 +28,8 @@ createRoot(document.getElementById('root')).render(
           <Route path="/" element={<App />} />
           <Route path="/book" element={<BookConsultation />} />
           <Route path="/assessments" element={<Assessments />} />
-          <Route path="/get-in-touch" element={<GetInTouch />} />
+          <Route path="/assessments/:slug" element={<Assessments />} />
+          <Route path="/get-in-touch" element={<Navigate to="/book" replace />} />
           <Route path="/workshops/topics" element={<WorkshopTopics />} />
           <Route path="/workshops/topics/:slug" element={<WorkshopTopicPage />} />
           <Route path="/programs" element={<Programs />} />
